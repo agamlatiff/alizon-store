@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label";
 import { useFormState, useFormStatus } from "react-dom";
 import SignIn from "../lib/actions";
 import type { ActionResult } from "@/types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 const initialState: ActionResult = {
   error: "",
@@ -31,16 +33,27 @@ const SubmitButton = () => {
 const FormSignin = () => {
   const [state, formAction] = useFormState(SignIn, initialState);
 
+  console.log(state);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form action={formAction}>
+    <form action={formAction}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Login to your account</CardTitle>
+          <CardDescription>
+            Enter your email below to login to your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {state.error !== "" && (
+            <Alert variant="destructive">
+              <Terminal />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {state.error}
+              </AlertDescription>
+            </Alert>
+          )}
           <div className="flex flex-col gap-6">
             <div className="grid gap-3">
               <Label htmlFor="email">Email</Label>
@@ -48,7 +61,6 @@ const FormSignin = () => {
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                required
                 name="email"
               />
             </div>
@@ -62,7 +74,7 @@ const FormSignin = () => {
                   Forgot your password?
                 </a>
               </div>
-              <Input id="password" type="password" required name="password" />
+              <Input id="password" type="password" name="password" />
             </div>
             <div className="flex flex-col gap-3">
               <SubmitButton />
@@ -74,9 +86,9 @@ const FormSignin = () => {
               Sign up
             </a>
           </div>
-        </form>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </form>
   );
 };
 
