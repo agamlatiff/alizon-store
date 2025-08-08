@@ -19,14 +19,14 @@ const SignIn = async (
 
   if (!validate.success) {
     return {
-      error: validate.error.message,
+      error: validate.error.issues[0].message,
     };
   }
 
   const existingUser = await prisma.user.findFirst({
     where: {
       email: validate.data.email,
-      role: 'superadmin'
+      role: "superadmin",
     },
   });
 
