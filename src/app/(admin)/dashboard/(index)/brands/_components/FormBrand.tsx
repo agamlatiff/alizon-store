@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { AlertCircle, ChevronLeft } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,19 +11,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useFormState, useFormStatus } from "react-dom";
 import type { ActionResult } from "@/types";
-import type { Category } from "@prisma/client";
-import { postCategory, updateCategory } from "../lib/actions";
+import { AlertCircle, ChevronLeft, Link } from "lucide-react";
+import { useFormState, useFormStatus } from "react-dom";
+import { postBrand, updateBrand } from "../lib/actions";
+import type { Brand } from "@prisma/client";
+
 
 const initialState: ActionResult = {
   error: "",
 };
 
-interface FormCategoryProps {
+interface FormBrandProps {
   type?: "ADD" | "EDIT";
-  data?: Category | null;
+  data?: Brand | null;
 }
 
 const SubmitButton = () => {
@@ -37,14 +36,10 @@ const SubmitButton = () => {
   );
 };
 
-const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
-  const updateCategoryWithId = (_: unknown, formData: FormData) =>
-    updateCategory(_, formData, data?.id);
-
-  const [state, formAction] = useFormState(
-    type === "ADD" ? postCategory : updateCategoryWithId,
-    initialState
-  );
+const FormBrand = ({data, type} : FormBrandProps) => {
+  const updateBrandWithId = (_: unknown, formData: FormData) => updateBrand(_, formData, data?.id ?? 0);
+  
+  const [state, formAction] = useFormState(type === 'ADD' ? postBrand : updateBrandWithId, initialState);
 
   return (
     <form action={formAction}>
@@ -96,6 +91,15 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
                         defaultValue={data?.name}
                       />
                     </div>
+                    <div className="grid gap-3">
+                      <Label htmlFor="logo">Logo</Label>
+                      <Input
+                        id="logo"
+                        type="file"
+                        name="image"
+                        className="w-full"
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -113,4 +117,4 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
   );
 };
 
-export default FormCategory;
+export default FormBrand;
