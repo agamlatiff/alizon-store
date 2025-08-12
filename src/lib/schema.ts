@@ -20,6 +20,13 @@ export const schemaCategory = z.object({
     .min(4, { message: "Name must be at least 4 characters" }),
 });
 
+export const schemaSignUp = schemaSignIn.extend({
+  name: z
+    .string()
+    .nonempty({ message: "Name is required" })
+    .min(4, { message: "Name must be at least 4 characters" }),
+});
+
 export const schemaBrand = schemaCategory.extend({
   image: z
     .any()
@@ -64,6 +71,8 @@ export const schemaProduct = z.object({
     ),
 });
 
-export const schemaProductEdit = schemaProduct.extend({
-  id: z.number({ message: "Product Id is required" }),
-}).omit({images: true});
+export const schemaProductEdit = schemaProduct
+  .extend({
+    id: z.number({ message: "Product Id is required" }),
+  })
+  .omit({ images: true });

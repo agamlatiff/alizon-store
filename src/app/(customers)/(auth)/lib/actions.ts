@@ -1,6 +1,6 @@
 "use server";
 
-import { schemaSignIn } from "@/lib/schema";
+import { schemaSignIn, schemaSignUp } from "@/lib/schema";
 import type { ActionResult } from "@/types";
 import prisma from "lib/prisma";
 import { redirect } from "next/navigation";
@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 import { lucia } from "@/lib/auth";
 import { cookies } from "next/headers";
 
-const SignIn = async (
+export const SignIn = async (
   _: unknown,
   formData: FormData
 ): Promise<ActionResult> => {
@@ -58,4 +58,39 @@ const SignIn = async (
   return redirect("/");
 };
 
-export default SignIn;
+export const signUp = async (
+  _: unknown,
+  formData: FormData
+): Promise<ActionResult> => {
+  const parse = schemaSignUp.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+  
+  if(!parse.success) {
+    return {
+      error: parse.error.issues[0].message
+    }
+  }
+  
+  const hashPassword = bcrypt.hashSync(parse.data.password, 12);
+  
+  try {
+    await prisma.user.create( {
+      data: {
+        name: parse.data.name,
+        email: parse.data.email,
+        password: hashPassword,
+        role: "customer"
+      }
+    })
+  } catch (e) {
+    console.log(e)
+    return {
+      error: 'Failed to sin up'
+    }
+  }
+  
+  return redirect('/signin')
+};

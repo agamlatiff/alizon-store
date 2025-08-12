@@ -3,7 +3,7 @@
 import type { ActionResult } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import SignIn from "../lib/actions";
+import { SignIn } from "../lib/actions";
 import { useFormState, useFormStatus } from "react-dom";
 
 const initiaFormState: ActionResult = {
@@ -58,8 +58,8 @@ const SignInPage = () => {
           <div className="flex items-center gap-[10px] rounded-full border border-[#E5E5E5] p-[12px_20px] focus-within:ring-2 focus-within:ring-[#FFC736] transition-all duration-300">
             <div className="flex shrink-0">
               <Image
-                height={30}
-                width={30}
+                height={25}
+                width={25}
                 src="assets/icons/sms.svg"
                 alt="icon"
               />
@@ -76,8 +76,8 @@ const SignInPage = () => {
             <div className="flex items-center gap-[10px] rounded-full border border-[#E5E5E5] p-[12px_20px] focus-within:ring-2 focus-within:ring-[#FFC736] transition-all duration-300">
               <div className="flex shrink-0">
                 <Image
-                  height={30}
-                  width={30}
+                  height={25}
+                  width={25}
                   src="assets/icons/lock.svg"
                   alt="icon"
                 />
