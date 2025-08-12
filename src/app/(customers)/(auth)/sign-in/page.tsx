@@ -1,7 +1,32 @@
+"use client";
+
+import type { ActionResult } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import SignIn from "../lib/actions";
+import { useFormState, useFormStatus } from "react-dom";
+import { stat } from "fs";
+
+const initiaFormState: ActionResult = {
+  error: "",
+};
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      disabled={pending}
+      type="submit"
+      className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
+    >
+      {pending ? "Loading..." : "Sign in to my account"}
+    </button>
+  );
+};
 
 const SignInPage = () => {
+  const [state, formAction] = useFormState(SignIn, initiaFormState);
   return (
     <div
       id="signin"
@@ -9,7 +34,7 @@ const SignInPage = () => {
     >
       <div className="container max-w-[1130px] mx-auto flex flex-1 items-center justify-center py-5">
         <form
-          action="index.html"
+          action={formAction}
           className="w-[500px] bg-white p-[50px_30px] flex flex-col gap-5 rounded-3xl border border-[#E5E5E5]"
         >
           <div className="flex justify-center">
@@ -20,7 +45,17 @@ const SignInPage = () => {
               alt="logo"
             />
           </div>
-          <h1 className="font-bold text-2xl leading-[34px] text-black">Sign In</h1>
+          <h1 className="font-bold text-2xl leading-[34px] text-black">
+            Sign In
+          </h1>
+          
+          {state.error !== '' && (
+            <div className="border border-red-300 text-red-500 p-3 rounded">
+              <h4 className="font-semibold">Error</h4>
+              <p className="text-sm">{state.error}</p>
+            </div>
+          )}
+          
           <div className="flex items-center gap-[10px] rounded-full border border-[#E5E5E5] p-[12px_20px] focus-within:ring-2 focus-within:ring-[#FFC736] transition-all duration-300">
             <div className="flex shrink-0">
               <Image
@@ -32,8 +67,8 @@ const SignInPage = () => {
             </div>
             <input
               type="email"
-              id=""
-              name=""
+              id="email"
+              name="email"
               className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
               placeholder="Write your email address"
             />
@@ -51,11 +86,11 @@ const SignInPage = () => {
               <input
                 type="password"
                 id="password"
-                name=""
+                name="password"
                 className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
                 placeholder="Write your password"
               />
-              <button
+              {/* <button
                 type="button"
                 className="reveal-password flex shrink-0"
                 //onclick="togglePasswordVisibility('password', this)"
@@ -66,22 +101,17 @@ const SignInPage = () => {
                   src="assets/icons/eye.svg"
                   alt="icon"
                 />
-              </button>
+              </button> */}
             </div>
-            <Link
+            {/* <Link
               href=""
               className="text-sm text-[#616369] underline w-fit mr-0 ml-auto"
             >
               Forgot Password
-            </Link>
+            </Link> */}
           </div>
           <div className="flex flex-col gap-3">
-            <button
-              type="submit"
-              className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
-            >
-              Sign In to My Account
-            </button>
+            <SubmitButton />
             <Link
               href="signup.html"
               className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5] text-black"
