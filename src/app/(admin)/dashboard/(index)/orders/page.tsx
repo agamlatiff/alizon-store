@@ -7,8 +7,12 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
+import { getOrders } from "./lib/data";
 
-const OrdersPage = () => {
+const OrdersPage = async () => {
+  
+  const orders = await getOrders()
+  
   return (
     <div className="space-y-4">
       <Card x-chunk="dashboard-06-chunk-0">
@@ -19,7 +23,7 @@ const OrdersPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={[]} />
+          <DataTable columns={columns} data={orders} />
         </CardContent>
       </Card>
     </div>
