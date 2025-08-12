@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import SignIn from "../lib/actions";
 import { useFormState, useFormStatus } from "react-dom";
-import { stat } from "fs";
 
 const initiaFormState: ActionResult = {
   error: "",
@@ -90,30 +89,12 @@ const SignInPage = () => {
                 className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
                 placeholder="Write your password"
               />
-              {/* <button
-                type="button"
-                className="reveal-password flex shrink-0"
-                //onclick="togglePasswordVisibility('password', this)"
-              >
-                <Image
-                  height={30}
-                  width={30}
-                  src="assets/icons/eye.svg"
-                  alt="icon"
-                />
-              </button> */}
             </div>
-            {/* <Link
-              href=""
-              className="text-sm text-[#616369] underline w-fit mr-0 ml-auto"
-            >
-              Forgot Password
-            </Link> */}
           </div>
           <div className="flex flex-col gap-3">
             <SubmitButton />
             <Link
-              href="signup.html"
+              href="/sign-up"
               className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5] text-black"
             >
               Sign Up
