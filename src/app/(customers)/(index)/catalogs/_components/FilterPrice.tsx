@@ -1,4 +1,33 @@
+"use client";
+
+import { useFIlter } from "@/hooks/useFilter";
+import { useEffect, useState } from "react";
+
 const FilterPrice = () => {
+  const { setFilter } = useFIlter();
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+
+  useEffect(() => {
+    const debounceInput = setTimeout(() => {
+      setFilter({
+        minPrice: minPrice,
+      });
+    }, 1500);
+    
+    return () => clearTimeout(debounceInput)
+  }, [minPrice]);
+  
+    useEffect(() => {
+    const debounceInput = setTimeout(() => {
+      setFilter({
+        maxPrice: maxPrice,
+      });
+    }, 1500);
+    
+    return () => clearTimeout(debounceInput)
+  }, [maxPrice]);
+
   return (
     <div className="flex flex-col gap-[14px]">
       <p className="font-semibold leading-[22px]">Range Harga</p>
@@ -7,6 +36,7 @@ const FilterPrice = () => {
           <img src="assets/icons/dollar-circle.svg" alt="icon" />
         </div>
         <input
+          onChange={(e) => setMinPrice(Number(e.target.value))}
           type="number"
           id=""
           name=""
@@ -19,6 +49,7 @@ const FilterPrice = () => {
           <img src="assets/icons/dollar-circle.svg" alt="icon" />
         </div>
         <input
+          onChange={(e) => setMaxPrice(Number(e.target.value))}
           type="number"
           id=""
           name=""
