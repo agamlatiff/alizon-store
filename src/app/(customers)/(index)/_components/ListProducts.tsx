@@ -1,7 +1,5 @@
 import React, { type ReactNode } from "react";
 import { getProducts } from "../lib/data";
-import Link from "next/link";
-import { rupiahFormat } from "@/lib/utils";
 import CardProduct from "./CardProduct";
 
 interface ListProductProps {
