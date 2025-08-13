@@ -1,10 +1,10 @@
 "use client";
 
-import { useFIlter } from "@/hooks/useFilter";
+import { useFilter } from "@/hooks/useFilter";
 import { useEffect, useState } from "react";
 
 const FilterPrice = () => {
-  const { setFilter } = useFIlter();
+  const { setFilter } = useFilter();
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
 

@@ -1,9 +1,9 @@
 'use client'
 
-import { useFIlter } from "@/hooks/useFilter";
+import { useFilter } from "@/hooks/useFilter";
 import React, { useEffect, useState } from "react";
 const SearchBar = () => {
-  const { setFilter } = useFIlter();
+  const { setFilter } = useFilter();
   const [query, setQuerry] = useState<string>("");
   
   useEffect(() => {

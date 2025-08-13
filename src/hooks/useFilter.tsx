@@ -16,7 +16,7 @@ export interface FilterState {
   setFilter : (filter : TFilter) => void
 }
 
-export const useFIlter = create<FilterState>()((set) => ({
+export const useFilter = create<FilterState>()((set) => ({
   filter : {
     search : '',
     minPrice : 0,
