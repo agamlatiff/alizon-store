@@ -155,7 +155,9 @@ const LandingPage = () => {
               }
             />
           </Suspense>
-          <ListBrands />
+          <Suspense fallback={<span>Loading...</span>}>
+            <ListBrands />
+          </Suspense>
 
           <Suspense fallback={<span>Loading...</span>}>
             <ListProducts
