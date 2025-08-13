@@ -3,11 +3,15 @@
 import { useQuery } from "@tanstack/react-query";
 import CardProduct from "../../_components/CardProduct";
 import { fetchProduct } from "../lib/data";
+import { useFilter } from "@/hooks/useFilter";
 
 const ProductListing = () => {
+  
+  const {filter} = useFilter()
+  
   const { data, isLoading } = useQuery({
-    queryKey: ["product-listing"],
-    queryFn: () => fetchProduct(),
+    queryKey: ["product-listing", filter],
+    queryFn: () => fetchProduct(filter),
   });
 
   if (isLoading) {
