@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const res = (await request.json()) as TFilter;
     const ORQuery: Prisma.ProductWhereInput[] = [];
 
-    if (res.search !== "") {
+    if (res.search && res.search !== "") {
       ORQuery.push({
         name: {
           contains: res.search,
