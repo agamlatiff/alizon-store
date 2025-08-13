@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ListBrands from "../(auth)/_components/ListBrands";
 import ListCategory from "../(auth)/_components/ListCategory";
 import ListProducts from "../(auth)/_components/ListProducts";
@@ -142,7 +143,9 @@ const LandingPage = () => {
           id="content"
           className="container max-w-[1130px] mx-auto flex flex-col gap-[50px] pt-[50px] pb-[100px]"
         >
-          <ListCategory />
+          <Suspense fallback={<span>Loading...</span>}>
+            <ListCategory />
+          </Suspense>
           <ListProducts
             title={
               <>
