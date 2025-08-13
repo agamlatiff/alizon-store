@@ -146,22 +146,26 @@ const LandingPage = () => {
           <Suspense fallback={<span>Loading...</span>}>
             <ListCategory />
           </Suspense>
-          <ListProducts
-            title={
-              <>
-                Most Picked <br /> Quality Products
-              </>
-            }
-          />
+          <Suspense fallback={<span>Loading...</span>}>
+            <ListProducts
+              title={
+                <>
+                  Most Picked <br /> Quality Products
+                </>
+              }
+            />
+          </Suspense>
           <ListBrands />
 
-          <ListProducts
-            title={
-              <>
-                New Releases <br /> From Official Stores
-              </>
-            }
-          />
+          <Suspense fallback={<span>Loading...</span>}>
+            <ListProducts
+              title={
+                <>
+                  New Releases <br /> From Official Stores
+                </>
+              }
+            />
+          </Suspense>
         </section>
       </>
     </>
