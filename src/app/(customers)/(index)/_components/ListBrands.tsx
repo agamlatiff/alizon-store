@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getBrands } from "../../(index)/lib/data";
+import { getBrands } from "../lib/data";
 
 const ListBrands = async () => {
   const brands = await getBrands();

@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import ListBrands from "../(auth)/_components/ListBrands";
-import ListCategory from "../(auth)/_components/ListCategory";
-import ListProducts from "../(auth)/_components/ListProducts";
-import Navbar from "../(auth)/_components/Navbar";
+import ListBrands from "./_components/ListBrands";
+import ListCategory from "./_components/ListCategory";
+import ListProducts from "./_components/ListProducts";
+import Navbar from "./_components/Navbar";
 
 const LandingPage = () => {
   return (
