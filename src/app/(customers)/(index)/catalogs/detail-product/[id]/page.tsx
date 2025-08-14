@@ -6,6 +6,7 @@ import type { Tparams } from "@/types";
 import { getProductById } from "./lib/data";
 import { redirect } from "next/navigation";
 import CarouselImages from "./_components/CarouselImages";
+import { getUser } from "@/lib/auth";
 
 type paramsProps = {
   params: Tparams;
@@ -13,6 +14,7 @@ type paramsProps = {
 
 const DetailProductPage = async ({ params }: paramsProps) => {
   const product = await getProductById(Number.parseInt(params.id));
+  const { session } = await getUser();
 
   if (!product) {
     return redirect("/");
@@ -310,6 +312,7 @@ const DetailProductPage = async ({ params }: paramsProps) => {
           </div>
         </div>
         <PriceInfo
+          isLogin={session ? true : false}
           item={{
             id: product.id,
             category_name: product.category.name,

@@ -1,11 +1,31 @@
+'use client'
+
+import { useCart } from "@/hooks/useCart";
 import { rupiahFormat } from "@/lib/utils";
-import type { TProduct } from "@/types";
+import type { TCart, TProduct } from "@/types";
+import { useRouter } from "next/router";
 
 interface PriceInfoProp {
   item : TProduct;
+  isLogin: boolean
 }
 
-const PriceInfo = ({item} : PriceInfoProp) => {
+const PriceInfo = ({item, isLogin} : PriceInfoProp) => {
+  
+  const {addProduct} = useCart();
+  
+  const router = useRouter()
+  
+  const checkout = () => {
+    const newCart : TCart = {
+      ...item,
+      quantity: 1
+    }
+    
+    addProduct(newCart)
+    router.push('/carts')
+  }
+  
   return (
     <div className="w-[302px] flex flex-col shrink-0 gap-5 h-fit">
       <div className="w-full bg-white border border-[#E5E5E5] flex flex-col gap-[30px] p-[30px] rounded-3xl">
@@ -46,12 +66,14 @@ const PriceInfo = ({item} : PriceInfoProp) => {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <a
-            href="cart.html"
-            className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
+          <button
+            type="button"
+            disabled={!isLogin}
+            onClick={checkout}
+            className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white disabled:opacity-60"
           >
             Add to Cart
-          </a>
+          </button>
           <a
             href=""
             className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]"
