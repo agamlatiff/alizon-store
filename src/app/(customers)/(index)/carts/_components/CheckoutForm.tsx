@@ -2,17 +2,45 @@
 
 import { useCart } from "@/hooks/useCart";
 import { rupiahFormat } from "@/lib/utils";
+import type { ActionResult } from "@/types";
 import { useMemo } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { storeOrder } from "../lib/actions";
+
+const initialState: ActionResult = {
+  error: "",
+};
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
+      disabled={pending}
+    >
+      {pending ? "Checkout with xendit..." : "Checkout Now"}
+    </button>
+  );
+};
 
 const CheckoutForm = () => {
   const { products } = useCart();
   const grandTotal = useMemo(() => {
-    return products.reduce((prev, curr) => prev + curr.price * curr.quantity,0)
-  }, [products])
+    return products.reduce(
+      (prev, curr) => prev + curr.price * curr.quantity,
+      0
+    );
+  }, [products]);
+
+  const storeOrderParams = (_: unknown, formData: FormData) =>
+    storeOrder(_, formData, grandTotal, products);
+
+  const [state, formAction] = useFormState(storeOrderParams, initialState);
 
   return (
     <form
-      action=""
+      action={formAction}
       id="checkout-info"
       className="container max-w-[1130px] mx-auto flex justify-between gap-5 mt-[50px] pb-[100px]"
     >
@@ -25,10 +53,10 @@ const CheckoutForm = () => {
             <div className="flex shrink-0">
               <img src="assets/icons/profile-circle.svg" alt="icon" />
             </div>
-            <input
+            <input required
               type="text"
               id=""
-              name=""
+              name="name"
               className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
               placeholder="Write your real complete name"
             />
@@ -37,10 +65,10 @@ const CheckoutForm = () => {
             <div className="flex shrink-0">
               <img src="assets/icons/house-2.svg" alt="icon" />
             </div>
-            <input
+            <input required
               type="text"
               id=""
-              name=""
+              name="address"
               className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
               placeholder="Write your active house address"
             />
@@ -50,10 +78,10 @@ const CheckoutForm = () => {
               <div className="flex shrink-0">
                 <img src="assets/icons/global.svg" alt="icon" />
               </div>
-              <input
+              <input required
                 type="text"
                 id=""
-                name=""
+                name="city"
                 className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
                 placeholder="City"
               />
@@ -62,10 +90,10 @@ const CheckoutForm = () => {
               <div className="flex shrink-0">
                 <img src="assets/icons/location.svg" alt="icon" />
               </div>
-              <input
+              <input required
                 type="number"
                 id=""
-                name=""
+                name="postal_code"
                 className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
                 placeholder="Post code"
               />
@@ -77,7 +105,7 @@ const CheckoutForm = () => {
             </div>
             <textarea
               name=""
-              id=""
+              id="notes"
               className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black resize-none"
               rows={6}
               placeholder="Additional notes for courier"
@@ -88,10 +116,10 @@ const CheckoutForm = () => {
             <div className="flex shrink-0">
               <img src="assets/icons/call.svg" alt="icon" />
             </div>
-            <input
+            <input required
               type="tel"
               id=""
-              name=""
+              name="phone"
               className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
               placeholder="Write your phone number or whatsapp"
             />
@@ -171,12 +199,7 @@ const CheckoutForm = () => {
             </p>
           </div>
           <div className="flex flex-col gap-3">
-            <a
-              href=""
-              className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
-            >
-              Checkout Now
-            </a>
+            <SubmitButton/>
             <a
               href=""
               className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]"
