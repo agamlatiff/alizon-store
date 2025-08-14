@@ -2,8 +2,15 @@ import { Suspense } from "react";
 import Navbar from "../../../_components/Navbar";
 import ListProducts from "../../../_components/ListProducts";
 import PriceInfo from "./_components/PriceInfo";
+import type { Tparams } from "@/types";
+import { getProductById } from "./lib/data";
 
-const DetailProductPage = () => {
+const DetailProductPage = async ({id}: Tparams) => {
+  
+  const product = await getProductById(Number.parseInt(id));
+  
+  console.log(product)
+  
   return (
     <>
       <header className="bg-[#EFF3FA] pt-[30px] h-[480px] -mb-[310px]">
