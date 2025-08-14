@@ -4,7 +4,7 @@ import { useCart } from "@/hooks/useCart";
 import { rupiahFormat } from "@/lib/utils";
 
 const CartProduct = () => {
-  const { products } = useCart();
+  const { products, increaseQuantity, decreaseQuantity, removeProduct } = useCart();
 
   return (
     <div
@@ -35,13 +35,13 @@ const CartProduct = () => {
           <div className="w-[120px] flex flex-col gap-1">
             <p className="text-sm text-[#616369]">Quantity</p>
             <div className="flex items-center gap-3">
-              <button className="w-6 h-6 flex shrink-0">
+              <button type="button" onClick={() => decreaseQuantity(cart.id)} className="w-6 h-6 flex shrink-0">
                 <img src="assets/icons/minus-cirlce.svg" alt="minus" />
               </button>
               <p className="text-[#0D5CD7] font-semibold leading-[22px]">
                 {cart.quantity}
               </p>
-              <button className="w-6 h-6 flex shrink-0">
+              <button type="button" onClick={() => increaseQuantity(cart.id)} className="w-6 h-6 flex shrink-0">
                 <img src="assets/icons/add-circle.svg" alt="plus" />
               </button>
             </div>
@@ -52,7 +52,7 @@ const CartProduct = () => {
               {rupiahFormat(cart.price * cart.quantity)}
             </p>
           </div>
-          <button className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]">
+          <button type="button" onClick={() => removeProduct(cart.id)} className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]">
             Remove
           </button>
         </div>
