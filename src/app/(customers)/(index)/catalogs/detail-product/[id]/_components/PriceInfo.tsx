@@ -1,12 +1,17 @@
-import React from "react";
+import { rupiahFormat } from "@/lib/utils";
+import type { TProduct } from "@/types";
 
-const PriceInfo = () => {
+interface PriceInfoProp {
+  item : TProduct;
+}
+
+const PriceInfo = ({item} : PriceInfoProp) => {
   return (
     <div className="w-[302px] flex flex-col shrink-0 gap-5 h-fit">
       <div className="w-full bg-white border border-[#E5E5E5] flex flex-col gap-[30px] p-[30px] rounded-3xl">
         <div className="flex flex-col gap-1">
           <p className="font-semibold">Brand New</p>
-          <p className="font-bold text-[32px] leading-[48px]">Rp 56.500.000</p>
+          <p className="font-bold text-[24px] leading-[48px]">{rupiahFormat(item.price)}</p>
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">

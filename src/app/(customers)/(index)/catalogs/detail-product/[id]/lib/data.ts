@@ -18,7 +18,12 @@ export async function getProductById(id: number) {
         },
         images: true,
         description: true,
-        price: true
+        price: true,
+        category: {
+          select: {
+            name: true
+          }
+        }
       }
     })
     

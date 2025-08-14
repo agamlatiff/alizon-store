@@ -4,13 +4,19 @@ import ListProducts from "../../../_components/ListProducts";
 import PriceInfo from "./_components/PriceInfo";
 import type { Tparams } from "@/types";
 import { getProductById } from "./lib/data";
+import { redirect } from "next/navigation";
+import CarouselImages from "./_components/CarouselImages";
 
-const DetailProductPage = async ({id}: Tparams) => {
-  
-  const product = await getProductById(Number.parseInt(id));
-  
-  console.log(product)
-  
+type paramsProps = {
+  params: Tparams;
+};
+
+const DetailProductPage = async ({ params }: paramsProps) => {
+  const product = await getProductById(Number.parseInt(params.id));
+
+  if (!product) {
+    return redirect("/");
+  }
   return (
     <>
       <header className="bg-[#EFF3FA] pt-[30px] h-[480px] -mb-[310px]">
@@ -34,9 +40,7 @@ const DetailProductPage = async ({id}: Tparams) => {
               Details
             </a>
           </div>
-          <h1 className="font-bold text-4xl leading-9">
-            iMac Pro Anniv Edition 100th
-          </h1>
+          <h1 className="font-bold text-4xl leading-9">{product?.name}</h1>
         </div>
         <div className="flex items-center gap-2 justify-end">
           <div className="flex items-center">
@@ -56,10 +60,10 @@ const DetailProductPage = async ({id}: Tparams) => {
               <img src="/assets/icons/Star-gray.svg" alt="star" />
             </div>
           </div>
-          <p className="font-semibold">(4,389)</p>
+          <p className="font-semibold">({product._count.orders})</p>
         </div>
       </div>
-
+      <CarouselImages images={product.images} />
       <div
         id="details-benefits"
         className="container max-w-[1130px] mx-auto flex items-center gap-[50px] justify-center mt-[50px]"
@@ -107,16 +111,7 @@ const DetailProductPage = async ({id}: Tparams) => {
         <div className="max-w-[650px] w-full flex flex-col gap-[30px]">
           <div id="about" className="flex flex-col gap-[10px]">
             <h3 className="font-semibold">About Product</h3>
-            <p className="leading-[32px]">
-              iMac brings incredible, room-filling audio to any space. Two pairs
-              of force-cancelling woofers create rich, deep bass — and each is
-              balanced with a high-performance tweeter for a massive soundstage
-              that takes music, movies, and more to the next level. 12-Core CPU
-              18-Core GPU 18GB Unified Memory 1TB SSD Storage¹ iMac also
-              supports Spatial Audio with Dolby Atmos. And when you combine that
-              with a 4.5K Retina display, it's like bringing the whole theater
-              home.
-            </p>
+            <p className="leading-[32px]">{product.description}</p>
           </div>
           <div id="testi" className="flex flex-col gap-[10px]">
             <h3 className="font-semibold">Real Testimonials</h3>
@@ -314,7 +309,15 @@ const DetailProductPage = async ({id}: Tparams) => {
             </div>
           </div>
         </div>
-        <PriceInfo />
+        <PriceInfo
+          item={{
+            id: product.id,
+            category_name: product.category.name,
+            image_url: product.images[0],
+            name: product.name,
+            price: Number(product.price),
+          }}
+        />
       </div>
       <div
         id="recommedations"
