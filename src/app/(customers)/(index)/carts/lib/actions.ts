@@ -14,7 +14,7 @@ export async function storeOrder(
   _: unknown,
   formData: FormData,
   total: number,
-  product: TCart[]
+  products: TCart[]
 ): Promise<ActionResult> {
   const { session, user } = await getUser();
 
@@ -75,10 +75,26 @@ export async function storeOrder(
     for (const product of products) {
       queryCreateProductOrder.push({
         order_id : order.id,
-        product_id: product.id
+        product_id: product.id,
+        quantity: product.quantity,
+        subtotal: product.price
       })
     }
     
+    await prisma.orderProduct.createMany({
+      data: queryCreateProductOrder
+    })
+    
+    await prisma.orderDetail.create({
+      data: {
+        address: parse.data.address,
+        city: parse.data.city,
+        name: parse.data.name,
+        phone: parse.data.phone,
+        postal_code: parse.data.postal_code,
+        order_id: order.id
+      }
+    })
   } catch (e) {
     console.log(e);
     return  {
