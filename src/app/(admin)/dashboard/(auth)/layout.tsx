@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans", // 3. Set sebagai CSS variable
+  variable: "--font-sans",
 });
 export const metadata: Metadata = {
   title: "Dashbaord",
