@@ -3,7 +3,7 @@
 import { schemaBrand } from "@/lib/schema";
 import { deleteFile, uploadFile } from "@/lib/supabase";
 import type { ActionResult } from "@/types";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export const postBrand = async (
@@ -112,19 +112,18 @@ export const deleteBrand = async (
   }
 
   try {
-    
-    deleteFile()
-    
+    deleteFile();
+
     await prisma.brand.delete({
       where: {
         id: id,
       },
-    })
+    });
   } catch (error) {
     console.log(error);
     return {
-      error: 'Failed to delete data'
-    }
+      error: "Failed to delete data",
+    };
   }
 
   return redirect("/dashboard/brands");

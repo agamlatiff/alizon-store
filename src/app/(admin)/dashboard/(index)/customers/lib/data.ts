@@ -1,4 +1,4 @@
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import type { TColumn } from "../columns";
 
 export async function getCustomers() {
@@ -24,8 +24,8 @@ export async function getCustomers() {
         total_transaction: cust._count.orders,
       };
     });
-    
-    return response
+
+    return response;
   } catch (e) {
     console.log(e);
     return [];

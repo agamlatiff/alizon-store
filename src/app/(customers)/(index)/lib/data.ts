@@ -1,5 +1,5 @@
 import { getImageUrl } from "@/lib/supabase";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function getCategories() {
   try {
@@ -12,62 +12,61 @@ export async function getCategories() {
         },
       },
     });
-    
-    return categories
+
+    return categories;
   } catch (e) {
     console.log(e);
     return [];
   }
 }
 
-export async function getProducts () {
+export async function getProducts() {
   try {
-    const products = await prisma.product.findMany( {
-      select : {
+    const products = await prisma.product.findMany({
+      select: {
         images: true,
         id: true,
         name: true,
         category: {
-          select : {
-            name: true
-          }
+          select: {
+            name: true,
+          },
         },
-        price: true
-      }
-    })
-    
+        price: true,
+      },
+    });
+
     const response = products.map((item) => {
       return {
-       ...item,
-        image_url: getImageUrl(item.images[0], 'products')
-      }
-    })
-    
-    return response
-  }catch (e) {
-    console.log(e)
-    return []
+        ...item,
+        image_url: getImageUrl(item.images[0], "products"),
+      };
+    });
+
+    return response;
+  } catch (e) {
+    console.log(e);
+    return [];
   }
 }
 
-
-export async function getBrands () {
+export async function getBrands() {
   try {
     const brands = prisma.brand.findMany({
-      select :{
+      select: {
         logo: true,
-        id: true
-      }
-    })
-    
+        id: true,
+      },
+    });
+
     const response = (await brands).map((item) => {
       return {
         ...item,
-        logo_url: getImageUrl(item.logo, 'brands')
-      }
-    })
-    
-    return response
+        logo_url: getImageUrl(item.logo, "brands"),
+      };
+    });
+
+    return response;
   } catch (e) {
     console.log(e);
     return [];

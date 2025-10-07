@@ -2,7 +2,7 @@
 
 import { schemaCategory } from "@/lib/schema";
 import type { ActionResult } from "@/types";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export const postCategory = async (
@@ -80,19 +80,18 @@ export const deleteCategory = async (
   formData: FormData,
   id: number
 ): Promise<ActionResult> => {
-  
   try {
     await prisma.category.delete({
-      where : {
-        id
-      }
-    })
-  } catch (error ) {
-    console.log(error) 
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    console.log(error);
     return {
-      error: 'Failed to delete data'
+      error: "Failed to delete data",
     };
   }
-  
+
   return redirect("/dashboard/categories");
-}
+};

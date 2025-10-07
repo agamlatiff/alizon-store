@@ -6,9 +6,12 @@ import { generateRandomString } from "@/lib/utils";
 import xenditClient from "@/lib/xendit";
 import type { ActionResult, TCart } from "@/types";
 import { Prisma } from "@prisma/client";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import type { PaymentRequestParameters, PaymentRequest } from "xendit-node/payment_request/models";
+import type {
+  PaymentRequestParameters,
+  PaymentRequest,
+} from "xendit-node/payment_request/models";
 
 export async function storeOrder(
   _: unknown,
@@ -35,8 +38,8 @@ export async function storeOrder(
       error: parse.error.issues[0].message,
     };
   }
-  
-  let redirectPaymentUrl = '/'
+
+  let redirectPaymentUrl = "/";
 
   try {
     const order = await prisma.order.create({
@@ -63,28 +66,30 @@ export async function storeOrder(
       currency: "IDR",
       referenceId: order.code,
     };
-    
-    const response : PaymentRequest = await xenditClient.PaymentRequest.createPaymentRequest({
-      data
-    })
-    
-    redirectPaymentUrl = response.actions?.find((item) => item.urlType === 'DEEPLINK')?.url ?? '/'
-    
-    const queryCreateProductOrder : Prisma.OrderProductCreateManyInput[] = []
-    
+
+    const response: PaymentRequest =
+      await xenditClient.PaymentRequest.createPaymentRequest({
+        data,
+      });
+
+    redirectPaymentUrl =
+      response.actions?.find((item) => item.urlType === "DEEPLINK")?.url ?? "/";
+
+    const queryCreateProductOrder: Prisma.OrderProductCreateManyInput[] = [];
+
     for (const product of products) {
       queryCreateProductOrder.push({
-        order_id : order.id,
+        order_id: order.id,
         product_id: product.id,
         quantity: product.quantity,
-        subtotal: product.price
-      })
+        subtotal: product.price,
+      });
     }
-    
+
     await prisma.orderProduct.createMany({
-      data: queryCreateProductOrder
-    })
-    
+      data: queryCreateProductOrder,
+    });
+
     await prisma.orderDetail.create({
       data: {
         address: parse.data.address,
@@ -92,14 +97,14 @@ export async function storeOrder(
         name: parse.data.name,
         phone: parse.data.phone,
         postal_code: parse.data.postal_code,
-        order_id: order.id
-      }
-    })
+        order_id: order.id,
+      },
+    });
   } catch (e) {
     console.log(e);
-    return  {
-      error: 'Failed to check out'
-    }
+    return {
+      error: "Failed to check out",
+    };
   }
 
   console.log(parse);

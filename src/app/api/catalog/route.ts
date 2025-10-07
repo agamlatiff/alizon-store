@@ -2,7 +2,7 @@ import type { TFilter } from "@/hooks/useFilter";
 import { getImageUrl } from "@/lib/supabase";
 import type { TProduct } from "@/types";
 import { Prisma } from "@prisma/client";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -85,23 +85,23 @@ export async function POST(request: Request) {
             name: true,
           },
         },
-        price: true
+        price: true,
       },
     });
-    
-    const response : TProduct[] = products.map((item) => {
+
+    const response: TProduct[] = products.map((item) => {
       return {
         id: item.id,
-        category_name : item.category.name,
-        image_url : getImageUrl(item.images[0], 'products'),
-        name : item.name,
-        price : Number(item.price),
-      }
-    }) 
-    
-    return Response.json(response)
+        category_name: item.category.name,
+        image_url: getImageUrl(item.images[0], "products"),
+        name: item.name,
+        price: Number(item.price),
+      };
+    });
+
+    return Response.json(response);
   } catch (e) {
     console.log(e);
-    return Response.json({status: false}, {status: 500});
+    return Response.json({ status: false }, { status: 500 });
   }
 }

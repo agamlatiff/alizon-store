@@ -1,4 +1,4 @@
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import type { TColumn } from "../columns";
 import { getImageUrl } from "@/lib/supabase";
 
@@ -29,10 +29,10 @@ export async function getOrders() {
         status: order.status,
       };
     });
-    
-    return response
+
+    return response;
   } catch (e) {
     console.log(e);
-    return []
+    return [];
   }
 }

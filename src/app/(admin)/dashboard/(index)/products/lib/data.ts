@@ -1,4 +1,4 @@
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import type { TColumn } from "../columns";
 
 export async function getProducts() {

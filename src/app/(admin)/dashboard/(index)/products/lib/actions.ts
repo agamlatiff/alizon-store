@@ -4,7 +4,7 @@ import { schemaProduct, schemaProductEdit } from "@/lib/schema";
 import { deleteFile, uploadFile } from "@/lib/supabase";
 import type { ActionResult } from "@/types";
 import type { ProductStock } from "@prisma/client";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export async function storeProduct(

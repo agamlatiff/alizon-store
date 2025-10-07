@@ -2,7 +2,7 @@
 
 import { schemaSignIn, schemaSignUp } from "@/lib/schema";
 import type { ActionResult } from "@/types";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { lucia } from "@/lib/auth";
@@ -67,30 +67,30 @@ export const signUp = async (
     email: formData.get("email"),
     password: formData.get("password"),
   });
-  
-  if(!parse.success) {
+
+  if (!parse.success) {
     return {
-      error: parse.error.issues[0].message
-    }
+      error: parse.error.issues[0].message,
+    };
   }
-  
+
   const hashPassword = bcrypt.hashSync(parse.data.password, 12);
-  
+
   try {
-    await prisma.user.create( {
+    await prisma.user.create({
       data: {
         name: parse.data.name,
         email: parse.data.email,
         password: hashPassword,
-        role: "customer"
-      }
-    })
+        role: "customer",
+      },
+    });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return {
-      error: 'Failed to sin up'
-    }
+      error: "Failed to sin up",
+    };
   }
-  
-  return redirect('/signin')
+
+  return redirect("/signin");
 };

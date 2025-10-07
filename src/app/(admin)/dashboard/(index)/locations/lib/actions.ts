@@ -2,7 +2,7 @@
 
 import { schemaCategory } from "@/lib/schema";
 import type { ActionResult } from "@/types";
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export const postLocation = async (

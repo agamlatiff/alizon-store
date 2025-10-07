@@ -1,5 +1,4 @@
-
-import prisma from "lib/prisma";
+import prisma from "@/lib/prisma";
 
 export const getBrands = async () => {
   try {
@@ -18,8 +17,8 @@ export const getBrandById = async (id: string) => {
         id: Number.parseInt(id),
       },
     });
-    
-    return brand
+
+    return brand;
   } catch (error) {
     console.log(error);
     return null;
