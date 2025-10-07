@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import type { TypeCheckingSignIn, TypeCheckingSignUp } from "@/types";
 import { normalizeEmail, normalizePassword } from "@/lib/normalize";
+import { signIn } from "@/lib/auth";
 
 const SignIn = async (
   _: unknown,
@@ -65,6 +66,7 @@ const SignIn = async (
 
   // Rehash from 12 to 13
   try {
+    await signIn("credentials", formData);
     const rounds = bcrypt.getRounds(existingUser.password) ?? 12;
     if (rounds < 13) {
       const newHash = await bcrypt.hash(toHash, 13);

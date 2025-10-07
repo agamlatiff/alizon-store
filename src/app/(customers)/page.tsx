@@ -3,8 +3,10 @@ import ListBrands from "./_components/ListBrands";
 import ListCategory from "./_components/ListCategory";
 import ListProducts from "./_components/ListProducts";
 import Navbar from "../../components/customers/Navbar";
+import requireUser from "@/lib/requireUser";
 
-const LandingPage = () => {
+const LandingPage = async () => {
+  
   return (
     <>
       <header className="bg-[#EFF3FA] pt-[30px] pb-[50px]">

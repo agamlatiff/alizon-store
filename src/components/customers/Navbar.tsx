@@ -1,9 +1,10 @@
-import requireUser from "@/lib/requireUser";
+import { auth } from "@/lib/auth";
+
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = async () => {
-  const session = await requireUser();
+  const session = await auth();
 
   return (
     <nav className="container max-w-[1130px] mx-auto flex items-center justify-between bg-[#0D5CD7] p-5 rounded-3xl">

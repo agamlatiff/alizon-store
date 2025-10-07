@@ -2,10 +2,11 @@
 
 import SignIn from "@/app/(auth)/lib/actions";
 import type { TypeCheckingSignIn } from "@/types";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState } from "react";
-
+import Logo from "../logo";
 
 const initiaFormState: TypeCheckingSignIn = {
   email: "",
@@ -25,17 +26,11 @@ const FormSignIn = () => {
           className="w-[500px] bg-white p-[50px_30px] flex flex-col gap-5 rounded-3xl border border-[#E5E5E5]"
         >
           <div className="flex justify-center">
-            <Image
-              height={200}
-              width={200}
-              src="assets/logos/logo-black.svg"
-              alt="logo"
-            />
+            <Logo />
           </div>
           <h1 className="font-bold text-2xl leading-[34px] text-black">
             Sign In
           </h1>
-
           <div className="flex items-center gap-[10px] rounded-full border border-[#E5E5E5] p-[12px_20px] focus-within:ring-2 focus-within:ring-[#FFC736] transition-all duration-300">
             <div className="flex shrink-0">
               <Image
@@ -52,9 +47,8 @@ const FormSignIn = () => {
               className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
               placeholder="Write your email address"
             />
-            <p className="text-red-500 text-sm">{state.email}</p>
           </div>
-
+          <p className="text-red-500 text-sm -mt-2">{state.email}</p>
           <div className="flex flex-col gap-[10px]">
             <div className="flex items-center gap-[10px] rounded-full border border-[#E5E5E5] p-[12px_20px] focus-within:ring-2 focus-within:ring-[#FFC736] transition-all duration-300">
               <div className="flex shrink-0">
@@ -72,8 +66,8 @@ const FormSignIn = () => {
                 className="appearance-none outline-none w-full placeholder:text-[#616369] placeholder:font-normal font-semibold text-black"
                 placeholder="Write your password"
               />
-              <p className="text-red-500 text-sm">{state.password}</p>
             </div>
+            <p className="text-red-500 text-sm">{state.password}</p>
           </div>
           <div className="flex flex-col gap-3">
             <button

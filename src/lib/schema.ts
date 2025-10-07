@@ -3,10 +3,11 @@ import z, { type nullable } from "zod";
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
 export const schemaSignIn = z.object({
-  email: z.string("Email is required").email("Email is not valid"),
+  email: z.string().nonempty("Email is required").email("Email is not valid"),
   password: z
-    .string("Password is required")
-    .min(5, { message: "Password must be at least 5 characters" }),
+    .string()
+    .nonempty("Password is required")
+    .min(5, "Password must be at least 5 characters"),
 });
 
 export const schemaSignUp = schemaSignIn.extend({
