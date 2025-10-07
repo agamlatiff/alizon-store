@@ -3,14 +3,12 @@ import z, { type nullable } from "zod";
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
 export const schemaSignIn = z.object({
-  email: z
-    .string()
-    .nonempty({ message: "Email is required" })
-    .email({ message: "Email is not valid" }),
+  email: z.string().nonempty("Email is required").email("Email is not valid"),
   password: z
     .string()
     .nonempty({ message: "Password is required" })
     .min(5, { message: "Password must be at least 5 characters" }),
+  name: z.string().min(1, "Name is min 1 character"),
 });
 
 export const schemaCategory = z.object({
@@ -77,12 +75,29 @@ export const schemaProductEdit = schemaProduct
   })
   .omit({ images: true });
 
-  
 export const schemaShippingAddress = z.object({
-  name: z.string().nonempty({message: 'Name is required' }).min(5, {message: 'Name should be at least 5 characters'}),
-  address: z.string().nonempty({message: 'Address is required' }).min(5, {message: 'Address should be at least 5 characters'}),
-  city: z.string().nonempty({message: 'City is required' }).min(5, {message: 'City should be at least 5 characters'}),
-  postal_code: z.string().nonempty({message: 'Postal Code is required' }).min(5, {message: 'Postal Code should be at least 5 characters'}),
-  notes: z.string().min(5, {message: 'Notes should be at least 5 characters'}).nullable(),
-  phone: z.string().nonempty({message: 'Phone is required' }).min(5, {message: 'Phone should be at least 5 characters'}),
-})
+  name: z
+    .string()
+    .nonempty({ message: "Name is required" })
+    .min(5, { message: "Name should be at least 5 characters" }),
+  address: z
+    .string()
+    .nonempty({ message: "Address is required" })
+    .min(5, { message: "Address should be at least 5 characters" }),
+  city: z
+    .string()
+    .nonempty({ message: "City is required" })
+    .min(5, { message: "City should be at least 5 characters" }),
+  postal_code: z
+    .string()
+    .nonempty({ message: "Postal Code is required" })
+    .min(5, { message: "Postal Code should be at least 5 characters" }),
+  notes: z
+    .string()
+    .min(5, { message: "Notes should be at least 5 characters" })
+    .nullable(),
+  phone: z
+    .string()
+    .nonempty({ message: "Phone is required" })
+    .min(5, { message: "Phone should be at least 5 characters" }),
+});

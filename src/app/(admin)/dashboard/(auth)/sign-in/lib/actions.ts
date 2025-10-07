@@ -51,6 +51,6 @@ const SignIn = async (
 
 
   return redirect("/dashboard");
-};
+} 
 
 export default SignIn;
