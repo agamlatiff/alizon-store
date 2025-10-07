@@ -132,5 +132,5 @@ export const signUp = async (
     };
   }
 
-  return redirect("/signin");
+  return redirect("/sign-in");
 };

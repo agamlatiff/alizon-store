@@ -1,6 +1,6 @@
+import requireUser from "@/lib/requireUser";
 
-
-export default function LandingRootLayout({
+export default async function LandingRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

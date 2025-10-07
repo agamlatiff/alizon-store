@@ -15,7 +15,7 @@ const initiaFormState: TypeCheckingSignIn = {
 const FormSignIn = () => {
   const [state, formAction, pending] = useActionState(SignIn, initiaFormState);
   return (
-    <div
+    <section
       id="signin"
       className="bg-[#EFF3FA] min-h-screen pt-[30px] pb-[50px] flex flex-col"
     >
@@ -92,7 +92,7 @@ const FormSignIn = () => {
           </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

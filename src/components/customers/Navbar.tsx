@@ -1,5 +1,5 @@
-
 import requireUser from "@/lib/requireUser";
+import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = async () => {
@@ -8,7 +8,7 @@ const Navbar = async () => {
   return (
     <nav className="container max-w-[1130px] mx-auto flex items-center justify-between bg-[#0D5CD7] p-5 rounded-3xl">
       <div className="flex shrink-0">
-        <img src="/assets/logos/logo.svg" alt="icon" />
+        <Image height={50} width={50} src="/assets/logos/logo.svg" alt="icon" />
       </div>
       <ul className="flex items-center gap-[30px]">
         <li className="hover:font-bold hover:text-[#FFC736] transition-all duration-300 font-bold text-[#FFC736]">
@@ -27,15 +27,22 @@ const Navbar = async () => {
       <div className="flex items-center gap-3">
         <Link href="cart.html">
           <div className="w-12 h-12 flex shrink-0">
-            <img src="/assets/icons/cart.svg" alt="icon" />
+            <Image
+              height={50}
+              width={50}
+              src="/assets/icons/cart.svg"
+              alt="icon"
+            />
           </div>
         </Link>
         {session ? (
           <>
             <p className="text-white">{session.user?.name}</p>
             <div className="w-[48px] h-[48px] flex shrink-0 rounded-full p-1 border border-[#E5E5E5] overflow-hidden">
-              <img
-                src={session.user?.image}
+              <Image
+                src={session.user?.image || ""}
+                height={50}
+                width={50}
                 className="w-full h-full object-cover rounded-full"
                 alt="photo"
               />
