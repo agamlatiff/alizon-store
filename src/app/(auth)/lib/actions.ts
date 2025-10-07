@@ -1,5 +1,6 @@
 "use server";
 
+
 import { schemaSignIn } from "@/lib/schema";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
@@ -63,3 +64,41 @@ const SignIn = async (
 };
 
 export default SignIn;
+
+
+// export const signUp = async (
+//   _: unknown,
+//   formData: FormData
+// ): Promise<ActionResult> => {
+//   const parse = schemaSignUp.safeParse({
+//     name: formData.get("name"),
+//     email: formData.get("email"),
+//     password: formData.get("password"),
+//   });
+
+//   if (!parse.success) {
+//     return {
+//       error: parse.error.issues[0].message,
+//     };
+//   }
+
+//   const hashPassword = bcrypt.hashSync(parse.data.password, 12);
+
+//   try {
+//     await prisma.user.create({
+//       data: {
+//         name: parse.data.name,
+//         email: parse.data.email,
+//         password: hashPassword,
+//         role: "customer",
+//       },
+//     });
+//   } catch (e) {
+//     console.log(e);
+//     return {
+//       error: "Failed to sin up",
+//     };
+//   }
+
+//   return redirect("/signin");
+// };

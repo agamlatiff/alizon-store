@@ -1,5 +1,5 @@
 import { Poppins } from "next/font/google";
-import "../../globalsLanding.css";
+import "../../globals.css";
 
 const poppins = Poppins({
   weight: ['300', '400', '500','700', '800', '900'],
@@ -7,7 +7,7 @@ const poppins = Poppins({
 })
 
 
-export default function AuthRootLayout({
+export default function LandingRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
