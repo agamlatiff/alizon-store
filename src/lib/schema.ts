@@ -3,22 +3,20 @@ import z, { type nullable } from "zod";
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
 export const schemaSignIn = z.object({
-  email: z.string().nonempty("Email is required").email("Email is not valid"),
+  email: z.string("Email is required").email("Email is not valid"),
   password: z
-    .string()
-    .nonempty({ message: "Password is required" })
+    .string("Password is required")
     .min(5, { message: "Password must be at least 5 characters" }),
-  name: z.string().min(1, "Name is min 1 character"),
-});
-
-export const schemaCategory = z.object({
-  name: z
-    .string()
-    .nonempty({ message: "Name is required" })
-    .min(4, { message: "Name must be at least 4 characters" }),
 });
 
 export const schemaSignUp = schemaSignIn.extend({
+  name: z
+    .string("Name is required")
+    .min(4, "Name must be at least 4 characters"),
+    role: z.enum(["superadmin", "customer"]).optional()
+});
+
+export const schemaCategory = z.object({
   name: z
     .string()
     .nonempty({ message: "Name is required" })

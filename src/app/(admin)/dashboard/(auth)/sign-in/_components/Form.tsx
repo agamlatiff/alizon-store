@@ -10,31 +10,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useFormState, useFormStatus } from "react-dom";
-import SignIn from "../lib/actions";
-import type { ActionResult } from "@/types";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from "lucide-react";
+import SignIn, { type TypeCheckingSignIn } from "../lib/actions";
 
-const initialState: ActionResult = {
-  error: "",
-};
+import { useActionState } from "react";
 
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" disabled={pending}>
-      {pending ? "Loading..." : "Sign in"}
-    </Button>
-  );
+const initialState: TypeCheckingSignIn = {
+  email: "",
+  password: "",
 };
 
 const FormSignin = () => {
-  const [state, formAction] = useFormState(SignIn, initialState);
-
-  console.log(state);
-
+  const [state, formAction, pending] = useActionState(SignIn, initialState);
   return (
     <form action={formAction}>
       <Card>
@@ -45,39 +31,28 @@ const FormSignin = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {state.error !== "" && (
-            <Alert variant="destructive">
-              <Terminal />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                {state.error}
-              </AlertDescription>
-            </Alert>
-          )}
           <div className="flex flex-col gap-6">
             <div className="grid gap-3">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="john.doe@gmail.com"
                 name="email"
               />
+              <p className="text-red-500 text-sm">{state.email}</p>
             </div>
             <div className="grid gap-3">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <a
-                  href="#"
-                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                >
-                  Forgot your password?
-                </a>
               </div>
               <Input id="password" type="password" name="password" />
+              <p className="text-red-500 text-sm">{state.password}</p>
             </div>
             <div className="flex flex-col gap-3">
-              <SubmitButton />
+              <Button type="submit" disabled={pending}>
+                {pending ? "Loading..." : "Sign in"}
+              </Button>
             </div>
           </div>
           <div className="mt-4 text-center text-sm">

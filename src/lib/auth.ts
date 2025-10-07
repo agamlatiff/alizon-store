@@ -39,9 +39,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             image: true,
           },
         });
-        if (!user || user.password) throw new Error("Invalid user account");
+        
+        // User is must available and password must be valid
+        if (!user || !user.password) throw new Error("Invalid user account");
 
-        // Validation password from database
+        // Validation password from database by compare
         const verifyPassword = bcrypt.compare(password, user.password ?? "");
         if (!verifyPassword) throw new Error("Invalid password");
 
