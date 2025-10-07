@@ -9,7 +9,7 @@ datasource db {
 }
 
 enum RoleUser {
-  superadmin
+  seller
   customer
 }
 
@@ -21,7 +21,7 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  role RoleUser?
+  role RoleUser @default(customer)
 
   orders        Order[]
   accounts      Account[]

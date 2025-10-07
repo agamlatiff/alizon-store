@@ -13,7 +13,6 @@ export const schemaSignUp = schemaSignIn.extend({
   name: z
     .string("Name is required")
     .min(4, "Name must be at least 4 characters"),
-    role: z.enum(["superadmin", "customer"]).optional()
 });
 
 export const schemaCategory = z.object({

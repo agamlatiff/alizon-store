@@ -1,29 +1,28 @@
 "use server";
 
-
-import { schemaSignIn } from "@/lib/schema";
+import { schemaSignIn, schemaSignUp } from "@/lib/schema";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
-
-export type TypeCheckingSignIn = {
-  email?: string;
-  password?: string;
-};
+import type { TypeCheckingSignIn, TypeCheckingSignUp } from "@/types";
+import { normalizeEmail, normalizePassword } from "@/lib/normalize";
 
 const SignIn = async (
   _: unknown,
   formData: FormData
 ): Promise<TypeCheckingSignIn> => {
-  // Validation schema 
-  const validate = schemaSignIn.safeParse({
-    email: String(formData.get("email") || ""),
-    password: String(formData.get("password") || ""),
+  const emailRaw = String(formData.get("email") ?? "");
+  const passwordRaw = String(formData.get("password") ?? "");
+
+  // Validation schema
+  const parsedData = schemaSignIn.safeParse({
+    email: normalizeEmail(emailRaw),
+    password: normalizePassword(passwordRaw),
   });
 
   // Checking data (1)
-  if (!validate.success) {
-    const errors = validate.error.flatten().fieldErrors;
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors;
     return {
       email: errors.email?.[0] ?? "",
       password: errors.password?.[0] ?? "",
@@ -31,74 +30,107 @@ const SignIn = async (
   }
 
   // Existing user by email & Authorization
-  const existingUser = await prisma.user.findFirst({
+  const existingUser = await prisma.user.findUnique({
     where: {
-      email: validate.data.email,
-      role: "superadmin",
+      email: parsedData.data.email,
+    },
+    select: {
+      id: true,
+      password: true,
+      role: true,
     },
   });
 
+  const pepper = process.env.PASSWORD_PEPPER ?? "";
+  const toHash = pepper
+    ? parsedData.data.password + pepper
+    : parsedData.data.password;
+
   // Checking Email (2)
-  if (!existingUser) {
+  if (!existingUser?.password) {
     return {
-      email: "Email is not registered",
+      message: "Email or password is incorrect",
     };
   }
 
-  
   // Compare password around form data & database
-  const comparePassword = bcrypt.compareSync(
-    validate.data.password,
-    existingUser.password ?? ""
-  );
+  const comparePassword = await bcrypt.compare(toHash, existingUser.password);
 
   // Validation Password (3)
   if (!comparePassword) {
     return {
-      password: "Password is incorrect",
+      message: "Email or password is incorrect",
     };
   }
 
+  // Rehash from 12 to 13
+  try {
+    const rounds = bcrypt.getRounds(existingUser.password) ?? 12;
+    if (rounds < 13) {
+      const newHash = await bcrypt.hash(toHash, 13);
+      await prisma.user.update({
+        where: { id: existingUser.id },
+        data: { password: newHash },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
   // If three validation checking true, redirect
-  return redirect("/dashboard");
+  return redirect("/");
 };
 
 export default SignIn;
 
+export const signUp = async (
+  _: unknown,
+  formData: FormData
+): Promise<TypeCheckingSignUp> => {
+  const emailRaw = String(formData.get("email") ?? "");
+  const passwordRaw = String(formData.get("password") ?? "");
+  const nameRaw = String(formData.get("name") ?? "");
 
-// export const signUp = async (
-//   _: unknown,
-//   formData: FormData
-// ): Promise<ActionResult> => {
-//   const parse = schemaSignUp.safeParse({
-//     name: formData.get("name"),
-//     email: formData.get("email"),
-//     password: formData.get("password"),
-//   });
+  // Get data from form data
+  const parsedUser = schemaSignUp.safeParse({
+    email: emailRaw,
+    password: passwordRaw,
+    name: nameRaw,
+  });
 
-//   if (!parse.success) {
-//     return {
-//       error: parse.error.issues[0].message,
-//     };
-//   }
+  const errors = parsedUser.error?.flatten();
 
-//   const hashPassword = bcrypt.hashSync(parse.data.password, 12);
+  // Checking
+  if (!parsedUser.success) {
+    return {
+      email: errors?.fieldErrors.email?.[0] ?? "",
+      password: errors?.fieldErrors.password?.[0] ?? "",
+      name: errors?.fieldErrors.name?.[0] ?? "",
+    };
+  }
 
-//   try {
-//     await prisma.user.create({
-//       data: {
-//         name: parse.data.name,
-//         email: parse.data.email,
-//         password: hashPassword,
-//         role: "customer",
-//       },
-//     });
-//   } catch (e) {
-//     console.log(e);
-//     return {
-//       error: "Failed to sin up",
-//     };
-//   }
+  const pepper = process.env.PASSWORD_PEPPER ?? "";
+  const toHash = pepper
+    ? parsedUser.data.password + pepper
+    : parsedUser.data.password;
 
-//   return redirect("/signin");
-// };
+  const hashPassword = await bcrypt.hash(toHash, 12);
+
+  try {
+    await prisma.user.create({
+      data: {
+        name: parsedUser.data.name,
+        email: parsedUser.data.email,
+        password: hashPassword,
+        role: "customer",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "Failed to create account. Please try again.",
+    };
+  }
+
+  return redirect("/signin");
+};

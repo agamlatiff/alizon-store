@@ -1,4 +1,4 @@
-import Navbar from "../_components/Navbar";
+import Navbar from "../../../components/customers/Navbar";
 import CartProduct from "./_components/CartProduct";
 import CheckoutForm from "./_components/CheckoutForm";
 

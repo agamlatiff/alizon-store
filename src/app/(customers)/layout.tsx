@@ -1,10 +1,3 @@
-import { Poppins } from "next/font/google";
-import "../../globals.css";
-
-const poppins = Poppins({
-  weight: ['300', '400', '500','700', '800', '900'],
-  subsets: ["latin-ext"],
-})
 
 
 export default function LandingRootLayout({
@@ -14,7 +7,7 @@ export default function LandingRootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

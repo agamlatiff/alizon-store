@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Navbar from "../../../_components/Navbar";
+import Navbar from "../../../../../components/customers/Navbar";
 import ListProducts from "../../../_components/ListProducts";
 import PriceInfo from "./_components/PriceInfo";
 import type { Tparams } from "@/types";

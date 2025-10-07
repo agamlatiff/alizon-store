@@ -1,8 +1,9 @@
-import { getUser } from "@/lib/auth";
+
+import requireUser from "@/lib/requireUser";
 import Link from "next/link";
 
 const Navbar = async () => {
-  const { session, user } = await getUser();
+  const session = await requireUser();
 
   return (
     <nav className="container max-w-[1130px] mx-auto flex items-center justify-between bg-[#0D5CD7] p-5 rounded-3xl">
@@ -29,12 +30,12 @@ const Navbar = async () => {
             <img src="/assets/icons/cart.svg" alt="icon" />
           </div>
         </Link>
-        {session && user.role === "customer" ? (
+        {session ? (
           <>
-            <p className="text-white">{user.name}</p>
+            <p className="text-white">{session.user?.name}</p>
             <div className="w-[48px] h-[48px] flex shrink-0 rounded-full p-1 border border-[#E5E5E5] overflow-hidden">
               <img
-                src="/assets/photos/p4.png"
+                src={session.user?.image}
                 className="w-full h-full object-cover rounded-full"
                 alt="photo"
               />

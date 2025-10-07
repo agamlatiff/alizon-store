@@ -1,4 +1,4 @@
-import Navbar from "../_components/Navbar";
+import Navbar from "../../../components/customers/Navbar";
 import FilterBrand from "./_components/FilterBrand";
 import FilterCategories from "./_components/FilterCategories";
 import FilterLocation from "./_components/FilterLocation";

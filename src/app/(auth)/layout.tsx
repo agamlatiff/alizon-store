@@ -1,12 +1,3 @@
-import { Poppins } from "next/font/google";
-import "../../globals.css";
-
-const poppins = Poppins({
-  weight: ['300', '400', '500','700', '800', '900'],
-  subsets: ["latin-ext"],
-})
-
-
 export default function AuthRootLayout({
   children,
 }: Readonly<{
@@ -14,7 +5,7 @@ export default function AuthRootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
