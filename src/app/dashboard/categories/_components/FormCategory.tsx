@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import type { ActionResult } from "@/types";
+
 import type { Category } from "@prisma/client";
 import { postCategory, updateCategory } from "../lib/actions";
 

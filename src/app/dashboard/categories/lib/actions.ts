@@ -38,7 +38,7 @@ export const postCategory = async (
 export const updateCategory = async (
   _: unknown,
   formData: FormData,
-  id: string | undefined
+  id: number | undefined
 ): Promise<ActionResult> => {
   const validate = schemaCategory.safeParse({
     name: formData.get("name"),

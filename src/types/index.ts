@@ -11,6 +11,11 @@ export type TypeCheckingSignUp = {
   message?: string
 };
 
+export type ActionResult = {
+  error?: string
+  success?: string
+}
+
 export type Tparams = { id: string };
 
 export type Tedit = { params: Tparams };
