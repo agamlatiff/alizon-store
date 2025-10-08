@@ -75,8 +75,7 @@ const FormSignUp = ({ children }: { children: React.ReactNode }) => {
                 id="name"
                 name="name"
                 type="text"
-                autoComplete="name"
-                required
+
                 placeholder="John Doe"
                 className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />
@@ -123,13 +122,14 @@ const FormSignUp = ({ children }: { children: React.ReactNode }) => {
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                required
+
                 placeholder="••••••••"
                 className="appearance-none block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400 hover:text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
                   <EyeOffIcon className="h-5 w-5" />

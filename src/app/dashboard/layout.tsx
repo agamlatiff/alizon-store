@@ -14,44 +14,39 @@ export const metadata: Metadata = {
 const getRoleUser = async (id: string) => {
   const user = await prisma.user.findUnique({
     where: {
-      id
+      id,
     },
     select: {
-      role: true
-    }
-  })
-  
-  if(user?.role === "customer") {
-    redirect("/")
-  }
-  
-  return user
-}
+      role: true,
+    },
+  });
 
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  return user;
+};
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session =await requireUser();
-  const user = await getRoleUser(session.user?.id as string)
-  
-  if(user?.role === "seller") {
-    redirect("/dashboard")
-  }
+  const session = await requireUser();
+  const user = await getRoleUser(session.user?.id as string);
+if (user.role !== "seller") {
+  redirect("/");
+}
 
+  
   return (
-    <html lang="en">
-      <body className={` antialiased`}>
-        <div className="flex min-h-screen w-full flex-col bg-muted/40">
-          <Sidebar />
-          <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-            <Header />
-            <main className="py-4 px-6">{children}</main>
-          </div>
-        </div>
-      </body>
-    </html>
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <Sidebar />
+      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+        <Header />
+        <main className="py-4 px-6">{children}</main>
+      </div>
+    </div>
   );
 }

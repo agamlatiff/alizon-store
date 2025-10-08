@@ -116,6 +116,9 @@ model Category {
 model Location {
   id       String    @id @default(cuid())
   name     String    @db.VarChar(255)
+  address  String   @db.VarChar(255)
+  city     String   @db.VarChar(100)
+  country  String   @db.VarChar(100)
   products Product[]
 
   created_at DateTime @default(now())
