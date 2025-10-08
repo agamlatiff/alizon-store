@@ -1,14 +1,14 @@
 export type TypeCheckingSignIn = {
   email?: string;
   password?: string;
-  message?: string;
+  error?: string;
 };
 
 export type TypeCheckingSignUp = {
   email?: string;
   password?: string;
   name?: string;
-  message?: string;
+  error?: string;
 };
 
 export type ActionResult = {

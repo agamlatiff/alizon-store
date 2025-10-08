@@ -1,9 +1,9 @@
-"use client"
-
+"use client";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { signUp } from "@/app/(auth)/lib/actions";
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/lib/icon";
 import type { TypeCheckingSignUp } from "@/types";
-import { UserIcon } from "lucide-react";
+import { AlertCircle, UserIcon } from "lucide-react";
 import React, { useActionState, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -13,7 +13,7 @@ const initialState: TypeCheckingSignUp = {
   email: "",
   name: "",
   password: "",
-  message: " ",
+  error: " ",
 };
 
 const FormSignUp = ({ children }: { children: React.ReactNode }) => {
@@ -49,6 +49,13 @@ const FormSignUp = ({ children }: { children: React.ReactNode }) => {
             Let&apos;s get started with a free account.
           </p>
         </div>
+        {state.error !== "" && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{state.error}</AlertDescription>
+          </Alert>
+        )}
 
         {/* Form Section */}
         <form action={formAction} className="space-y-5">
@@ -74,6 +81,7 @@ const FormSignUp = ({ children }: { children: React.ReactNode }) => {
                 className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />
             </div>
+            <p className="text-red-500 text-sm mt-2">{state.name}</p>
           </div>
 
           {/* Email Input */}
@@ -92,12 +100,11 @@ const FormSignUp = ({ children }: { children: React.ReactNode }) => {
                 id="email"
                 name="email"
                 type="email"
-        
-                required
                 placeholder="you@example.com"
                 className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />
             </div>
+            <p className="text-red-500 text-sm mt-2">{state.name}</p>
           </div>
 
           {/* Password Input */}
@@ -131,6 +138,7 @@ const FormSignUp = ({ children }: { children: React.ReactNode }) => {
                 )}
               </button>
             </div>
+            <p className="text-red-500 text-sm mt-2">{state.password}</p>
           </div>
 
           {/* Submit Button */}

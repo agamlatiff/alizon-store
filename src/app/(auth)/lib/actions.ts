@@ -50,7 +50,7 @@ const SignIn = async (
   // Checking Email (2)
   if (!existingUser?.password) {
     return {
-      message: "Email or password is incorrect",
+      error: "Email or password is incorrect",
     };
   }
 
@@ -60,7 +60,7 @@ const SignIn = async (
   // Validation Password (3)
   if (!comparePassword) {
     return {
-      message: "Email or password is incorrect",
+      error: "Email or password is incorrect",
     };
   }
 
@@ -130,7 +130,7 @@ export const signUp = async (
   } catch (error) {
     console.log(error);
     return {
-      message: "Failed to create account. Please try again.",
+      error: "Failed to create account. Please try again.",
     };
   }
 

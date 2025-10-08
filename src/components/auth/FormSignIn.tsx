@@ -1,6 +1,7 @@
 "use client";
 
 import SignIn from "@/app/(auth)/lib/actions";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/lib/icon";
 import type { TypeCheckingSignIn } from "@/types";
@@ -9,11 +10,12 @@ import React, { useActionState, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import Link from "next/link";
+import { AlertCircle } from "lucide-react";
 
 const initiaFormState: TypeCheckingSignIn = {
   email: "",
   password: "",
-  message: "",
+  error: "",
 };
 
 const FormSignIn = ({ children }: { children: React.ReactNode }) => {
@@ -57,6 +59,14 @@ const FormSignIn = ({ children }: { children: React.ReactNode }) => {
           <div className="flex-grow border-t border-gray-200"></div>
         </div>
 
+        {state.error !== "" && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{state.error}</AlertDescription>
+          </Alert>
+        )}
+
         {/* Email & Password Form */}
         <form action={formAction} className="space-y-6">
           <div>
@@ -78,6 +88,7 @@ const FormSignIn = ({ children }: { children: React.ReactNode }) => {
                 className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />
             </div>
+            <p className="text-sm text-red-500 mt-2">{state.email}</p>
           </div>
 
           <div>
@@ -110,6 +121,7 @@ const FormSignIn = ({ children }: { children: React.ReactNode }) => {
                 )}
               </button>
             </div>
+            <p className="text-sm text-red-500 mt-2">{state.password}</p>
           </div>
 
           <div>
