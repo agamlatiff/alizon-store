@@ -1,4 +1,4 @@
-import z, { type nullable } from "zod";
+import z from "zod";
 
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
@@ -19,11 +19,22 @@ export const schemaSignUp = schemaSignIn.extend({
 export const schemaCategory = z.object({
   name: z
     .string()
-    .nonempty({ message: "Name is required" })
-    .min(4, { message: "Name must be at least 4 characters" }),
+    .nonempty("Name is required")
+    .min(4, "Name must be at least 4 characters"),
+  description: z
+    .string()
+    .nonempty("Description is required")
+    .min(10, "Description must be at least 10 characters"),
+  status: z.enum(["active", "inactive"], {
+error: "Status is required"
+  }),
 });
 
-export const schemaBrand = schemaCategory.extend({
+export const schemaBrand = z.object({
+  name: z
+    .string()
+    .nonempty("Name is required")
+    .min(4, "Name must be at least 4 characters"),
   image: z
     .any()
     .refine((file: File) => FILE_TYPE.includes(file.type), {

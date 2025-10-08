@@ -97,10 +97,17 @@ model Brand {
   updated_at DateTime @updatedAt
 }
 
+enum StatusCategory {
+  active
+  inactive
+}
+
 model Category {
-  id       String    @id @default(cuid())
-  name     String    @db.VarChar(255)
-  products Product[]
+  id          String         @id @default(cuid())
+  name        String         @db.VarChar(255)
+  description String         @db.VarChar(255)
+  status      StatusCategory @default(active)
+  products    Product[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

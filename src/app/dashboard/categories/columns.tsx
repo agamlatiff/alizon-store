@@ -6,6 +6,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 import Link from "next/link";
 import FormDelete from "./_components/FormDelete";
+import { Badge } from "@/components/ui/badge";
+import { dateFormat } from "@/lib/utils";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -13,7 +15,44 @@ export const columns: ColumnDef<Category>[] = [
     header: "Category Name",
   },
   {
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const { status } = row.original;
+      return (
+        <Badge
+          className={`${
+            status === "active"
+              ? "bg-green-100 text-green-700 border border-green-200 hover:bg-green-200"
+              : "bg-gray-100 text-gray-700 border border-gray-200"
+          }`}
+        >
+          {status}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
+    cell: ({ getValue }) => (
+      <span>{dateFormat(getValue() as Date | null)}</span>
+    ),
+  },
+  {
+    accessorKey: "updatedAt",
+    header: "Updated At",
+    cell: ({ getValue }) => (
+      <span>{dateFormat(getValue() as Date | null)}</span>
+    ),
+  },
+  {
     id: "actions",
+    header: "Edit/Delete",
     cell: ({ row }) => {
       const category = row.original;
       return (
@@ -24,7 +63,7 @@ export const columns: ColumnDef<Category>[] = [
               Edit
             </Link>
           </Button>
-          <FormDelete id={category.id}/>
+          <FormDelete id={category.id} />
         </div>
       );
     },

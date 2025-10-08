@@ -17,6 +17,15 @@ import { getCategories } from "./lib/data";
 const CategoriesPage = async () => {
   const data = await getCategories();
 
+  const rows = data.map((category) => ({
+    id: category.id,
+    name: category.name,
+    description: category.description,
+    status: category.status,
+    createdAt: category.created_at,
+    updatedAt: category.updated_at,
+  }));
+
   return (
     <div className="space-y-4">
       <div className="text-right">
@@ -37,7 +46,7 @@ const CategoriesPage = async () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={rows} />
         </CardContent>
       </Card>
     </div>

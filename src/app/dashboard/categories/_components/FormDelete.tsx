@@ -11,7 +11,7 @@ const initialState: ActionResult = {
 };
 
 interface FormDeleteProps {
-  id: number;
+  id: string;
 }
 
 const FormDelete = ({ id }: FormDeleteProps) => {
@@ -22,7 +22,7 @@ const FormDelete = ({ id }: FormDeleteProps) => {
 
   return (
     <form action={formAction}>
-      <Button variant={"destructive"} size={"sm"} disabled={pending}>
+      <Button variant={"destructive"} size={"sm"} disabled={pending} className="text-white">
         <Trash className="size-4 mr-2" />
         {pending ? "Loading..." : "Delete"}
       </Button>

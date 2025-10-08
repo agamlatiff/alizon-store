@@ -1,28 +1,37 @@
 "use server";
 
 import { schemaCategory } from "@/lib/schema";
-import type { ActionResult } from "@/types";
+import type { TypeCheckingCategories } from "@/types";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import type { StatusCategory } from "@prisma/client";
 
 export const postCategory = async (
   _: unknown,
   formData: FormData
-): Promise<ActionResult> => {
-  const validate = schemaCategory.safeParse({
+): Promise<TypeCheckingCategories> => {
+  const parsedData = schemaCategory.safeParse({
     name: formData.get("name"),
+    description: formData.get("description"),
+    status: formData.get("status"),
   });
 
-  if (!validate.success) {
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors;
     return {
-      error: validate.error.issues[0].message,
+      name: errors.name?.[0] ?? "",
+      description: errors.description?.[0] ?? "",
+      status: errors.status?.[0] ?? "",
+      error: "Failed to insert data",
     };
   }
 
   try {
     await prisma.category.create({
       data: {
-        name: validate.data.name,
+        name: parsedData.data.name,
+        description: parsedData.data.description,
+        status: parsedData.data.status,
       },
     });
   } catch (error) {
@@ -38,15 +47,20 @@ export const postCategory = async (
 export const updateCategory = async (
   _: unknown,
   formData: FormData,
-  id: number | undefined
-): Promise<ActionResult> => {
-  const validate = schemaCategory.safeParse({
+  id: string | undefined
+): Promise<TypeCheckingCategories> => {
+  const parsedData = schemaCategory.safeParse({
     name: formData.get("name"),
+    description: formData.get("description"),
+    status: formData.get("status"),
   });
 
-  if (!validate.success) {
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors;
     return {
-      error: validate.error.issues[0].message,
+      name: errors.name?.[0] ?? "",
+      description: errors.description?.[0] ?? "",
+      status: errors.status?.[0] ?? "",
     };
   }
 
@@ -59,10 +73,12 @@ export const updateCategory = async (
   try {
     await prisma.category.update({
       where: {
-        id: id,
+        id,
       },
       data: {
-        name: validate.data.name,
+        name: parsedData.data.name,
+        description: parsedData.data.description,
+        status: parsedData.data.status as StatusCategory,
       },
     });
   } catch (error) {
@@ -78,8 +94,8 @@ export const updateCategory = async (
 export const deleteCategory = async (
   _: unknown,
   formData: FormData,
-  id: number
-): Promise<ActionResult> => {
+  id: string
+): Promise<TypeCheckingCategories> => {
   try {
     await prisma.category.delete({
       where: {

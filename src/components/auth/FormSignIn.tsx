@@ -74,7 +74,6 @@ const FormSignIn = ({ children }: { children: React.ReactNode }) => {
                 id="email"
                 name="email"
                 type="email"
-                required
                 placeholder="you@example.com"
                 className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />
@@ -96,7 +95,6 @@ const FormSignIn = ({ children }: { children: React.ReactNode }) => {
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                required
                 placeholder="••••••••"
                 className="appearance-none block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
               />

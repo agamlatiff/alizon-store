@@ -1,7 +1,9 @@
 import FormCategory from "../_components/FormCategory";
 
 const CreatePage = () => {
-  return <FormCategory />;
+  return <div className="px-6 py-4">
+     <FormCategory />;
+  </div>
 };
 
 export default CreatePage;

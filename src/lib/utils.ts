@@ -15,7 +15,7 @@ export function USDFormat(value: number) {
 
 export function dateFormat(date: Date | null, format = 'DD MMMM YYYY') {
   if(!date) {
-   return dayjs(date).format(format)
+   return "-"
   }
   return dayjs(date).format(format)
 } 

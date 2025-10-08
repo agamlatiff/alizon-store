@@ -9,7 +9,9 @@ const EditPage = async ({ params }: Tedit) => {
   if (!data) {
     return redirect("/dashboard/categories");
   }
-  return <FormCategory type="EDIT" data={data} />;
+  return <div className="px-6 py-4">
+    <FormCategory type="EDIT" data={data} />;
+  </div>
 };
 
 export default EditPage;

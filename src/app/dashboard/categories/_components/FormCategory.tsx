@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState } from "react";
+import React, { useActionState, useState } from "react";
 import Link from "next/link";
 import { AlertCircle, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,12 +13,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { Category } from "@prisma/client";
+import { postCategory, updateCategory } from "../lib/actions";
+import type { TypeCheckingCategories } from "@/types";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-import type { Category } from "@prisma/client";
-import { postCategory, updateCategory } from "../lib/actions";
-
-const initialState: ActionResult = {
+const initialState: TypeCheckingCategories = {
+  name: "",
+  description: "",
+  status: "",
   error: "",
 };
 
@@ -29,12 +41,14 @@ interface FormCategoryProps {
 
 const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
   const updateCategoryWithId = (_: unknown, formData: FormData) =>
-    updateCategory(_, formData, data?.id );
+    updateCategory(_, formData, data?.id);
 
   const [state, formAction, pending] = useActionState(
     type === "ADD" ? postCategory : updateCategoryWithId,
     initialState
   );
+
+  const [status, setStatus] = useState<string>("");
 
   return (
     <form action={formAction}>
@@ -42,17 +56,17 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
         <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
           <div className="flex items-center gap-4">
             <Button variant="outline" size="icon" className="h-7 w-7" asChild>
-              <Link href="/dashboard/brands">
+              <Link href="/dashboard/categories">
                 <ChevronLeft className="h-4 w-4" />
                 <span className="sr-only">Back</span>
               </Link>
             </Button>
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-              Brand Controller
+              Create Category
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
-                Discard
+                <Link href={"/dashboard/categories"}> Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
                 {pending ? "Loading..." : "Save Category"}
@@ -63,9 +77,9 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card x-chunk="dashboard-07-chunk-0" className="w-[500px]">
                 <CardHeader>
-                  <CardTitle>Brand Details</CardTitle>
+                  <CardTitle>Category Details</CardTitle>
                   <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit
+                    Enter the Category details below.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -76,18 +90,52 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
                       <AlertDescription>{state.error}</AlertDescription>
                     </Alert>
                   )}
-
-                  <div className="grid gap-6">
+                  <div className="grid gap-3">
                     <div className="grid gap-3">
                       <Label htmlFor="name">Name</Label>
                       <Input
                         id="name"
                         type="text"
                         name="name"
+                        placeholder="Enter your category name"
                         className="w-full"
                         defaultValue={data?.name}
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.name}
+                    </p>
+                    <div className="grid gap-3">
+                      <Label htmlFor="description">Description</Label>
+                      <Input
+                        id="description"
+                        type="text"
+                        name="description"
+                        placeholder="Enter your category description"
+                        className="w-full"
+                        defaultValue={data?.description}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.description}
+                    </p>
+
+                    <Select value={status} onValueChange={setStatus}>
+                      <Label>Status</Label>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a status categories" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="inactive">Inactive</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <input type="hidden" name="status" value={status} />
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.status}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -95,9 +143,11 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
             <Button variant="outline" size="sm">
-              Discard
+              <Link href={"/dashboard/categories"}> Discard</Link>
             </Button>
-            <Button size="sm">Save Brand</Button>
+            <Button size="sm" type="submit" disabled={pending}>
+              {pending ? "Loading..." : "Save Category"}
+            </Button>
           </div>
         </div>
       </div>

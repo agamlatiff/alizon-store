@@ -1,20 +1,26 @@
 export type TypeCheckingSignIn = {
   email?: string;
   password?: string;
-  message?: string
+  message?: string;
 };
 
 export type TypeCheckingSignUp = {
   email?: string;
   password?: string;
   name?: string;
-  message?: string
+  message?: string;
 };
 
 export type ActionResult = {
-  error?: string
-  success?: string
-}
+  error?: string;
+};
+
+export type TypeCheckingCategories = {
+  name?: string;
+  description?: string;
+  status?: string;
+  error?: string;
+};
 
 export type Tparams = { id: string };
 
