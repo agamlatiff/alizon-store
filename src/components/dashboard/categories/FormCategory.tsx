@@ -23,7 +23,10 @@ import {
 } from "@/components/ui/select";
 
 import { Category } from "@prisma/client";
-import { postCategory, updateCategory } from "../lib/actions";
+import {
+  postCategory,
+  updateCategory,
+} from "../../../app/dashboard/categories/lib/actions";
 import type { TypeCheckingCategories } from "@/types";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 

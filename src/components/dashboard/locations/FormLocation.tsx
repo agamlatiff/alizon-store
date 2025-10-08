@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useActionState } from "react";
 import Link from "next/link";
 import { AlertCircle, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,12 +14,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useFormState, useFormStatus } from "react-dom";
-import type { ActionResult } from "@/types";
+import type { TypeCheckingLocations } from "@/types";
 import type { Location } from "@prisma/client";
-import { postLocation, updateLocation } from "../lib/actions";
+import {
+  postLocation,
+  updateLocation,
+} from "@/app/dashboard/locations/lib/actions";
 
-const initialState: ActionResult = {
+const initialState: TypeCheckingLocations = {
+  address: "",
+  city: "",
+  country: "",
+  name: "",
   error: "",
 };
 
@@ -28,20 +34,11 @@ interface FormLocationProps {
   data?: Location | null;
 }
 
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? "Loading..." : "Save Location"}
-    </Button>
-  );
-};
-
 const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
   const updateLocationWithId = (_: unknown, formData: FormData) =>
     updateLocation(_, formData, data?.id);
 
-  const [state, formAction] = useFormState(
+  const [state, formAction, pending] = useActionState(
     type === "ADD" ? postLocation : updateLocationWithId,
     initialState
   );
@@ -58,13 +55,15 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
               </Link>
             </Button>
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-              Location Controller
+              Create Location
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
-                Discard
+                <Link href={"/dashboard/locations"}> Discard</Link>
               </Button>
-              <SubmitButton />
+              <Button size="sm" type="submit" disabled={pending}>
+                {pending ? "Loading..." : "Save Location"}
+              </Button>
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -73,7 +72,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                 <CardHeader>
                   <CardTitle>Location Details</CardTitle>
                   <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit
+                    Enter the Location details below.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -85,7 +84,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                     </Alert>
                   )}
 
-                  <div className="grid gap-6">
+                  <div className="grid gap-3">
                     <div className="grid gap-3">
                       <Label htmlFor="name">Name</Label>
                       <Input
@@ -94,8 +93,57 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                         name="name"
                         className="w-full"
                         defaultValue={data?.name}
+                         placeholder="Enter your location name"
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.name}
+                    </p>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="address">Address</Label>
+                      <Input
+                       placeholder="Enter your location address"
+                        id="address"
+                        type="text"
+                        name="address"
+                        className="w-full"
+                        defaultValue={data?.address}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.address}
+                    </p>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="city">City</Label>
+                      <Input
+                       placeholder="Enter your location city "
+                        id="city"
+                        type="text"
+                        name="city"
+                        className="w-full"
+                        defaultValue={data?.city}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.city}
+                    </p>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="country">Country</Label>
+                      <Input
+                       placeholder="Enter your location country"
+                        id="country"
+                        type="text"
+                        name="country"
+                        className="w-full"
+                        defaultValue={data?.country}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.country}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -103,7 +151,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
             <Button variant="outline" size="sm">
-              Discard
+              <Link href={"/dashboard/locations"}> Discard</Link>
             </Button>
             <Button size="sm">Save Location</Button>
           </div>

@@ -22,6 +22,14 @@ export type TypeCheckingCategories = {
   error?: string;
 };
 
+export type TypeCheckingLocations = {
+  name?: string;
+  address?: string;
+  city?: string;
+  country?: string;
+  error?: string;
+};
+
 export type Tparams = { id: string };
 
 export type Tedit = { params: Tparams };

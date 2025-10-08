@@ -5,7 +5,7 @@ import type { Category } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 import Link from "next/link";
-import FormDelete from "./_components/FormDelete";
+import FormDelete from "../../../components/dashboard/categories/FormDelete";
 import { Badge } from "@/components/ui/badge";
 import { dateFormat } from "@/lib/utils";
 
@@ -52,7 +52,6 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     id: "actions",
-    header: "Edit/Delete",
     cell: ({ row }) => {
       const category = row.original;
       return (

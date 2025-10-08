@@ -1,7 +1,7 @@
-import FormCategory from "../_components/FormLocation";
+import FormLocation from "@/components/dashboard/locations/FormLocation";
 
 const CreatePage = () => {
-  return <FormCategory />;
+  return <FormLocation />;
 };
 
 export default CreatePage;

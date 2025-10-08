@@ -15,7 +15,7 @@ export const getLocationsById = async (id: string) => {
   try {
     const location = await prisma.location.findFirst({
       where: {
-        id: Number.parseInt(id),
+        id
       },
     });
     return location;

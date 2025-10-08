@@ -1,28 +1,43 @@
 "use server";
 
-import { schemaCategory } from "@/lib/schema";
-import type { ActionResult } from "@/types";
+import { schemaLocation } from "@/lib/schema";
+
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import type { TypeCheckingLocations } from "@/types";
 
 export const postLocation = async (
   _: unknown,
   formData: FormData
-): Promise<ActionResult> => {
-  const validate = schemaCategory.safeParse({
+): Promise<TypeCheckingLocations> => {
+  // Get data from form data
+  const parsedData = schemaLocation.safeParse({
     name: formData.get("name"),
+    address: formData.get("address"),
+    city: formData.get("city"),
+    country: formData.get("country"),
   });
 
-  if (!validate.success) {
+  // Checking if form data not valid
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors;
     return {
-      error: validate.error.issues[0].message,
+      name: errors.name?.[0],
+      address: errors.address?.[0],
+      city: errors.city?.[0],
+      country: errors.country?.[0],
+      error: "Failed to insert data",
     };
   }
 
+  // Create data Location
   try {
     await prisma.location.create({
       data: {
-        name: validate.data.name,
+        name: parsedData.data.name,
+        address: parsedData.data.address,
+        city: parsedData.data.city,
+        country: parsedData.data.country,
       },
     });
   } catch (error) {
@@ -38,31 +53,46 @@ export const postLocation = async (
 export const updateLocation = async (
   _: unknown,
   formData: FormData,
-  id: number | undefined
-): Promise<ActionResult> => {
-  const validate = schemaCategory.safeParse({
+  id: string | undefined
+): Promise<TypeCheckingLocations> => {
+  // Get data from form data
+  const parsedData = schemaLocation.safeParse({
     name: formData.get("name"),
+    address: formData.get("address"),
+    city: formData.get("city"),
+    country: formData.get("country"),
   });
 
-  if (!validate.success) {
+  // Checking if form data not valid
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors;
     return {
-      error: validate.error.issues[0].message,
+      name: errors.name?.[0],
+      address: errors.address?.[0],
+      city: errors.city?.[0],
+      country: errors.country?.[0],
+      error: "Failed to insert data",
     };
   }
 
+  // Validation if account invalid
   if (id === undefined) {
     return {
-      error: "Id is not found",
+      error: "Account is not found",
     };
   }
 
+  // Update database
   try {
     await prisma.location.update({
       where: {
-        id: id,
+        id,
       },
       data: {
-        name: validate.data.name,
+        name: parsedData.data.name,
+        address: parsedData.data.address,
+        city: parsedData.data.city,
+        country: parsedData.data.country,
       },
     });
   } catch (error) {
@@ -78,8 +108,8 @@ export const updateLocation = async (
 export const deleteLocation = async (
   _: unknown,
   formData: FormData,
-  id: number
-): Promise<ActionResult> => {
+  id: string
+): Promise<TypeCheckingLocations> => {
   try {
     await prisma.location.delete({
       where: {

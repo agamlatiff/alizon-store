@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getLocationsById } from "../../lib/data";
-import FormLocation from "../../_components/FormLocation";
 import type { Tedit } from "@/types";
+import FormLocation from "@/components/dashboard/locations/FormLocation";
 
 const EditPage = async ({ params }: Tedit) => {
   const data = await getLocationsById(params.id);

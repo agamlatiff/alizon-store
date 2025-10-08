@@ -1,17 +1,30 @@
 "use client";
 
+import FormDelete from "@/components/dashboard/locations/FormDelete";
 import { Button } from "@/components/ui/button";
-import type {  Location } from "@prisma/client";
+import type { Location } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 import Link from "next/link";
-import FormDelete from "./_components/FormDelete";
 
 export const columns: ColumnDef<Location>[] = [
   {
     accessorKey: "name",
     header: "Location",
   },
+  {
+    accessorKey: "address",
+    header: "Address",
+  },
+  {
+    accessorKey: "city",
+    header: "city",
+  },
+  {
+    accessorKey: "country",
+    header: "Country",
+  },
+
   {
     id: "actions",
     cell: ({ row }) => {
@@ -24,7 +37,7 @@ export const columns: ColumnDef<Location>[] = [
               Edit
             </Link>
           </Button>
-          <FormDelete id={location.id}/>
+          <FormDelete id={location.id} />
         </div>
       );
     },

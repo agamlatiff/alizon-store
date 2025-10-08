@@ -13,14 +13,14 @@ export const schemaSignIn = z.object({
 export const schemaSignUp = schemaSignIn.extend({
   name: z
     .string("Name is required")
-    .min(4, "Name must be at least 4 characters"),
+    .min(1, "Name must be at least 1 character"),
 });
 
 export const schemaCategory = z.object({
   name: z
     .string()
     .nonempty("Name is required")
-    .min(4, "Name must be at least 4 characters"),
+    .min(1, "Name must be at least 1 character"),
   description: z
     .string()
     .nonempty("Description is required")
@@ -29,6 +29,13 @@ export const schemaCategory = z.object({
 error: "Status is required"
   }),
 });
+
+export const schemaLocation = z.object({
+  name:z.string().nonempty("Name is required").min(1, "Name must be at least 1 character"),
+  address: z.string().nonempty("Address is required").min(10, "Address must be at least 10 characters"),
+  city: z.string().nonempty("City is required").min(10, "City must be at least 10 characters"),
+  country: z.string().nonempty("Country is required").min(2, "Country must be at least 2 characters")
+})
 
 export const schemaBrand = z.object({
   name: z
