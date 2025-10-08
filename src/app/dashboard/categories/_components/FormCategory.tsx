@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useActionState } from "react";
 import Link from "next/link";
 import { AlertCircle, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useFormState, useFormStatus } from "react-dom";
 import type { ActionResult } from "@/types";
 import type { Category } from "@prisma/client";
 import { postCategory, updateCategory } from "../lib/actions";
@@ -28,20 +27,11 @@ interface FormCategoryProps {
   data?: Category | null;
 }
 
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? "Loading..." : "Save Category"}
-    </Button>
-  );
-};
-
 const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
   const updateCategoryWithId = (_: unknown, formData: FormData) =>
-    updateCategory(_, formData, data?.id);
+    updateCategory(_, formData, data?.id );
 
-  const [state, formAction] = useFormState(
+  const [state, formAction, pending] = useActionState(
     type === "ADD" ? postCategory : updateCategoryWithId,
     initialState
   );
@@ -64,7 +54,9 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
               <Button variant="outline" size="sm">
                 Discard
               </Button>
-              <SubmitButton />
+              <Button size="sm" type="submit" disabled={pending}>
+                {pending ? "Loading..." : "Save Category"}
+              </Button>
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
