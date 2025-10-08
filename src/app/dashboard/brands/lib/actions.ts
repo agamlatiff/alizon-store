@@ -2,30 +2,45 @@
 
 import { schemaBrand } from "@/lib/schema";
 import { deleteFile, uploadFile } from "@/lib/supabase";
-import type { ActionResult } from "@/types";
+import type { TypeCheckingBrand } from "@/types";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export const postBrand = async (
   _: unknown,
   formData: FormData
-): Promise<ActionResult> => {
-  const validate = schemaBrand.safeParse({
+): Promise<TypeCheckingBrand> => {
+  
+  // Get form data
+  const parsedData = schemaBrand.safeParse({
     name: formData.get("name"),
-    image: formData.get("image"),
+    logo: formData.get("logo"),
+    description: formData.get("description"),
+    website: formData.get("website"),
+    country: formData.get("country"),
+    status: formData.get("status"),
   });
 
-  if (!validate.success) {
+  // Validation form data
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors
     return {
-      error: validate.error.issues[0].message,
+      name : errors.name?.[0],
+      logo : errors.logo?.[0],
+      description : errors.description?.[0],
+      website : errors.website?.[0],
+      country : errors.country?.[0],
+      status : errors.status?.[0],
+      error: "Failed to insert data"
     };
   }
 
+  // Create data
   try {
-    const fileName = await uploadFile(validate.data.image, "brands");
+    const fileName = await uploadFile(parsedData.data.logo, "brands");
     await prisma.brand.create({
       data: {
-        name: validate.data.name,
+        name: parsedData.data.name,
         logo: fileName,
       },
     });
@@ -42,23 +57,25 @@ export const postBrand = async (
 export const updateBrand = async (
   _: unknown,
   formData: FormData,
-  id: number
-): Promise<ActionResult> => {
+  id: string
+): Promise<TypeCheckingBrand> => {
   const fileUpload = formData.get("image") as File;
 
-  const validate = schemaBrand.pick({ name: true }).safeParse({
+  
+  // SAMPAI SINI YAK CATAT CATAT!
+  const parsedData = schemaBrand.pick({ name: true }).safeParse({
     name: formData.get("name"),
   });
 
-  if (!validate.success) {
+  if (!parsedData.success) {
     return {
-      error: validate.error.issues[0].message,
+      error: parsedData.error.issues[0].message,
     };
   }
 
   const brand = await prisma.brand.findFirst({
     where: {
-      id: id,
+      id,
     },
     select: {
       logo: true,
@@ -74,10 +91,10 @@ export const updateBrand = async (
   try {
     await prisma.brand.update({
       where: {
-        id: id,
+        id,
       },
       data: {
-        name: validate.data.name,
+        name: parsedData.data.name,
         logo: fileName,
       },
     });
@@ -94,11 +111,11 @@ export const updateBrand = async (
 export const deleteBrand = async (
   _: unknown,
   formData: FormData,
-  id: number
-): Promise<ActionResult> => {
+  id: string
+): Promise<TypeCheckingBrand> => {
   const brand = await prisma.brand.findFirst({
     where: {
-      id: id,
+      id,
     },
     select: {
       logo: true,

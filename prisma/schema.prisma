@@ -87,11 +87,20 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
+enum BrandStatus {
+  active
+  inactive
+}
+
 model Brand {
-  id       String    @id @default(cuid())
-  name     String    @db.VarChar(255)
-  logo     String    @db.VarChar(255)
-  products Product[]
+  id          String      @id @default(cuid())
+  name        String      @db.VarChar(255)
+  logo        String      @db.VarChar(255)
+  products    Product[]
+  description String      @db.Text
+  website     String      @db.VarChar(255)
+  country     String?     @db.VarChar(100)
+  status      BrandStatus @default(active)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -105,7 +114,7 @@ enum StatusCategory {
 model Category {
   id          String         @id @default(cuid())
   name        String         @db.VarChar(255)
-  description String         @db.VarChar(255)
+  description String         @db.Text
   status      StatusCategory @default(active)
   products    Product[]
 
@@ -116,9 +125,9 @@ model Category {
 model Location {
   id       String    @id @default(cuid())
   name     String    @db.VarChar(255)
-  address  String   @db.VarChar(255)
-  city     String   @db.VarChar(100)
-  country  String   @db.VarChar(100)
+  address  String    @db.VarChar(255)
+  city     String    @db.VarChar(100)
+  country  String    @db.VarChar(100)
   products Product[]
 
   created_at DateTime @default(now())

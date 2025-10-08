@@ -11,35 +11,36 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { ActionResult } from "@/types";
+
 import { AlertCircle, ChevronLeft, Link } from "lucide-react";
-import { useFormState, useFormStatus } from "react-dom";
+
 import { postBrand, updateBrand } from "../lib/actions";
 import type { Brand } from "@prisma/client";
+import type { TypeCheckingBrand } from "@/types";
+import { useActionState } from "react";
 
-
-const initialState: ActionResult = {
+const initialState: TypeCheckingBrand = {
+  country: "",
+  description: "",
+  logo: "",
+  name: "",
+  status: "",
+  website: "",
   error: "",
 };
-
 interface FormBrandProps {
   type?: "ADD" | "EDIT";
   data?: Brand | null;
 }
 
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? "Loading..." : "Save Category"}
-    </Button>
-  );
-};
+const FormBrand = ({ data, type }: FormBrandProps) => {
+  const updateBrandWithId = (_: unknown, formData: FormData) =>
+    updateBrand(_, formData, data?.id ?? "");
 
-const FormBrand = ({data, type} : FormBrandProps) => {
-  const updateBrandWithId = (_: unknown, formData: FormData) => updateBrand(_, formData, data?.id ?? 0);
-  
-  const [state, formAction] = useFormState(type === 'ADD' ? postBrand : updateBrandWithId, initialState);
+  const [state, formAction, pending] = useActionState(
+    type === "ADD" ? postBrand : updateBrandWithId,
+    initialState
+  );
 
   return (
     <form action={formAction}>
@@ -53,13 +54,15 @@ const FormBrand = ({data, type} : FormBrandProps) => {
               </Link>
             </Button>
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-              Brand Controller
+              Create Brand
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
-                Discard
+                <Link href={"/dashboard/locations"}> Discard</Link>
               </Button>
-              <SubmitButton />
+              <Button size="sm" type="submit" disabled={pending}>
+                {pending ? "Loading..." : "Save Category"}
+              </Button>
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -68,7 +71,7 @@ const FormBrand = ({data, type} : FormBrandProps) => {
                 <CardHeader>
                   <CardTitle>Brand Details</CardTitle>
                   <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit
+                    Enter the Brand details below.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -80,7 +83,7 @@ const FormBrand = ({data, type} : FormBrandProps) => {
                     </Alert>
                   )}
 
-                  <div className="grid gap-6">
+                  <div className="grid gap-3">
                     <div className="grid gap-3">
                       <Label htmlFor="name">Name</Label>
                       <Input
@@ -91,6 +94,10 @@ const FormBrand = ({data, type} : FormBrandProps) => {
                         defaultValue={data?.name}
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.name}
+                    </p>
+
                     <div className="grid gap-3">
                       <Label htmlFor="logo">Logo</Label>
                       <Input
@@ -100,6 +107,23 @@ const FormBrand = ({data, type} : FormBrandProps) => {
                         className="w-full"
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.logo}
+                    </p>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="description">description</Label>
+                      <Input
+                        id="description"
+                        type="text"
+                        name="description"
+                        className="w-full"
+                        defaultValue={data?.description}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.description}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -107,7 +131,7 @@ const FormBrand = ({data, type} : FormBrandProps) => {
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
             <Button variant="outline" size="sm">
-              Discard
+              <Link href={"/dashboard/locations"}> Discard</Link>
             </Button>
             <Button size="sm">Save Brand</Button>
           </div>

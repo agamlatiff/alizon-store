@@ -30,6 +30,16 @@ export type TypeCheckingLocations = {
   error?: string;
 };
 
+export type TypeCheckingBrand = {
+  name?: string;
+  logo?: string;
+  description?: string;
+  website?: string;
+  country?: string;
+  status?: string;
+  error?: string;
+};
+
 export type Tparams = { id: string };
 
 export type Tedit = { params: Tparams };

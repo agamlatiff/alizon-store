@@ -1,5 +1,7 @@
+import Loading from "@/components/Loading";
+
 const LoadingPage = () => {
-  return <div>loading...</div>;
+  return <Loading />;
 };
 
 export default LoadingPage;

@@ -1,53 +1,107 @@
 import z from "zod";
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
 export const schemaSignIn = z.object({
-  email: z.string().nonempty("Email is required").email("Email is not valid"),
+  email: z
+    .string()
+    .trim()
+    .nonempty("Email is required")
+    .email("Email is not valid"),
   password: z
     .string()
+    .trim()
     .nonempty("Password is required")
     .min(5, "Password must be at least 5 characters"),
 });
 
 export const schemaSignUp = schemaSignIn.extend({
   name: z
-    .string("Name is required")
+    .string()
+    .trim()
+    .nonempty("Name is required")
     .min(1, "Name must be at least 1 character"),
 });
 
 export const schemaCategory = z.object({
   name: z
     .string()
+    .trim()
     .nonempty("Name is required")
     .min(1, "Name must be at least 1 character"),
   description: z
     .string()
+    .trim()
     .nonempty("Description is required")
     .min(10, "Description must be at least 10 characters"),
   status: z.enum(["active", "inactive"], {
-error: "Status is required"
+    error: "Status is required",
   }),
 });
 
 export const schemaLocation = z.object({
-  name:z.string().nonempty("Name is required").min(1, "Name must be at least 1 character"),
-  address: z.string().nonempty("Address is required").min(4, "Address must be at least 4characters"),
-  city: z.string().nonempty("City is required").min(1, "City must be at least 1 character"),
-  country: z.string().nonempty("Country is required").min(1, "Country must be at least 1 character")
-})
+  name: z
+    .string()
+    .trim()
+    .nonempty("Name is required")
+    .min(1, "Name must be at least 1 character"),
+  address: z
+    .string()
+    .trim()
+    .nonempty("Address is required")
+    .min(4, "Address must be at least 4 characters"),
+  city: z
+    .string()
+    .trim()
+    .nonempty("City is required")
+    .min(1, "City must be at least 1 character"),
+  country: z
+    .string()
+    .trim()
+    .nonempty("Country is required")
+    .min(1, "Country must be at least 1 character"),
+});
 
 export const schemaBrand = z.object({
   name: z
     .string()
+    .trim()
     .nonempty("Name is required")
-    .min(4, "Name must be at least 4 characters"),
-  image: z
+    .min(1, "Name must be at least 1 character"),
+  logo: z
     .any()
+    .refine((file) => file instanceof File, {
+      message: "Logo is required",
+    })
     .refine((file: File) => FILE_TYPE.includes(file.type), {
       message: "File type is not allowed",
     })
-    .refine((file: File) => file?.name, { message: "Image is required" }),
+    .refine((file: File) => file.size <= MAX_FILE_SIZE, {
+      message: "File size must not exceed 2 MB",
+    } ),
+
+  description: z
+    .string()
+    .trim()
+    .nonempty("Description is required")
+    .min(10, "Description must be at least 10 characters"),
+
+  website: z
+    .string()
+    .trim()
+    .nonempty("Website is required")
+    .url("Website must be a valid URL"),
+
+  country: z
+    .string()
+    .trim()
+    .nonempty("Country is required")
+    .max(100, "Country must not exceed 100 characters"),
+
+  status: z.enum(["active", "inactive"], {
+    error: "Status is required",
+  }),
 });
 
 export const schemaProduct = z.object({

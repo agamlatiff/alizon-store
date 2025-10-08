@@ -11,8 +11,8 @@ import FormDelete from "./_components/FormDelete";
 
 export const columns: ColumnDef<Brand>[] = [
   {
-    accessorKey: "name",
-    header: "Brand",
+    accessorKey: "logo",
+    header: "Logo",
     cell: ({ row }) => {
       const brand = row.original;
 
@@ -50,7 +50,9 @@ export const columns: ColumnDef<Brand>[] = [
           </Button>
           <FormDelete id={brand.id} />
         </div>
-      );
-    },
-  },
+      )
+    }, 
+  }, {
+    accessorKey:""
+  }
 ];
