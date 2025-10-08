@@ -18,14 +18,17 @@ const FormDelete = ({ id }: FormDeleteProps) => {
   const deleteLocationById = (_: unknown, formData: FormData) =>
     deleteLocation(_, formData, id);
 
-  const [state, formAction, pending] = useActionState(deleteLocationById, initialState);
+  const [state, formAction, pending] = useActionState(
+    deleteLocationById,
+    initialState
+  );
 
   return (
     <form action={formAction}>
-        <Button variant={"destructive"} size={"sm"} disabled={pending}>
-      <Trash className="size-4 mr-2" />
-      {pending ? "Loading..." : "Delete"}
-    </Button>
+      <Button className="text-white" variant={"destructive"} size={"sm"} disabled={pending}>
+        <Trash className="size-4 mr-2" />
+        {pending ? "Loading..." : "Delete"}
+      </Button>
     </form>
   );
 };

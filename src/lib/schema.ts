@@ -32,9 +32,9 @@ error: "Status is required"
 
 export const schemaLocation = z.object({
   name:z.string().nonempty("Name is required").min(1, "Name must be at least 1 character"),
-  address: z.string().nonempty("Address is required").min(10, "Address must be at least 10 characters"),
-  city: z.string().nonempty("City is required").min(10, "City must be at least 10 characters"),
-  country: z.string().nonempty("Country is required").min(2, "Country must be at least 2 characters")
+  address: z.string().nonempty("Address is required").min(4, "Address must be at least 4characters"),
+  city: z.string().nonempty("City is required").min(1, "City must be at least 1 character"),
+  country: z.string().nonempty("Country is required").min(1, "Country must be at least 1 character")
 })
 
 export const schemaBrand = z.object({
