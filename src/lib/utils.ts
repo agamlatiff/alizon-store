@@ -6,10 +6,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function rupiahFormat(value: number) {
-  return Intl.NumberFormat("id-ID", {
+export function USDFormat(value: number) {
+  return Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "IDR",
+    currency: "USD",
   }).format(value);
 }
 

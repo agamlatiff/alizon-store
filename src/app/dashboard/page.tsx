@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { DollarSign, ShoppingBag, Users } from "lucide-react";
 
-import { rupiahFormat } from "@/lib/utils";
+import { USDFormat } from "@/lib/utils";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDashboardData } from "./lib/data";
@@ -39,7 +39,7 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {rupiahFormat(Number(totalRevenue))}
+                  {USDFormat(Number(totalRevenue))}
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Based on all successful sales
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
                         </p>
                       </div>
                       <div className="ml-auto font-medium">
-                        +{rupiahFormat(Number(order.total))}
+                        +{USDFormat(Number(order.total))}
                       </div>
                     </div>
                   ))}

@@ -1,6 +1,7 @@
 "use client";
 
-import { rupiahFormat } from "@/lib/utils";
+
+import { USDFormat } from "@/lib/utils";
 import {
   Bar,
   BarChart,
@@ -31,10 +32,10 @@ export default function OverviewChart({ data }: ChartProps) {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `${rupiahFormat(value)}`}
+          tickFormatter={(value) => `${USDFormat(value)}`}
         />
         <Tooltip
-          formatter={(value: number) => [rupiahFormat(value), "Total"]}
+          formatter={(value: number) => [USDFormat(value), "Total"]}
           cursor={{ fill: "rgba(100, 100, 100, 0.1)" }}
         />
         <Legend />

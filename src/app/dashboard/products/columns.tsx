@@ -4,7 +4,7 @@ import type { ProductStock } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/supabase";
-import { dateFormat, rupiahFormat } from "@/lib/utils";
+import { dateFormat, USDFormat,} from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -48,7 +48,7 @@ export const columns: ColumnDef<TColumn>[] = [
     header: "Price",
     cell: ({ row }) => {
       const product = row.original;
-      return rupiahFormat(product.price);
+      return USDFormat(product.price);
     },
   },
   {

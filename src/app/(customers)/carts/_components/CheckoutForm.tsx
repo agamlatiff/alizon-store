@@ -1,11 +1,12 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
-import { rupiahFormat } from "@/lib/utils";
+
 import type { ActionResult } from "@/types";
 import { useMemo } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { storeOrder } from "../lib/actions";
+import { USDFormat } from "@/lib/utils";
 
 const initialState: ActionResult = {
   error: "",
@@ -153,7 +154,7 @@ const CheckoutForm = () => {
                 </div>
                 <p>Sub Total</p>
               </div>
-              <p className="font-semibold">{rupiahFormat(grandTotal)}</p>
+              <p className="font-semibold">{USDFormat(grandTotal)}</p>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -193,7 +194,7 @@ const CheckoutForm = () => {
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <p className="font-semibold">{rupiahFormat(grandTotal)}</p>
+            <p className="font-semibold">{USDFormat(grandTotal)}</p>
             <p className="font-bold text-[32px] leading-[48px] underline text-[#0D5CD7]">
               Rp 0
             </p>

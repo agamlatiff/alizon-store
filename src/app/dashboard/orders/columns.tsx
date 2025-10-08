@@ -1,7 +1,8 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { rupiahFormat } from "@/lib/utils";
+import { USDFormat } from "@/lib/utils";
+
 import type { StatusOrder } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
@@ -46,7 +47,7 @@ export const columns: ColumnDef<TColumn>[] = [
   {
     accessorKey: 'price',
     header: 'Total Price',
-    cell: ({row}) => rupiahFormat(row.original.price)
+    cell: ({row}) => USDFormat(row.original.price)
   },
   {
     accessorKey: "status",

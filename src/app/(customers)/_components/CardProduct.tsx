@@ -1,4 +1,5 @@
-import { rupiahFormat } from "@/lib/utils";
+
+import { USDFormat } from "@/lib/utils";
 import type { TProduct } from "@/types";
 import Link from "next/link";
 import React from "react";
@@ -25,7 +26,7 @@ const CardProduct = ({ item }: CardProductProps) => {
               <p className="text-sm text-[#616369]">{item.category_name}</p>
             </div>
             <p className="font-semibold text-[#0D5CD7] leading-[22px]">
-              {rupiahFormat(Number(item.price))}
+              {USDFormat(Number(item.price))}
             </p>
           </div>
         </div>

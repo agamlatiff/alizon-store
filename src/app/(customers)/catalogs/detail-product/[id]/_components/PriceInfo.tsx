@@ -1,7 +1,8 @@
 'use client'
 
 import { useCart } from "@/hooks/useCart";
-import { rupiahFormat } from "@/lib/utils";
+import { USDFormat } from "@/lib/utils";
+
 import type { TCart, TProduct } from "@/types";
 import { useRouter } from "next/router";
 
@@ -31,7 +32,7 @@ const PriceInfo = ({item, isLogin} : PriceInfoProp) => {
       <div className="w-full bg-white border border-[#E5E5E5] flex flex-col gap-[30px] p-[30px] rounded-3xl">
         <div className="flex flex-col gap-1">
           <p className="font-semibold">Brand New</p>
-          <p className="font-bold text-[24px] leading-[48px]">{rupiahFormat(item.price)}</p>
+          <p className="font-bold text-[24px] leading-[48px]">{USDFormat(item.price)}</p>
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">

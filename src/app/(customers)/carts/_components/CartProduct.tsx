@@ -1,7 +1,9 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
-import { rupiahFormat } from "@/lib/utils";
+import { USDFormat } from "@/lib/utils";
+
+
 
 const CartProduct = () => {
   const { products, increaseQuantity, decreaseQuantity, removeProduct } = useCart();
@@ -29,7 +31,7 @@ const CartProduct = () => {
           <div className="w-[150px] flex flex-col gap-1">
             <p className="text-sm text-[#616369]">Price</p>
             <p className="font-semibold text-[#0D5CD7] leading-[22px]">
-              {rupiahFormat(cart.price)}
+              {USDFormat(cart.price)}
             </p>
           </div>
           <div className="w-[120px] flex flex-col gap-1">
@@ -49,7 +51,7 @@ const CartProduct = () => {
           <div className="w-[150px] flex flex-col gap-1">
             <p className="text-sm text-[#616369]">Total</p>
             <p className="font-semibold text-[#0D5CD7] leading-[22px]">
-              {rupiahFormat(cart.price * cart.quantity)}
+              {USDFormat(cart.price * cart.quantity)}
             </p>
           </div>
           <button type="button" onClick={() => removeProduct(cart.id)} className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]">
