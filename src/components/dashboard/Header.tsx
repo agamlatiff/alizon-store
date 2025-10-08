@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -11,19 +11,21 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
-export default function Header() {
+export default function Header({children}: {children :ReactNode}) {
 	return (
 		<header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
 			<Breadcrumb className="hidden md:flex">
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href="/">Dashboard</Link>
+							<Link href="/dashboard">Dashboard</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
-						<BreadcrumbPage>Home</BreadcrumbPage>
+						<BreadcrumbPage>
+							{children}
+						</BreadcrumbPage>
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>

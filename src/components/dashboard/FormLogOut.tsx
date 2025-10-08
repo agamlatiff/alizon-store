@@ -9,7 +9,7 @@ import type { ActionResult } from "@/types";
 import { LogOut } from "lucide-react";
 import React from "react";
 import { useFormState } from "react-dom";
-import Logout from "../lib/actions";
+import Logout from "../../app/dashboard/lib/actions";
 
 const initialState: ActionResult = {
   error: "",
