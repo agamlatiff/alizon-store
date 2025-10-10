@@ -114,17 +114,17 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                     </p>
 
                     <div className="grid gap-3">
-                      <Label htmlFor="logo">Logo</Label>
+                      <Label htmlFor="image">Logo</Label>
                       <Input
-                        id="logo"
+                        id="image"
                         type="file"
-                        name="logo"
-                        placeholder="Upload logo"
+                        name="image"
+                        placeholder="Upload image"
                         className="w-full text-muted-foreground placeholder:text-muted-foreground"
                       />
                     </div>
                     <p className="text-sm text-red-500 -mt-2 ml-1">
-                      {state.logo}
+                      {state?.image}
                     </p>
 
                     <div className="grid gap-3">

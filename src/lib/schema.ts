@@ -3,13 +3,6 @@ import z from "zod";
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
-const isFileLike = (v: unknown): v is File =>
-  typeof v === "object" &&
-  v !== null &&
-  "size" in v &&
-  "type" in v &&
-  "name" in v;
-
 export const schemaSignIn = z.object({
   email: z
     .string()
@@ -70,9 +63,9 @@ export const schemaBrand = z.object({
     .string()
     .trim()
     .min(1,"Name is required"),
-  logo: z
+  image: z
     .any()
-    .refine((file: File) => file === null || isFileLike(file), {
+    .refine((file: File) => file === null, {
       message: "Logo is required",
     })
     .refine((file: File) => FILE_TYPE.includes(file.type), {

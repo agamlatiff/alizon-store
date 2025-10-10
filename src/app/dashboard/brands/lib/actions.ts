@@ -13,7 +13,7 @@ export const postBrand = async (
   // Get form data
   const parsedData = schemaBrand.safeParse({
     name: formData.get("name"),
-    logo: formData.get("logo"),
+    image: formData.get("image"),
     description: formData.get("description"),
     website: formData.get("website"),
     country: formData.get("country"),
@@ -25,7 +25,7 @@ export const postBrand = async (
     const errors = parsedData.error.flatten().fieldErrors;
     return {
       name: errors.name?.[0],
-      logo: errors.logo?.[0],
+      image: errors.image?.[0],
       description: errors.description?.[0],
       website: errors.website?.[0],
       country: errors.country?.[0],
@@ -36,11 +36,11 @@ export const postBrand = async (
 
   // Create data
   try {
-    const fileName = await uploadFile(parsedData.data.logo, "brands");
+    const fileName = await uploadFile(parsedData.data.image, "brands");
     await prisma.brand.create({
       data: {
         ...parsedData.data,
-        logo: fileName,
+        image: fileName,
 
       },
     });
@@ -60,10 +60,10 @@ export const updateBrand = async (
   id: string
 ): Promise<TypeCheckingBrand> => {
   // Get form data
-  const fileUpload = formData.get("logo") as File;
+  const fileUpload = formData.get("image") as File;
   const parsedData = schemaBrand.safeParse({
     name: formData.get("name"),
-    logo: formData.get("logo"),
+    image: formData.get("image"),
     description: formData.get("description"),
     website: formData.get("website"),
     country: formData.get("country"),
@@ -75,7 +75,7 @@ export const updateBrand = async (
     const errors = parsedData.error.flatten().fieldErrors;
     return {
       name: errors.name?.[0],
-      logo: errors.logo?.[0],
+      image: errors.image?.[0],
       description: errors.description?.[0],
       website: errors.website?.[0],
       country: errors.country?.[0],
@@ -84,19 +84,19 @@ export const updateBrand = async (
     };
   }
 
-  // Find existing brand logo
+  // Find existing brand image
   const brand = await prisma.brand.findFirst({
     where: {
       id,
     },
     select: {
-      logo: true,
+      image: true,
     },
   });
 
-  let fileName = brand?.logo;
+  let fileName = brand?.image;
 
-  // Upload new logo if exists
+  // Upload new image if exists
   if (fileUpload.size > 0) {
     fileName = await uploadFile(fileUpload, "brands");
   }
@@ -109,7 +109,7 @@ export const updateBrand = async (
       },
       data: {
         name: parsedData.data.name,
-        logo: fileName,
+        image: fileName,
         description: parsedData.data.description,
         website: parsedData.data.website,
         country: parsedData.data.country,
@@ -131,13 +131,13 @@ export const deleteBrand = async (
   formData: FormData,
   id: string
 ): Promise<TypeCheckingBrand> => {
-  // Find existing brand logo
+  // Find existing brand image
   const brand = await prisma.brand.findFirst({
     where: {
       id,
     },
     select: {
-      logo: true,
+      image: true,
     },
   });
 
@@ -148,7 +148,7 @@ export const deleteBrand = async (
     };
   }
 
-  // Delete existing logo
+  // Delete existing image
   try {
     deleteFile();
 

@@ -95,7 +95,7 @@ enum BrandStatus {
 model Brand {
   id          String      @id @default(cuid())
   name        String      @db.VarChar(255)
-  logo        String      @db.VarChar(255)
+  image        String      @db.VarChar(255)
   products    Product[]
   description String      @db.Text
   website     String      @db.VarChar(255)
