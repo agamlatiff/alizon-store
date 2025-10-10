@@ -51,7 +51,7 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
     initialState
   );
 
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState<string>(data?.status ?? "");
 
   return (
     <form action={formAction}>
@@ -126,7 +126,7 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
                     <Select value={status} onValueChange={setStatus}>
                       <Label>Status</Label>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a status categories" />
+                        <SelectValue placeholder="Select a status category" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>

@@ -12,12 +12,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { AlertCircle, ChevronLeft, Link } from "lucide-react";
+import { AlertCircle, ChevronLeft} from "lucide-react";
 
-import { postBrand, updateBrand } from "../lib/actions";
+import {
+  postBrand,
+  updateBrand,
+} from "../../../app/dashboard/brands/lib/actions";
 import type { Brand } from "@prisma/client";
 import type { TypeCheckingBrand } from "@/types";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
 
 const initialState: TypeCheckingBrand = {
   country: "",
@@ -42,6 +54,8 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
     initialState
   );
 
+  const [status, setStatus] = useState<string>(data?.status ?? "");
+
   return (
     <form action={formAction}>
       <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -58,7 +72,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
-                <Link href={"/dashboard/locations"}> Discard</Link>
+                <Link href={"/dashboard/brands"}> Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
                 {pending ? "Loading..." : "Save Category"}
@@ -87,6 +101,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                     <div className="grid gap-3">
                       <Label htmlFor="name">Name</Label>
                       <Input
+                        placeholder="Enter your brand name"
                         id="name"
                         type="text"
                         name="name"
@@ -103,8 +118,9 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                       <Input
                         id="logo"
                         type="file"
-                        name="image"
-                        className="w-full"
+                        name="logo"
+                        placeholder="Upload logo"
+                        className="w-full text-muted-foreground placeholder:text-muted-foreground"
                       />
                     </div>
                     <p className="text-sm text-red-500 -mt-2 ml-1">
@@ -112,8 +128,9 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                     </p>
 
                     <div className="grid gap-3">
-                      <Label htmlFor="description">description</Label>
+                      <Label htmlFor="description">Description</Label>
                       <Input
+                        placeholder="Enter your brand description"
                         id="description"
                         type="text"
                         name="description"
@@ -124,6 +141,52 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                     <p className="text-sm text-red-500 -mt-2 ml-1">
                       {state.description}
                     </p>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="website">Website</Label>
+                      <Input
+                        id="website"
+                        type="text"
+                        name="website"
+                        placeholder="Enter your brand website"
+                        className="w-full"
+                        defaultValue={data?.website}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.website}
+                    </p>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="country">Country</Label>
+                      <Input
+                        id="country"
+                        type="text"
+                        name="country"
+                        placeholder="Enter your brand country"
+                        className="w-full"
+                        defaultValue={data?.country}
+                      />
+                    </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.country}
+                    </p>
+                    <Select value={status} onValueChange={setStatus}>
+                      <Label>Status</Label>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a status brand" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="inactive">Inactive</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <input type="hidden" name="status" value={status} />
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.status}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -131,7 +194,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
             <Button variant="outline" size="sm">
-              <Link href={"/dashboard/locations"}> Discard</Link>
+              <Link href={"/dashboard/brands"}> Discard</Link>
             </Button>
             <Button size="sm">Save Brand</Button>
           </div>

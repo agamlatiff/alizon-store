@@ -99,7 +99,7 @@ model Brand {
   products    Product[]
   description String      @db.Text
   website     String      @db.VarChar(255)
-  country     String?     @db.VarChar(100)
+  country     String     @db.VarChar(100)
   status      BrandStatus @default(active)
 
   created_at DateTime @default(now())

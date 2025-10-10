@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import type { TypeCheckingBrand } from "@/types";
 import { Trash } from "lucide-react";
-import { deleteBrand } from "../lib/actions";
+import { deleteBrand } from "../../../app/dashboard/brands/lib/actions";
 import { useActionState } from "react";
 
 const initialState: TypeCheckingBrand = {

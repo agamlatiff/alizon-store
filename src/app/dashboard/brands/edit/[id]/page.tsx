@@ -2,7 +2,7 @@ import type { Tedit } from "@/types";
 
 import { redirect } from "next/navigation";
 import { getBrandById } from "../../lib/data";
-import FormBrand from "../../_components/FormBrand";
+import FormBrand from "../../../../../components/dashboard/brands/FormBrand";
 
 const EditPage = async ({ params }: Tedit) => {
   const brand = await getBrandById(params.id);

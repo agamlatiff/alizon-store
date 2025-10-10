@@ -1,7 +1,7 @@
-import FormBrand from "../_components/FormBrand";
+import FormBrand from "../../../../components/dashboard/brands/FormBrand";
 
 const CreatePage = () => {
-  return <FormBrand type="ADD"  />;
+  return <FormBrand type="ADD" />;
 };
 
 export default CreatePage;

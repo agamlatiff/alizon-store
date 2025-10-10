@@ -3,6 +3,13 @@ import z from "zod";
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 
+const isFileLike = (v: unknown): v is File =>
+  typeof v === "object" &&
+  v !== null &&
+  "size" in v &&
+  "type" in v &&
+  "name" in v;
+
 export const schemaSignIn = z.object({
   email: z
     .string()
@@ -20,16 +27,14 @@ export const schemaSignUp = schemaSignIn.extend({
   name: z
     .string()
     .trim()
-    .nonempty("Name is required")
-    .min(1, "Name must be at least 1 character"),
+    .min(1, "Name is required"),
 });
 
 export const schemaCategory = z.object({
   name: z
     .string()
     .trim()
-    .nonempty("Name is required")
-    .min(1, "Name must be at least 1 character"),
+    .min(1, "Name is required"),
   description: z
     .string()
     .trim()
@@ -44,8 +49,7 @@ export const schemaLocation = z.object({
   name: z
     .string()
     .trim()
-    .nonempty("Name is required")
-    .min(1, "Name must be at least 1 character"),
+    .min(1, "Name is required"),
   address: z
     .string()
     .trim()
@@ -54,24 +58,21 @@ export const schemaLocation = z.object({
   city: z
     .string()
     .trim()
-    .nonempty("City is required")
-    .min(1, "City must be at least 1 character"),
+    .min(1, "City is required"),
   country: z
     .string()
     .trim()
-    .nonempty("Country is required")
-    .min(1, "Country must be at least 1 character"),
+    .min(1,"Country is required"),
 });
 
 export const schemaBrand = z.object({
   name: z
     .string()
     .trim()
-    .nonempty("Name is required")
-    .min(1, "Name must be at least 1 character"),
+    .min(1,"Name is required"),
   logo: z
     .any()
-    .refine((file) => file instanceof File, {
+    .refine((file: File) => file === null || isFileLike(file), {
       message: "Logo is required",
     })
     .refine((file: File) => FILE_TYPE.includes(file.type), {

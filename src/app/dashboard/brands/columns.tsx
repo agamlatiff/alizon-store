@@ -7,7 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import FormDelete from "./_components/FormDelete";
+import FormDelete from "../../../components/dashboard/brands/FormDelete";
 
 export const columns: ColumnDef<Brand>[] = [
   {
@@ -50,9 +50,7 @@ export const columns: ColumnDef<Brand>[] = [
           </Button>
           <FormDelete id={brand.id} />
         </div>
-      )
-    }, 
-  }, {
-    accessorKey:""
-  }
+      );
+    },
+  },
 ];
