@@ -37,30 +37,13 @@ export const columns: ColumnDef<Brand>[] = [
       return <div>{brand.name}</div>;
     },
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const brand = row.original;
-      return (
-        <div className="space-x-4 inline-flex">
-          <Button size={"sm"} asChild>
-            <Link href={`/dashboard/brands/edit/${brand.id}`}>
-              <Edit className="size-4 mr-2" />
-              Edit
-            </Link>
-          </Button>
-          <FormDelete id={brand.id} />
-        </div>
-      );
-    },
-  },
 
   {
     accessorKey: "country",
     header: "country",
     cell: ({ row }) => {
       const brand = row.original;
-      <div>{brand.country}</div>;
+      return <div>{brand.country}</div>;
     },
   },
   {
@@ -76,17 +59,9 @@ export const columns: ColumnDef<Brand>[] = [
               : "bg-gray-100 text-gray-700 border border-gray-200"
           }`}
         >
-          {status}
+          {brand.status === "active" ? "active" : "inactive"}
         </Badge>
       );
-    },
-  },
-  {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => {
-      const brand = row.original;
-      <div>{brand.country}</div>;
     },
   },
   {
@@ -94,7 +69,25 @@ export const columns: ColumnDef<Brand>[] = [
     header: "Website",
     cell: ({ row }) => {
       const brand = row.original;
-      <div>{brand.website}</div>;
+      return <div>{brand.website}</div>;
+    },
+  },
+
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const brand = row.original;
+      return (
+        <div className="space-x-4 inline-flex">
+          <Button size={"sm"} asChild>
+            <Link href={`/dashboard/brands/edit/${brand.id}`}>
+              <Edit className="size-4 mr-2" />
+              Edit
+            </Link>
+          </Button>
+          <FormDelete id={brand.id} />
+        </div>
+      );
     },
   },
 ];

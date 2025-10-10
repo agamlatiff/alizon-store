@@ -31,7 +31,7 @@ const FormDelete = ({ id }: FormDeleteProps) => {
 
   return (
     <form action={formAction}>
-      <Button variant={"destructive"} size={"sm"} disabled={pending}>
+      <Button className="text-white" variant={"destructive"} size={"sm"} disabled={pending}>
         <Trash className="size-4 mr-2" />
         {pending ? "Loading..." : "Delete"}
       </Button>

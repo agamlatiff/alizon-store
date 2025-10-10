@@ -25,7 +25,10 @@ export const uploadFile = async (
     .upload(`public/${path}/${fileName}`, file, {
       cacheControl: "3600",
       upsert: false,
+      contentType: file.type
     });
+    
+    
 
   return fileName;
 };

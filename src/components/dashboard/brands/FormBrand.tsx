@@ -76,6 +76,10 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
   const clearImage = () => {
     setFile(null);
     setPreviewImage(null);
+    const fileInput = document.getElementById("logo") as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
   };
 
   useEffect(() => {
@@ -177,8 +181,9 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                         </div>
                       </>
                     )}
+
                     <p className="text-sm text-red-500 -mt-2 ml-1">
-                      {state?.logo}
+                      {state.logo}
                     </p>
 
                     <div className="grid gap-3">
