@@ -8,6 +8,7 @@ import { Edit } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import FormDelete from "../../../components/dashboard/brands/FormDelete";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Brand>[] = [
   {
@@ -19,7 +20,7 @@ export const columns: ColumnDef<Brand>[] = [
       return (
         <div className="inline-flex items-center gap-5">
           <Image
-            src={getImageUrl(brand.logo)}
+            src={getImageUrl(brand.logo ?? "")}
             height={80}
             width={80}
             alt="Product"
@@ -51,6 +52,49 @@ export const columns: ColumnDef<Brand>[] = [
           <FormDelete id={brand.id} />
         </div>
       );
+    },
+  },
+
+  {
+    accessorKey: "country",
+    header: "country",
+    cell: ({ row }) => {
+      const brand = row.original;
+      <div>{brand.country}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const brand = row.original;
+      return (
+        <Badge
+          className={`${
+            brand.status === "active"
+              ? "bg-green-100 text-green-700 border border-green-200 hover:bg-green-200"
+              : "bg-gray-100 text-gray-700 border border-gray-200"
+          }`}
+        >
+          {status}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "country",
+    header: "Country",
+    cell: ({ row }) => {
+      const brand = row.original;
+      <div>{brand.country}</div>;
+    },
+  },
+  {
+    accessorKey: "website",
+    header: "Website",
+    cell: ({ row }) => {
+      const brand = row.original;
+      <div>{brand.website}</div>;
     },
   },
 ];

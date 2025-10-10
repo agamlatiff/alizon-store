@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { AlertCircle, ChevronLeft} from "lucide-react";
+import { AlertCircle, ChevronLeft, X } from "lucide-react";
 
 import {
   postBrand,
@@ -20,7 +20,7 @@ import {
 } from "../../../app/dashboard/brands/lib/actions";
 import type { Brand } from "@prisma/client";
 import type { TypeCheckingBrand } from "@/types";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState, type ChangeEvent } from "react";
 import {
   Select,
   SelectContent,
@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import Image from "next/image";
 
 const initialState: TypeCheckingBrand = {
   country: "",
@@ -55,6 +56,33 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
   );
 
   const [status, setStatus] = useState<string>(data?.status ?? "");
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const fileImage = e.target.files?.[0];
+
+    // If file is not selected
+    if (!fileImage) {
+      setFile(null);
+      setPreviewImage(null);
+      return;
+    }
+
+    setFile(fileImage);
+    setPreviewImage(URL.createObjectURL(fileImage));
+  };
+
+  const clearImage = () => {
+    setFile(null);
+    setPreviewImage(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (previewImage) URL.revokeObjectURL(previewImage);
+    };
+  }, [previewImage]);
 
   return (
     <form action={formAction}>
@@ -75,7 +103,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                 <Link href={"/dashboard/brands"}> Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
-                {pending ? "Loading..." : "Save Category"}
+                {pending ? "Loading..." : "Save Brand"}
               </Button>
             </div>
           </div>
@@ -114,17 +142,43 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                     </p>
 
                     <div className="grid gap-3">
-                      <Label htmlFor="image">Logo</Label>
+                      <Label htmlFor="logo">Logo</Label>
                       <Input
-                        id="image"
+                        id="logo"
                         type="file"
-                        name="image"
-                        placeholder="Upload image"
+                        name="logo"
+                        placeholder="Upload Logo"
                         className="w-full text-muted-foreground placeholder:text-muted-foreground"
+                        onChange={onFileChange}
                       />
                     </div>
+                    {previewImage && (
+                      <>
+                        <div className="relative h-24 w-24 rounded-md overflow-hidden border">
+                          <Image
+                            src={previewImage}
+                            alt={file?.name ?? "preview"}
+                            fill
+                            className="object-cover object-top"
+                            sizes="96px"
+                            priority
+                          />
+
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute top-1 right-1 h-6 w-6"
+                            onClick={clearImage}
+                          >
+                            <X className="h-4 w-4" />
+                            <span className="sr-only">Delete logo</span>
+                          </Button>
+                        </div>
+                      </>
+                    )}
                     <p className="text-sm text-red-500 -mt-2 ml-1">
-                      {state?.image}
+                      {state?.logo}
                     </p>
 
                     <div className="grid gap-3">
@@ -153,6 +207,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                         defaultValue={data?.website}
                       />
                     </div>
+
                     <p className="text-sm text-red-500 -mt-2 ml-1">
                       {state.website}
                     </p>

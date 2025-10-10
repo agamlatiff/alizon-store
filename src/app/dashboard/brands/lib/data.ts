@@ -14,7 +14,7 @@ export const getBrandById = async (id: string) => {
   try {
     const brand = await prisma.brand.findFirst({
       where: {
-        id: Number.parseInt(id),
+        id,
       },
     });
 

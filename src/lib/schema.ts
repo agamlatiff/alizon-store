@@ -2,6 +2,12 @@ import z from "zod";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
+const isFile = (file: unknown): file is File =>
+  typeof file === "object" &&
+  file !== null &&
+  "name" in file &&
+  "size" in file &&
+  "type" in file;
 
 export const schemaSignIn = z.object({
   email: z
@@ -17,17 +23,11 @@ export const schemaSignIn = z.object({
 });
 
 export const schemaSignUp = schemaSignIn.extend({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required"),
+  name: z.string().trim().min(1, "Name is required"),
 });
 
 export const schemaCategory = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required"),
+  name: z.string().trim().min(1, "Name is required"),
   description: z
     .string()
     .trim()
@@ -39,41 +39,29 @@ export const schemaCategory = z.object({
 });
 
 export const schemaLocation = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required"),
+  name: z.string().trim().min(1, "Name is required"),
   address: z
     .string()
     .trim()
     .nonempty("Address is required")
     .min(4, "Address must be at least 4 characters"),
-  city: z
-    .string()
-    .trim()
-    .min(1, "City is required"),
-  country: z
-    .string()
-    .trim()
-    .min(1,"Country is required"),
+  city: z.string().trim().min(1, "City is required"),
+  country: z.string().trim().min(1, "Country is required"),
 });
 
 export const schemaBrand = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1,"Name is required"),
-  image: z
+  name: z.string().trim().min(1, "Name is required"),
+  logo: z
     .any()
-    .refine((file: File) => file === null, {
-      message: "Logo is required",
+    .refine((file: File) => file === null || isFile(file), {
+      message: "File is required",
     })
-    .refine((file: File) => FILE_TYPE.includes(file.type), {
+    .refine((file: File) => file && FILE_TYPE.includes(file.type), {
       message: "File type is not allowed",
     })
-    .refine((file: File) => file.size <= MAX_FILE_SIZE, {
+    .refine((file: File) => file && file.size <= MAX_FILE_SIZE, {
       message: "File size must not exceed 2 MB",
-    } ),
+    }),
 
   description: z
     .string()

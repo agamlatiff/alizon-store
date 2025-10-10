@@ -32,7 +32,7 @@ export type TypeCheckingLocations = {
 
 export type TypeCheckingBrand = {
   name?: string;
-  image?: string;
+  logo?: string;
   description?: string;
   website?: string;
   country?: string;
