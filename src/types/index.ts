@@ -30,13 +30,25 @@ export type TypeCheckingLocations = {
   error?: string;
 };
 
-export type TypeCheckingBrand = {
+export type TypeCheckingBrands = {
   name?: string;
   logo?: string;
   description?: string;
   website?: string;
   country?: string;
   status?: string;
+  error?: string;
+};
+
+export type TypeCheckingProducts = {
+  name?: string;
+  description?: string;
+  price?: string;
+  stock?: string;
+  images?: string;
+  category_id?: string;
+  location_id?: string;
+  brand_id?: string;
   error?: string;
 };
 

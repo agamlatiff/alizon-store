@@ -2,7 +2,7 @@
 
 import { schemaProduct, schemaProductEdit } from "@/lib/schema";
 import { deleteFile, uploadFile } from "@/lib/supabase";
-import type { ActionResult } from "@/types";
+import type { TypeCheckingProducts } from "@/types";
 import type { ProductStock } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
@@ -10,8 +10,8 @@ import { redirect } from "next/navigation";
 export async function storeProduct(
   _: unknown,
   formData: FormData
-): Promise<ActionResult> {
-  const parse = schemaProduct.safeParse({
+): Promise<TypeCheckingProducts> {
+  const parsedData = schemaProduct.safeParse({
     name: formData.get("name"),
     price: formData.get("price"),
     description: formData.get("description"),
@@ -22,13 +22,22 @@ export async function storeProduct(
     images: formData.getAll("images"),
   });
 
-  if (!parse.success) {
+  if (!parsedData.success) {
+    const errors = parsedData.error.flatten().fieldErrors;
     return {
-      error: parse.error.issues[0].message,
+      name: errors.name?.[0],
+      price: errors.price?.[0],
+      description: errors.description?.[0],
+    
+      category_id: errors.category_id?.[0],
+      location_id: errors.location_id?.[0],
+      stock: errors.stock?.[0],
+      images: errors.images?.[0],
+      error: "Failed to insert data product",
     };
   }
 
-  const uploaded_images = parse.data.images as File[];
+  const uploaded_images = parsedData.data.images as File[];
   const fileNames = [];
 
   for (const image of uploaded_images) {
@@ -39,13 +48,13 @@ export async function storeProduct(
   try {
     await prisma.product.create({
       data: {
-        name: parse.data.name,
-        description: parse.data.description,
-        category_id: parse.data.category_id,
-        location_id: parse.data.location_id,
-        brand_id: parse.data.brand_id,
-        price: Number.parseInt(parse.data.price),
-        stock: parse.data.stock as ProductStock,
+        name: parsedData.data.name,
+        description: parsedData.data.description,
+        category_id: parsedData.data.category_id,
+        location_id: parsedData.data.location_id,
+        brand_id: parsedData.data.brand_id,
+        price: Number.parseInt(parsedData.data.price),
+        stock: parsedData.data.stock as ProductStock,
         images: fileNames,
       },
     });
@@ -63,8 +72,8 @@ export async function updateProduct(
   _: unknown,
   formData: FormData,
   id: string
-): Promise<ActionResult> {
-  const parse = schemaProductEdit.safeParse({
+): Promise<TypeCheckingProducts> {
+  const parsedData = schemaProductEdit.safeParse({
     name: formData.get("name"),
     price: formData.get("price"),
     description: formData.get("description"),
@@ -75,9 +84,9 @@ export async function updateProduct(
     id: id,
   });
 
-  if (!parse.success) {
+  if (!parsedData.success) {
     return {
-      error: parse.error.issues[0].message,
+      error: parsedData.error.issues[0].message,
     };
   }
 
@@ -121,13 +130,13 @@ export async function updateProduct(
         id,
       },
       data: {
-        name: parse.data.name,
-        description: parse.data.description,
-        category_id: parse.data.category_id,
-        location_id: parse.data.location_id,
-        brand_id: parse.data.brand_id,
-        price: Number.parseInt(parse.data.price),
-        stock: parse.data.stock as ProductStock,
+        name: parsedData.data.name,
+        description: parsedData.data.description,
+        category_id: parsedData.data.category_id,
+        location_id: parsedData.data.location_id,
+        brand_id: parsedData.data.brand_id,
+        price: Number.parseInt(parsedData.data.price),
+        stock: parsedData.data.stock as ProductStock,
         images: fileNames,
       },
     });
@@ -145,7 +154,7 @@ export async function deleteProduct(
   _: unknown,
   formData: FormData,
   id: string
-): Promise<ActionResult> {
+): Promise<TypeCheckingProducts> {
   const product = await prisma.product.findFirst({
     where: {
       id,

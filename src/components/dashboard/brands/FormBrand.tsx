@@ -19,7 +19,7 @@ import {
   updateBrand,
 } from "../../../app/dashboard/brands/lib/actions";
 import type { Brand } from "@prisma/client";
-import type { TypeCheckingBrand } from "@/types";
+import type { TypeCheckingBrands } from "@/types";
 import { useActionState, useEffect, useState, type ChangeEvent } from "react";
 import {
   Select,
@@ -32,7 +32,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
-const initialState: TypeCheckingBrand = {
+const initialState: TypeCheckingBrands = {
   country: "",
   description: "",
   logo: "",
@@ -104,7 +104,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
-                <Link href={"/dashboard/brands"}> Discard</Link>
+                <Link href={"/dashboard/brands"}>Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
                 {pending ? "Loading..." : "Save Brand"}

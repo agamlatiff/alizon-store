@@ -10,17 +10,20 @@ import Image from "next/image";
 import { useRef } from "react";
 
 const UploadImages = () => {
+  // Get references to the file input and image elements
   const ref = useRef<HTMLInputElement>(null);
   const thumbnailRef = useRef<HTMLImageElement>(null);
   const imageFirstRef = useRef<HTMLImageElement>(null);
   const imageSecondRef = useRef<HTMLImageElement>(null);
 
+  // Function to trigger the file input click
   const openFolder = () => {
     if (ref.current) {
       ref.current.click();
     }
   };
 
+  // Function to handle file input change and update image sources
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
       !thumbnailRef.current ||
@@ -42,7 +45,7 @@ const UploadImages = () => {
       <CardHeader>
         <CardTitle>Product Images</CardTitle>
         <CardDescription>
-          Lipsum dolor sit amet, consectetur adipiscing elit
+          Upload product images below. The first image will be the thumbnail.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -52,7 +55,7 @@ const UploadImages = () => {
             alt="Product image"
             className="aspect-square w-full rounded-md object-cover"
             height="300"
-            src="/placeholder.svg"
+            src={thumbnailRef.current?.src ?? "/placeholder-image.jpg"}
             width="300"
             ref={thumbnailRef}
           />
@@ -63,7 +66,7 @@ const UploadImages = () => {
                 alt="Product image"
                 className="aspect-square w-full rounded-md object-cover"
                 height="84"
-                src={"/placeholder.svg" }
+                src={imageFirstRef.current?.src ?? "/placeholder-image.jpg"}
                 width="84"
                 ref={imageFirstRef}
               />
@@ -74,7 +77,7 @@ const UploadImages = () => {
                 alt="Product image"
                 className="aspect-square w-full rounded-md object-cover"
                 height="84"
-                src="/placeholder.svg"
+                src={imageSecondRef.current?.src ?? "/placeholder-image.jpg"}
                 width="84"
                 ref={imageSecondRef}
               />

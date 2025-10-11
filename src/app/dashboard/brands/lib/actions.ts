@@ -2,14 +2,14 @@
 
 import { schemaBrand } from "@/lib/schema";
 import { deleteFile, uploadFile } from "@/lib/supabase";
-import type { TypeCheckingBrand } from "@/types";
+import type { TypeCheckingBrands } from "@/types";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export const postBrand = async (
   _: unknown,
   formData: FormData
-): Promise<TypeCheckingBrand> => {
+): Promise<TypeCheckingBrands> => {
   // Get form data
   const parsedData = schemaBrand.safeParse({
     name: formData.get("name"),
@@ -70,7 +70,7 @@ export const updateBrand = async (
   _: unknown,
   formData: FormData,
   id: string
-): Promise<TypeCheckingBrand> => {
+): Promise<TypeCheckingBrands> => {
   // Get form data
   const fileUpload = formData.get("logo") as File;
   const parsedData = schemaBrand.safeParse({
@@ -142,7 +142,7 @@ export const deleteBrand = async (
   _: unknown,
   formData: FormData,
   id: string
-): Promise<TypeCheckingBrand> => {
+): Promise<TypeCheckingBrands> => {
   // Find existing brand logo
   const brand = await prisma.brand.findFirst({
     where: {

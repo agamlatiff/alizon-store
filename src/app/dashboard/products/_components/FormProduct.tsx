@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { ActionResult } from "@/types";
+import type { ActionResult, TypeCheckingProducts } from "@/types";
 import type { Product } from "@prisma/client";
 import { AlertCircle, ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,14 @@ interface FormProductProps {
   data?: Product | null;
 }
 
-const initialFormState: ActionResult = {
+const initialFormState: TypeCheckingProducts = {
+  brand_id: "",
+  category_id: "",
+  location_id: "",
+  description: "",
+  name: "",
+  price: "",
+  stock: "",
   error: "",
 };
 
@@ -59,11 +66,11 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
               </Link>
             </Button>
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-              Product Controller
+              Create Product
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
-                Discard
+                <Link href={"/dashboard/products"}>Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
                 {pending ? "Loading..." : "Save Product"}
@@ -76,7 +83,7 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                 <CardHeader>
                   <CardTitle>Product Details</CardTitle>
                   <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit
+                    Enter the Product details below.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -97,8 +104,12 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                         name="name"
                         className="w-full"
                         defaultValue={data?.name}
+                        placeholder="Enter your product name"
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.name}
+                    </p>
 
                     <div className="grid gap-3">
                       <Label htmlFor="price">Price</Label>
@@ -160,7 +171,7 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
             <Button variant="outline" size="sm">
-              Discard
+              <Link href={"/dashboard/products"}>Discard</Link>
             </Button>
             <Button size="sm" type="submit">
               Save Product

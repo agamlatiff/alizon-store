@@ -89,17 +89,17 @@ export const schemaBrand = z.object({
 export const schemaProduct = z.object({
   name: z
     .string()
-    .nonempty({ message: "Name is required" })
-    .min(4, { message: "Name must be at least 4 characters" }),
+    .nonempty("Name is required")
+    .min(4, "Name must be at least 4 characters"),
   description: z
     .string()
-    .nonempty({ message: "Description is required" })
-    .min(10, { message: "Description must be at least 10 characters" }),
-  price: z.string().nonempty({ message: "Price is required" }),
-  stock: z.string().nonempty({ message: "Stock is required" }),
-  brand_id: z.string().nonempty({ message: "Brand is required" }),
-  category_id: z.string().nonempty({ message: "Category is required" }),
-  location_id: z.string().nonempty({ message: "Location is required" }),
+    .nonempty("Description is required")
+    .min(10, "Description must be at least 10 characters"),
+  price: z.string().nonempty("Price is required"),
+  stock: z.string().nonempty("Stock is required"),
+  brand_id: z.string().nonempty("Brand is required"),
+  category_id: z.string().nonempty("Category is required"),
+  location_id: z.string().nonempty("Location is required"),
   images: z
     .any()
     .refine((files: File[]) => files.length === 3, {
