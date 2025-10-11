@@ -5,10 +5,13 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY ?? "";
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export const getImageUrl = (name: string,  path: "brands" | "products" = "brands" ) => {
+export const getImageUrl = (
+  name: string,
+  path: "brands" | "products" = "brands"
+) => {
   const { data } = supabase.storage
     .from("store")
-    .getPublicUrl(`public/${path}/${name}`);
+    .getPublicUrl(`${path}/${name}`);
 
   return data.publicUrl;
 };
@@ -20,15 +23,10 @@ export const uploadFile = async (
   const fileType = file.type.split("/")[1];
   const fileName = `${path}-${Date.now()}.${fileType}`;
 
-  await supabase.storage
-    .from("store")
-    .upload(`public/${path}/${fileName}`, file, {
-      cacheControl: "3600",
-      upsert: false,
-      contentType: file.type
-    });
-    
-    
+  await supabase.storage.from("store").upload(`${path}/${fileName}`, file, {
+    cacheControl: "3600",
+    upsert: false,
+  });
 
   return fileName;
 };

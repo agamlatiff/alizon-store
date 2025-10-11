@@ -36,14 +36,20 @@ export const postBrand = async (
 
   // Create data
   try {
-    let fileName = null; // Default value untuk logo adalah null
+    let fileName = null;
     const logoFile = parsedData.data.logo as File;
 
-    // HANYA UPLOAD JIKA ADA FILE YANG DIPILIH
+    if (!logoFile) {
+      return {
+        logo: "Logo is required",
+        error: "Failed to insert data",
+      };
+    }
+
     if (logoFile && logoFile.size > 0) {
       fileName = await uploadFile(logoFile, "brands");
     }
-   
+
     await prisma.brand.create({
       data: {
         ...parsedData.data,

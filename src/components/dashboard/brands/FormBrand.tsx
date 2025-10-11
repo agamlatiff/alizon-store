@@ -154,6 +154,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
                         placeholder="Upload Logo"
                         className="w-full text-muted-foreground placeholder:text-muted-foreground"
                         onChange={onFileChange}
+
                       />
                     </div>
                     {previewImage && (

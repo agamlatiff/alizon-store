@@ -41,9 +41,9 @@ export async function storeProduct(
       data: {
         name: parse.data.name,
         description: parse.data.description,
-        category_id: Number.parseInt(parse.data.category_id),
-        location_id: Number.parseInt(parse.data.location_id),
-        brand_id: Number.parseInt(parse.data.brand_id),
+        category_id: parse.data.category_id,
+        location_id: parse.data.location_id,
+        brand_id: parse.data.brand_id,
         price: Number.parseInt(parse.data.price),
         stock: parse.data.stock as ProductStock,
         images: fileNames,
@@ -62,7 +62,7 @@ export async function storeProduct(
 export async function updateProduct(
   _: unknown,
   formData: FormData,
-  id: number
+  id: string
 ): Promise<ActionResult> {
   const parse = schemaProductEdit.safeParse({
     name: formData.get("name"),
@@ -123,9 +123,9 @@ export async function updateProduct(
       data: {
         name: parse.data.name,
         description: parse.data.description,
-        category_id: Number.parseInt(parse.data.category_id),
-        location_id: Number.parseInt(parse.data.location_id),
-        brand_id: Number.parseInt(parse.data.brand_id),
+        category_id: parse.data.category_id,
+        location_id: parse.data.location_id,
+        brand_id: parse.data.brand_id,
         price: Number.parseInt(parse.data.price),
         stock: parse.data.stock as ProductStock,
         images: fileNames,
@@ -144,7 +144,7 @@ export async function updateProduct(
 export async function deleteProduct(
   _: unknown,
   formData: FormData,
-  id: number
+  id: string
 ): Promise<ActionResult> {
   const product = await prisma.product.findFirst({
     where: {
