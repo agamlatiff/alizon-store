@@ -58,7 +58,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
               Create Location
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" type="button">
                 <Link href={"/dashboard/locations"}> Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
@@ -93,7 +93,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                         name="name"
                         className="w-full"
                         defaultValue={data?.name}
-                         placeholder="Enter your location name"
+                        placeholder="Enter your location name"
                       />
                     </div>
                     <p className="text-sm text-red-500 -mt-2 ml-1">
@@ -103,7 +103,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                     <div className="grid gap-3">
                       <Label htmlFor="address">Address</Label>
                       <Input
-                       placeholder="Enter your location address"
+                        placeholder="Enter your location address"
                         id="address"
                         type="text"
                         name="address"
@@ -118,7 +118,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                     <div className="grid gap-3">
                       <Label htmlFor="city">City</Label>
                       <Input
-                       placeholder="Enter your location city "
+                        placeholder="Enter your location city "
                         id="city"
                         type="text"
                         name="city"
@@ -133,7 +133,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
                     <div className="grid gap-3">
                       <Label htmlFor="country">Country</Label>
                       <Input
-                       placeholder="Enter your location country"
+                        placeholder="Enter your location country"
                         id="country"
                         type="text"
                         name="country"
@@ -150,7 +150,7 @@ const FormLocation = ({ data = null, type = "ADD" }: FormLocationProps) => {
             </div>
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" type="button">
               <Link href={"/dashboard/locations"}> Discard</Link>
             </Button>
             <Button size="sm">Save Location</Button>

@@ -103,7 +103,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
               Create Brand
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" type="button">
                 <Link href={"/dashboard/brands"}>Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
@@ -254,7 +254,7 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
             </div>
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" type="button">
               <Link href={"/dashboard/brands"}> Discard</Link>
             </Button>
             <Button size="sm">Save Brand</Button>

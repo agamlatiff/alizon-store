@@ -1,5 +1,7 @@
+import LoadingState from "@/components/Loading";
+
 const Loading = () => {
-  return <div>Loading...</div>;
+  return <LoadingState/>
 };
 
 export default Loading;

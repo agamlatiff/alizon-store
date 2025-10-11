@@ -1,4 +1,4 @@
-const Loading = () => {
+const LoadingState = () => {
   return (
     <div className="relative bottom-20 flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900">
       <div
@@ -14,4 +14,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default LoadingState;

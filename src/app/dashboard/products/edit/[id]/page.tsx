@@ -1,6 +1,6 @@
 import type { Tedit } from "@/types";
 import { Label } from "@/components/ui/label";
-import FormProduct from "../../_components/FormProduct";
+import FormProduct from "../../../../../components/dashboard/products/FormProduct";
 import {
   Select,
   SelectContent,

@@ -3,36 +3,32 @@
 import { Button } from "@/components/ui/button";
 import type { ActionResult } from "@/types";
 import { Trash } from "lucide-react";
-import { useFormState, useFormStatus } from "react-dom";
-import { deleteProduct } from "../lib/actions";
+import { deleteProduct } from "../../../app/dashboard/products/lib/actions";
+import { useActionState } from "react";
 
 const initialState: ActionResult = {
   error: "",
 };
 
 interface FormDeleteProps {
-  id: number;
+  id: string;
 }
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <Button variant={"destructive"} size={"sm"} disabled={pending}>
-      <Trash className="size-4 mr-2" />
-      {pending ? "Loading..." : "Delete"}
-    </Button>
-  );
-};
 
 const FormDelete = ({ id }: FormDeleteProps) => {
   const deleteProductById = (_: unknown, formData: FormData) =>
     deleteProduct(_, formData, id);
 
-  const [state, formAction] = useFormState(deleteProductById, initialState);
+  const [state, formAction, pending] = useActionState(
+    deleteProductById,
+    initialState
+  );
 
   return (
     <form action={formAction}>
-      <SubmitButton />
+      <Button variant={"destructive"} size={"sm"} disabled={pending}>
+        <Trash className="size-4 mr-2" />
+        {pending ? "Loading..." : "Delete"}
+      </Button>
     </form>
   );
 };

@@ -28,7 +28,7 @@ export async function storeProduct(
       name: errors.name?.[0],
       price: errors.price?.[0],
       description: errors.description?.[0],
-    
+      brand_id: errors.brand_id?.[0],
       category_id: errors.category_id?.[0],
       location_id: errors.location_id?.[0],
       stock: errors.stock?.[0],

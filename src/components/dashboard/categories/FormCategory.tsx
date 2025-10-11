@@ -68,7 +68,7 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
               Create Category
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" type="button">
                 <Link href={"/dashboard/categories"}> Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
@@ -145,7 +145,7 @@ const FormCategory = ({ data = null, type = "ADD" }: FormCategoryProps) => {
             </div>
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" type="button">
               <Link href={"/dashboard/categories"}> Discard</Link>
             </Button>
             <Button size="sm" type="submit" disabled={pending}>

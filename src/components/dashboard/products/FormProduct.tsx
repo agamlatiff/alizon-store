@@ -11,12 +11,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { ActionResult, TypeCheckingProducts } from "@/types";
-import type { Product } from "@prisma/client";
+import type { TypeCheckingProducts } from "@/types";
+import type {
+  Brand,
+  Category,
+  Product,
+  Location as PrismaLocation,
+} from "@prisma/client";
 import { AlertCircle, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
-import UploadImages from "./UploadImages";
+
 import {
   Select,
   SelectContent,
@@ -24,14 +29,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useActionState, type ReactNode } from "react";
+import { useActionState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { storeProduct, updateProduct } from "../lib/actions";
+import {
+  storeProduct,
+  updateProduct,
+} from "../../../app/dashboard/products/lib/actions";
+import UploadImages from "./UploadImages";
 
 interface FormProductProps {
-  children: ReactNode;
   type?: "ADD" | "EDIT";
   data?: Product | null;
+  brands?: Brand[];
+  categories?: Category[];
+  locations?: PrismaLocation[];
 }
 
 const initialFormState: TypeCheckingProducts = {
@@ -45,7 +56,13 @@ const initialFormState: TypeCheckingProducts = {
   error: "",
 };
 
-const FormProduct = ({ children, type, data }: FormProductProps) => {
+const FormProduct = ({
+  type,
+  data,
+  brands,
+  categories,
+  locations,
+}: FormProductProps) => {
   const updateProductWIthId = (_: unknown, formData: FormData) =>
     updateProduct(_, formData, data?.id ?? "");
 
@@ -69,7 +86,7 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
               Create Product
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" type="button">
                 <Link href={"/dashboard/products"}>Discard</Link>
               </Button>
               <Button size="sm" type="submit" disabled={pending}>
@@ -95,7 +112,7 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                     </Alert>
                   )}
 
-                  <div className="grid gap-6">
+                  <div className="grid gap-3">
                     <div className="grid gap-3">
                       <Label htmlFor="name">Name</Label>
                       <Input
@@ -118,9 +135,12 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                         type="number"
                         name="price"
                         className="w-full"
-                        defaultValue={Number(data?.price)}
+                        placeholder="Enter your product price"
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.price}
+                    </p>
 
                     <div className="grid gap-3">
                       <Label htmlFor="description">Description</Label>
@@ -129,8 +149,12 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                         id="description"
                         className="min-h-32"
                         defaultValue={data?.description}
+                        placeholder="Enter your product description"
                       />
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.description}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -140,17 +164,81 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                   <CardTitle>Product Category</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid gap-6 sm:grid-cols-3">{children}</div>
+                  <div className="grid gap-6 sm:grid-cols-3">
+                    <div className="grid gap-3">
+                      <Label htmlFor="category">Category</Label>
+                      <Select name="category_id">
+                        <SelectTrigger
+                          id="category"
+                          aria-label="Select category"
+                        >
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories?.map((cat) => (
+                            <SelectItem key={cat.id} value={`${cat.id}`}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-red-500 -mt-2 ml-1">
+                        {state.category_id}
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="brand">Brand</Label>
+                      <Select name="brand_id">
+                        <SelectTrigger id="brand" aria-label="Select Brand">
+                          <SelectValue placeholder="Select brand" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {brands?.map((cat) => (
+                            <SelectItem key={cat.id} value={`${cat.id}`}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-red-500 -mt-2 ml-1">
+                        {state.brand_id}
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="location_id">Location</Label>
+                      <Select name="location_id">
+                        <SelectTrigger
+                          id="location"
+                          aria-label="Select location"
+                        >
+                          <SelectValue placeholder="Select location" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {locations?.map((cat) => (
+                            <SelectItem key={cat.id} value={`${cat.id}`}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-red-500 -mt-2 ml-1">
+                        {state.location_id}
+                      </p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
+
             <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
               <Card x-chunk="dashboard-07-chunk-3">
                 <CardHeader>
                   <CardTitle>Product Status</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid gap-6">
+                  <div className="grid gap-3">
                     <div className="grid gap-3">
                       <Label htmlFor="status">Status</Label>
                       <Select name="stock" defaultValue={data?.stock}>
@@ -163,14 +251,17 @@ const FormProduct = ({ children, type, data }: FormProductProps) => {
                         </SelectContent>
                       </Select>
                     </div>
+                    <p className="text-sm text-red-500 -mt-2 ml-1">
+                      {state.stock}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
-              <UploadImages />
+              <UploadImages error={state.images} />
             </div>
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" type="button">
               <Link href={"/dashboard/products"}>Discard</Link>
             </Button>
             <Button size="sm" type="submit">

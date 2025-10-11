@@ -1,6 +1,6 @@
 import z from "zod";
 
-const MAX_FILE_SIZE = 0.7 * 1024 * 1024;
+
 const FILE_TYPE = ["image/png", "image/jpg", "image/jpeg"];
 const isFile = (file: unknown): file is File =>
   typeof file === "object" &&
@@ -58,9 +58,6 @@ export const schemaBrand = z.object({
     })
     .refine((file: File) => file && FILE_TYPE.includes(file.type), {
       message: "File type is not allowed",
-    })
-    .refine((file: File) => file && file.size <= MAX_FILE_SIZE, {
-      message: "File size must not exceed 700 KB",
     }),
 
   description: z

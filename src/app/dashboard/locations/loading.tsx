@@ -1,7 +1,7 @@
-import Loading from "@/components/Loading";
+import LoadingState from "@/components/Loading";
 
 const LoadingPage = () => {
-  return <Loading/>
+  return <LoadingState/>
 };
 
 export default LoadingPage;

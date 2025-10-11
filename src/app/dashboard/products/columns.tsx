@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
 import type { ProductStock } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/supabase";
-import { dateFormat, USDFormat,} from "@/lib/utils";
+import { dateFormat, USDFormat } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Edit } from "lucide-react";
-import FormDelete from "./_components/FormDelete";
+import FormDelete from "../../../components/dashboard/products/FormDelete";
 
 export type TColumn = {
-  id: number;
+  id: string;
   name: string;
   image_url: string;
   category_name: string;
@@ -32,7 +32,7 @@ export const columns: ColumnDef<TColumn>[] = [
       return (
         <div className="inline-flex items-center gap-5">
           <Image
-            src={getImageUrl(product.image_url, 'products')}
+            src={getImageUrl(product.image_url, "products")}
             height={80}
             width={80}
             alt="Product"
@@ -77,14 +77,14 @@ export const columns: ColumnDef<TColumn>[] = [
     cell: ({ row }) => {
       const product = row.original;
       return (
-        <div className="space-x-4 inline-flex">
+        <div className="space-x-4 inline-flex text-white">
           <Button size={"sm"} asChild>
             <Link href={`/dashboard/products/edit/${product.id}`}>
               <Edit className="size-4 mr-2" />
               Edit
             </Link>
           </Button>
-          <FormDelete id={product.id}/> 
+          <FormDelete id={product.id} />
         </div>
       );
     },
