@@ -30,7 +30,7 @@ export const columns: ColumnDef<TColumn>[] = [
     cell: ({ row }) => {
       const product = row.original;
       return (
-        <div className="inline-flex items-center gap-5">
+        <div className="inline-flex items-center gap-5 object-fit">
           <Image
             src={getImageUrl(product.image_url, "products")}
             height={80}

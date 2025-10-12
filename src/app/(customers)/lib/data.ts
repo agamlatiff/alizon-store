@@ -62,7 +62,7 @@ export async function getBrands() {
     const response = (await brands).map((item) => {
       return {
         ...item,
-        logo_url: getImageUrl(item.logo, "brands"),
+        logo_url: getImageUrl(item.logo ?? "", "brands"),
       };
     });
 

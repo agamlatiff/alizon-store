@@ -1,12 +1,12 @@
 import { Suspense } from "react";
-import ListBrands from "./_components/ListBrands";
-import ListCategory from "./_components/ListCategory";
-import ListProducts from "./_components/ListProducts";
+
 import Navbar from "../../components/customers/Navbar";
-import requireUser from "@/lib/requireUser";
+import ListBrands from "@/components/customers/ListBrands";
+import ListProducts from "@/components/customers/ListProducts";
+import ListCategory from "@/components/customers/ListCategory";
+import Testimonial from "@/components/customers/Testimonial";
 
 const LandingPage = async () => {
-  
   return (
     <>
       <header className="bg-[#EFF3FA] pt-[30px] pb-[50px]">
@@ -18,16 +18,18 @@ const LandingPage = async () => {
                 <img src="assets/icons/crown.svg" alt="icon" />
               </div>
               <p className="font-semibold text-sm">
-                Most Popular 100th Product in Belanja
+                Most Popular 100th Product in AlizonStore
               </p>
             </div>
             <div className="flex flex-col gap-[14px]">
-              <h1 className="font-bold text-[55px] leading-[55px]">
-                Working Faster 10x
+              <h1 className="font-bold text-[50px] leading-[55px] text-nowrap">
+                Look 10x More Stylish
               </h1>
               <p className="text-lg leading-[34px] text-[#6A7789]">
-                Dolor si amet lorem super-power features riches than any other
-                platform devices AI integrated.
+                Discover a modern fashion collection designed to highlight your
+                unique style and confidence. Every piece is crafted with
+                elegance and premium quality — made to elevate your look for
+                every moment.
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -45,10 +47,10 @@ const LandingPage = async () => {
               </a>
             </div>
           </div>
-          <div className="w-[588px] h-[360px] flex shrink-0 overflow-hidden relative">
+          <div className="w-[588px] h-[360px] flex shrink-0 overflow-hidden relative  left-12">
             <img
-              src="assets/banners/mba13-m2-digitalmat-gallery-1-202402-Photoroom 2.png"
-              className="object-contain"
+              src="/assets/background.jpg"
+              className="object-contain  rounded-md"
               alt="icon"
             />
             <div className="absolute top-[60%] bg-white p-[14px_16px] rounded-3xl flex items-center gap-[10px]">
@@ -143,10 +145,9 @@ const LandingPage = async () => {
       <section
         id="content"
         className="container max-w-[1130px] mx-auto flex flex-col gap-[50px] pt-[50px] pb-[100px]"
-      >
-        <Suspense fallback={<span>Loading...</span>}>
-          <ListCategory />
-        </Suspense>
+      ></section>
+      <Testimonial />
+      <section className="container max-w-[1130px] mx-auto flex flex-col gap-[50px] pt-[50px] pb-[100px]">
         <Suspense fallback={<span>Loading...</span>}>
           <ListProducts
             title={
@@ -156,19 +157,7 @@ const LandingPage = async () => {
             }
           />
         </Suspense>
-        <Suspense fallback={<span>Loading...</span>}>
-          <ListBrands />
-        </Suspense>
-
-        <Suspense fallback={<span>Loading...</span>}>
-          <ListProducts
-            title={
-              <>
-                New Releases <br /> From Official Stores
-              </>
-            }
-          />
-        </Suspense>
+       
       </section>
     </>
   );

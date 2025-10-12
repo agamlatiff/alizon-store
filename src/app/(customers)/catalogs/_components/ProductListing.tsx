@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import CardProduct from "../../_components/CardProduct";
 import { fetchProduct } from "../lib/data";
 import { useFilter } from "@/hooks/useFilter";
+import CardProduct from "@/components/customers/CardProduct";
 
 const ProductListing = () => {
   
@@ -28,7 +28,7 @@ const ProductListing = () => {
             key={item.id + item.name}
             item={{
               category_name: "Desktops",
-              id: 1,
+              id: item.id,
               image_url:
                 "assets/thumbnails/color_back_green__buxxfjccqjzm_large_2x-Photoroom 1.png",
               name: "iMac Green Energy",
