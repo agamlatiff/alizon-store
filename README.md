@@ -65,6 +65,22 @@ To get a local copy up and running, follow these simple steps.
 
     Create a `.env.local` file in the root of the project and add the necessary environment variables. You'll need to include database credentials, NextAuth.js settings, and Supabase credentials.
 
+    ```
+    NEXT_PUBLIC_SUPABASE_URL=
+    NEXT_PUBLIC_SUPABASE_KEY=
+
+    DATABASE_URL=
+
+    AUTH_SECRET=
+
+    AUTH_GOOGLE_ID=
+    AUTH_GOOGLE_SECRET=
+
+    AUTH_TRUST_HOST=
+
+    PASSWORD_PEPPER=
+    ```
+
 4.  **Run database migrations**
 
     ```sh
