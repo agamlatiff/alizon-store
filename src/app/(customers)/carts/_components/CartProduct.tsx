@@ -2,6 +2,7 @@
 
 import { useCart } from "@/hooks/useCart";
 import { USDFormat } from "@/lib/utils";
+import Image from "next/image";
 
 
 
@@ -17,7 +18,7 @@ const CartProduct = () => {
         <div key={cart.id + cart.name} className="product-total-card bg-white flex items-center justify-between p-5 rounded-[20px] border border-[#E5E5E5]">
           <div className="flex items-center w-[340px] gap-5">
             <div className="w-[120px] h-[70px] flex shrink-0 overflow-hidden items-center justify-center">
-              <img
+              <Image height={120} width={120}
                 src={cart.image_url}
                 className="w-full h-full object-contain"
                 alt=""
@@ -38,13 +39,13 @@ const CartProduct = () => {
             <p className="text-sm text-[#616369]">Quantity</p>
             <div className="flex items-center gap-3">
               <button type="button" onClick={() => decreaseQuantity(cart.id)} className="w-6 h-6 flex shrink-0">
-                <img src="assets/icons/minus-cirlce.svg" alt="minus" />
+                <Image height={24} width={24} src="assets/icons/minus-cirlce.svg" alt="minus" />
               </button>
               <p className="text-[#0D5CD7] font-semibold leading-[22px]">
                 {cart.quantity}
               </p>
               <button type="button" onClick={() => increaseQuantity(cart.id)} className="w-6 h-6 flex shrink-0">
-                <img src="assets/icons/add-circle.svg" alt="plus" />
+                <Image height={24} width={24} src="assets/icons/add-circle.svg" alt="plus" />
               </button>
             </div>
           </div>
