@@ -1,4 +1,5 @@
-import { getCategories } from "@/app/(admin)/dashboard/(index)/categories/lib/data";
+import { getCategories } from "@/app/dashboard/categories/lib/data";
+
 
 const FilterCategories = async () => {
   const categories = await getCategories();

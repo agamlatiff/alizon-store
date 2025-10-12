@@ -3,28 +3,13 @@
 import { useCart } from "@/hooks/useCart";
 
 import type { ActionResult } from "@/types";
-import { useMemo } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useMemo } from "react";
 import { storeOrder } from "../lib/actions";
 import { USDFormat } from "@/lib/utils";
 
 const initialState: ActionResult = {
   error: "",
 };
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
-      disabled={pending}
-    >
-      {pending ? "Checkout with xendit..." : "Checkout Now"}
-    </button>
-  );
-};
-
 const CheckoutForm = () => {
   const { products } = useCart();
   const grandTotal = useMemo(() => {
@@ -37,7 +22,10 @@ const CheckoutForm = () => {
   const storeOrderParams = (_: unknown, formData: FormData) =>
     storeOrder(_, formData, grandTotal, products);
 
-  const [state, formAction] = useFormState(storeOrderParams, initialState);
+  const [state, formAction, pending] = useActionState(
+    storeOrderParams,
+    initialState
+  );
 
   return (
     <form
@@ -54,7 +42,8 @@ const CheckoutForm = () => {
             <div className="flex shrink-0">
               <img src="assets/icons/profile-circle.svg" alt="icon" />
             </div>
-            <input required
+            <input
+              required
               type="text"
               id=""
               name="name"
@@ -66,7 +55,8 @@ const CheckoutForm = () => {
             <div className="flex shrink-0">
               <img src="assets/icons/house-2.svg" alt="icon" />
             </div>
-            <input required
+            <input
+              required
               type="text"
               id=""
               name="address"
@@ -79,7 +69,8 @@ const CheckoutForm = () => {
               <div className="flex shrink-0">
                 <img src="assets/icons/global.svg" alt="icon" />
               </div>
-              <input required
+              <input
+                required
                 type="text"
                 id=""
                 name="city"
@@ -91,7 +82,8 @@ const CheckoutForm = () => {
               <div className="flex shrink-0">
                 <img src="assets/icons/location.svg" alt="icon" />
               </div>
-              <input required
+              <input
+                required
                 type="number"
                 id=""
                 name="postal_code"
@@ -117,7 +109,8 @@ const CheckoutForm = () => {
             <div className="flex shrink-0">
               <img src="assets/icons/call.svg" alt="icon" />
             </div>
-            <input required
+            <input
+              required
               type="tel"
               id=""
               name="phone"
@@ -137,8 +130,8 @@ const CheckoutForm = () => {
                   <img src="assets/icons/cake.svg" alt="icon" />
                 </div>
                 <div className="flex flex-col gap-[2px]">
-                  <p className="font-semibold">100% It's Original</p>
-                  <p className="text-sm">We don't sell fake products</p>
+                  <p className="font-semibold">100% It&apos;s Original</p>
+                  <p className="text-sm">We don&apos;t sell fake products</p>
                 </div>
               </div>
               <div className="flex shrink-0">
@@ -163,7 +156,7 @@ const CheckoutForm = () => {
                 </div>
                 <p>Insurance 12%</p>
               </div>
-              <p className="font-semibold">Rp 0</p>
+              <p className="font-semibold">{USDFormat(0)}</p>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -172,7 +165,7 @@ const CheckoutForm = () => {
                 </div>
                 <p>Shipping (Flat)</p>
               </div>
-              <p className="font-semibold">Rp 0</p>
+              <p className="font-semibold">{USDFormat(0)}</p>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -181,7 +174,7 @@ const CheckoutForm = () => {
                 </div>
                 <p>Warranty Original</p>
               </div>
-              <p className="font-semibold">Rp 0</p>
+              <p className="font-semibold">{USDFormat(0)}</p>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -190,17 +183,23 @@ const CheckoutForm = () => {
                 </div>
                 <p>PPN 11%</p>
               </div>
-              <p className="font-semibold">Rp 0</p>
+              <p className="font-semibold">{USDFormat(0)}</p>
             </div>
           </div>
           <div className="flex flex-col gap-1">
             <p className="font-semibold">{USDFormat(grandTotal)}</p>
             <p className="font-bold text-[32px] leading-[48px] underline text-[#0D5CD7]">
-              Rp 0
+              {USDFormat(grandTotal)}
             </p>
           </div>
           <div className="flex flex-col gap-3">
-            <SubmitButton/>
+            <button
+              type="submit"
+              className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white"
+              disabled={pending}
+            >
+              {pending ? "Checkout with xendit..." : "Checkout Now"}
+            </button>
             <a
               href=""
               className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]"

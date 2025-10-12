@@ -1,20 +1,20 @@
 import { Suspense } from "react";
 import Navbar from "../../../../../components/customers/Navbar";
-import ListProducts from "../../../_components/ListProducts";
+
 import PriceInfo from "./_components/PriceInfo";
 import type { Tparams } from "@/types";
 import { getProductById } from "./lib/data";
 import { redirect } from "next/navigation";
-import CarouselImages from "./_components/CarouselImages";
-import { getUser } from "@/lib/auth";
+import { auth } from "@/lib/auth";
+import ListProducts from "@/components/customers/ListProducts";
 
 type paramsProps = {
   params: Tparams;
 };
 
 const DetailProductPage = async ({ params }: paramsProps) => {
-  const product = await getProductById(Number.parseInt(params.id));
-  const { session } = await getUser();
+  const product = await getProductById(params.id);
+  const session = await auth();
 
   if (!product) {
     return redirect("/");
@@ -47,7 +47,7 @@ const DetailProductPage = async ({ params }: paramsProps) => {
         <div className="flex items-center gap-2 justify-end">
           <div className="flex items-center">
             <div className="flex shrink-0">
-              <img src="//assets/icons/Star.svg" alt="star" />
+              <img src="/assets/icons/Star.svg" alt="star" />
             </div>
             <div className="flex shrink-0">
               <img src="/assets/icons/Star.svg" alt="star" />
@@ -62,10 +62,9 @@ const DetailProductPage = async ({ params }: paramsProps) => {
               <img src="/assets/icons/Star-gray.svg" alt="star" />
             </div>
           </div>
-          <p className="font-semibold">({product._count.orders})</p>
+          <p className="font-semibold">({product.price})</p>
         </div>
       </div>
-      <CarouselImages images={product.images} />
       <div
         id="details-benefits"
         className="container max-w-[1130px] mx-auto flex items-center gap-[50px] justify-center mt-[50px]"
@@ -84,7 +83,7 @@ const DetailProductPage = async ({ params }: paramsProps) => {
             <img src="/assets/icons/code-circle.svg" alt="icon" />
           </div>
           <p className="font-semibold text-sm">
-            Bonus Mac OS <br /> Capitan Pro
+           Free Guarantee<br /> on All Products
           </p>
         </div>
         <div className="border-[0.5px] border-[#E5E5E5] h-12" />

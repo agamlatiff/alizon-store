@@ -2,7 +2,7 @@ import { getImageUrl } from "@/lib/supabase";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-export async function getProductById(id: number) {
+export async function getProductById(id: string) {
   try {
     const product = await prisma.product.findFirst({
       where: {

@@ -6,9 +6,9 @@ export type TFilter = {
   minPrice?: number;
   maxPrice?: number;
   stock?: ProductStock[] | null;
-  brands?: number[] | null
-  locations?: number[] | null
-  categories?: number[] | null
+  brands?: string[] | null
+  locations?: string[] | null
+  categories?: string[] | null
 };
 
 export interface FilterState {

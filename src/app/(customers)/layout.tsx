@@ -4,8 +4,8 @@ export default async function LandingRootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+<div>
+  {children}
+</div>
   );
 }

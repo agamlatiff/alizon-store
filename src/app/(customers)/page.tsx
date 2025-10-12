@@ -1,21 +1,27 @@
 import { Suspense } from "react";
 
 import Navbar from "../../components/customers/Navbar";
-import ListBrands from "@/components/customers/ListBrands";
 import ListProducts from "@/components/customers/ListProducts";
-import ListCategory from "@/components/customers/ListCategory";
-import Testimonial from "@/components/customers/Testimonial";
+
+import Image from "next/image";
+import LoadingState from "@/components/Loading";
+
 
 const LandingPage = async () => {
   return (
     <>
-      <header className="bg-[#EFF3FA] pt-[30px] pb-[50px]">
+      <header className="bg-[#EFF3FA] pt-[30px] pb-[50px] ">
         <Navbar />
         <div className="container max-w-[1130px] mx-auto flex items-center justify-between gap-1 mt-[50px]">
           <div className="flex flex-col gap-[30px]">
             <div className="flex items-center gap-[10px] p-[8px_16px] rounded-full bg-white w-fit">
               <div className="w-[22px] h-[22px] flex shrink-0">
-                <img src="assets/icons/crown.svg" alt="icon" />
+                <Image
+                  height={24}
+                  width={24}
+                  src="/assets/icons/crown.svg"
+                  alt="icon"
+                />
               </div>
               <p className="font-semibold text-sm">
                 Most Popular 100th Product in AlizonStore
@@ -48,27 +54,33 @@ const LandingPage = async () => {
             </div>
           </div>
           <div className="w-[588px] h-[360px] flex shrink-0 overflow-hidden relative  left-12">
-            <img
+            <Image
+              height={600}
+              width={600}
               src="/assets/background.jpg"
               className="object-contain  rounded-md"
-              alt="icon"
+              alt="Image Hero"
             />
             <div className="absolute top-[60%] bg-white p-[14px_16px] rounded-3xl flex items-center gap-[10px]">
               <div className="w-12 h-12 flex shrink-0 rounded-full items-center justify-center bg-[#FFC736] overflow-hidden">
-                <img
-                  src="assets/icons/code-circle.svg"
+                <Image
+                  height={24}
+                  width={24}
+                  src="/assets/icons/code-circle.svg"
                   className="w-6 h-6"
                   alt="icon"
                 />
               </div>
               <p className="font-semibold text-sm">
-                Bonus Mac OS <br /> Capitan Pro
+               Free guarantees <br /> on all products
               </p>
             </div>
             <div className="absolute right-0 top-[30%] bg-white p-[14px_16px] rounded-3xl flex flex-col items-center gap-[10px]">
               <div className="w-12 h-12 flex shrink-0 rounded-full items-center justify-center bg-[#FFC736] overflow-hidden">
-                <img
-                  src="assets/icons/star-outline.svg"
+                <Image
+                  height={24}
+                  width={24}
+                  src="/assets/icons/star-outline.svg"
                   className="w-6 h-6"
                   alt="icon"
                 />
@@ -82,8 +94,10 @@ const LandingPage = async () => {
         <div className="container max-w-[1130px] mx-auto flex items-center justify-center gap-10 mt-[50px]">
           <div className="flex items-center gap-[10px]">
             <div className="w-[50px] h-[50px] flex shrink-0 rounded-full border-[5px] border-white overflow-hidden">
-              <img
-                src="assets/photos/p1.png"
+              <Image
+                height={24}
+                width={24}
+                src="/assets/photos/p1.png"
                 className="w-full h-full object-cover"
                 alt="photo"
               />
@@ -97,8 +111,10 @@ const LandingPage = async () => {
           </div>
           <div className="flex items-center gap-[10px]">
             <div className="w-[50px] h-[50px] flex shrink-0 rounded-full border-[5px] border-white overflow-hidden">
-              <img
-                src="assets/photos/p2.png"
+              <Image
+                height={24}
+                width={24}
+                src="/assets/photos/p2.png"
                 className="w-full h-full object-cover"
                 alt="photo"
               />
@@ -112,8 +128,10 @@ const LandingPage = async () => {
           </div>
           <div className="flex items-center gap-[10px]">
             <div className="w-[50px] h-[50px] flex shrink-0 rounded-full border-[5px] border-white overflow-hidden">
-              <img
-                src="assets/photos/p3.png"
+              <Image
+                height={24}
+                width={24}
+                src="/assets/photos/p3.png"
                 className="w-full h-full object-cover"
                 alt="photo"
               />
@@ -127,8 +145,10 @@ const LandingPage = async () => {
           </div>
           <div className="flex items-center gap-[10px]">
             <div className="w-[50px] h-[50px] flex shrink-0 rounded-full border-[5px] border-white overflow-hidden">
-              <img
-                src="assets/photos/p4.png"
+              <Image
+                height={24}
+                width={24}
+                src="/assets/photos/p4.png"
                 className="w-full h-full object-cover"
                 alt="photo"
               />
@@ -146,9 +166,9 @@ const LandingPage = async () => {
         id="content"
         className="container max-w-[1130px] mx-auto flex flex-col gap-[50px] pt-[50px] pb-[100px]"
       ></section>
-      <Testimonial />
-      <section className="container max-w-[1130px] mx-auto flex flex-col gap-[50px] pt-[50px] pb-[100px]">
-        <Suspense fallback={<span>Loading...</span>}>
+
+      <section className="container max-w-[1130px] mx-auto flex flex-col gap-[50px] ">
+        <Suspense fallback={<LoadingState />}>
           <ListProducts
             title={
               <>
@@ -157,7 +177,6 @@ const LandingPage = async () => {
             }
           />
         </Suspense>
-       
       </section>
     </>
   );

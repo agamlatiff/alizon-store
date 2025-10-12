@@ -4,7 +4,8 @@ import { useCart } from "@/hooks/useCart";
 import { USDFormat } from "@/lib/utils";
 
 import type { TCart, TProduct } from "@/types";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+
 
 interface PriceInfoProp {
   item : TProduct;

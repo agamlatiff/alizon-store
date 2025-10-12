@@ -21,7 +21,7 @@ const ListProducts = async ({
         <h2 className="font-bold text-2xl leading-[34px]">{title}</h2>
         {isShowDetail && (
           <Link
-            href="/catalog"
+            href="/catalogs"
             className="p-[12px_24px] border border-[#E5E5E5] rounded-full font-semibold"
           >
             Explore All

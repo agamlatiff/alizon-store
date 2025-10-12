@@ -1,5 +1,5 @@
-import { getLocations } from "@/app/(admin)/dashboard/(index)/locations/lib/data";
-import React from "react";
+import { getLocations } from "@/app/dashboard/locations/lib/data";
+
 
 const FilterLocation = async () => {
   const locations = await getLocations();

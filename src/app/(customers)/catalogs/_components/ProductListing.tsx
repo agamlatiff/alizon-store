@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProduct } from "../lib/data";
 import { useFilter } from "@/hooks/useFilter";
 import CardProduct from "@/components/customers/CardProduct";
+import LoadingState from "@/components/Loading";
 
 const ProductListing = () => {
-  
-  const {filter} = useFilter()
-  
+  const { filter } = useFilter();
+
   const { data, isLoading } = useQuery({
     queryKey: ["product-listing", filter],
     queryFn: () => fetchProduct(filter),
@@ -16,8 +16,8 @@ const ProductListing = () => {
 
   if (isLoading) {
     <div className="grid grid-cols-3 gap-[30px]">
-      <span>Loading...</span>
-    </div> 
+      <LoadingState />
+    </div>;
   }
 
   return (
@@ -27,12 +27,11 @@ const ProductListing = () => {
           <CardProduct
             key={item.id + item.name}
             item={{
-              category_name: "Desktops",
+              category_name: item.category_name,
               id: item.id,
-              image_url:
-                "assets/thumbnails/color_back_green__buxxfjccqjzm_large_2x-Photoroom 1.png",
-              name: "iMac Green Energy",
-              price: 12000000,
+              image_url: item.image_url,
+              name: item.name,
+              price: item.price,
             }}
           />
         ))}

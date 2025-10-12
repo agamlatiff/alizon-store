@@ -1,8 +1,19 @@
-import { auth } from "@/lib/auth";
+import { auth, signOut } from "@/lib/auth";
 
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../Logo";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut } from "lucide-react";
+
 const Navbar = async () => {
   const session = await auth();
 
@@ -16,28 +27,63 @@ const Navbar = async () => {
           <Link href="/catalogs">Shop</Link>
         </li>
         <li className="hover:font-bold hover:text-[#FFC736] transition-all duration-300 text-white">
-          <Link href="/categories">Categories</Link>
+          <Link href="/catalogs">Categories</Link>
         </li>
         <li className="hover:font-bold hover:text-[#FFC736] transition-all duration-300 text-white">
-          <Link href="/">Testimonials</Link>
+          <Link href="/catalogs">Testimonials</Link>
         </li>
         <li className="hover:font-bold hover:text-[#FFC736] transition-all duration-300 text-white">
-          <Link href="/">Rewards</Link>
+          <Link href="/catalogs">Rewards</Link>
         </li>
       </ul>
       <div className="flex items-center gap-3">
         {session ? (
           <>
-            <p className="text-white">{session.user?.name?.split(" ")[0]}</p>
-            <div className="w-[48px] h-[48px] flex shrink-0 rounded-full p-1 border border-[#E5E5E5] overflow-hidden">
-              <Image
-                src={session.user?.image || ""}
-                height={50}
-                width={50}
-                className="w-full h-full object-cover rounded-full"
-                alt="photo"
-              />
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                {" "}
+                <div className="w-[48px] h-[48px] flex shrink-0 rounded-full p-1 border border-[#E5E5E5] overflow-hidden">
+                  {session.user?.image ? (
+                    <Image
+                      src={session.user?.image}
+                      height={50}
+                      width={50}
+                      className="w-full h-full object-cover rounded-full"
+                      alt="photo"
+                    />
+                  ) : (
+                    <Image
+                      src={"/assets/avatar.jpg"}
+                      height={50}
+                      width={50}
+                      className="w-full h-full object-cover rounded-full"
+                      alt="photo"
+                    />
+                  )}
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>User Profile</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  Name: {session.user?.name?.split(" ")[0]}
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Email: {session.user?.email}
+                </DropdownMenuItem>
+                <DropdownMenuItem></DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <form
+              action={async () => {
+                "use server";
+                await signOut();
+              }}
+            >
+              <Button variant={"outline"} type="submit">
+                <LogOut /> Log Out
+              </Button>
+            </form>
           </>
         ) : (
           <>

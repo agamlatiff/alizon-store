@@ -28,45 +28,34 @@ const FilterCheckboxItem = ({ id, value, type }: FilterCheckboxItemProps) => {
       case "brand":
         if (e.target.checked) {
           setFilter({
-            brands: [
-              ...(filter?.brands ?? []),
-              Number.parseInt(e.target.value),
-            ],
+            brands: [...(filter?.brands ?? []), e.target.value],
           });
         } else {
           setFilter({
-            brands: filter?.brands?.filter(
-              (item) => item !== Number.parseInt(e.target.value)
-            ),
+            brands: filter?.brands?.filter((item) => item !== e.target.value),
           });
         }
       case "category":
         if (e.target.checked) {
           setFilter({
-            categories: [
-              ...(filter?.categories ?? []),
-              Number.parseInt(e.target.value),
-            ],
+            categories: [...(filter?.categories ?? []), e.target.value],
           });
         } else {
           setFilter({
             categories: filter?.categories?.filter(
-              (item) => item !== Number.parseInt(e.target.value)
+              (item) => item !== e.target.value
             ),
           });
         }
       case "location":
         if (e.target.checked) {
           setFilter({
-            locations: [
-              ...(filter?.locations ?? []),
-              Number.parseInt(e.target.value),
-            ],
+            locations: [...(filter?.locations ?? []), e.target.value],
           });
         } else {
           setFilter({
             locations: filter?.locations?.filter(
-              (item) => item !== Number.parseInt(e.target.value)
+              (item) => item !== e.target.value
             ),
           });
         }

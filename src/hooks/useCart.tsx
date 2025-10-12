@@ -5,9 +5,9 @@ import {createJSONStorage, persist} from 'zustand/middleware'
 interface CartState {
   products: TCart[]
   addProduct : (cart : TCart) => void
-  increaseQuantity : (id: number) => void
-  decreaseQuantity : (id: number) => void
-  removeProduct : (id: number) => void
+  increaseQuantity : (id: string) => void
+  decreaseQuantity : (id: string) => void
+  removeProduct : (id: string) => void
 }
 
 

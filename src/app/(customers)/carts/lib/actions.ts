@@ -1,6 +1,5 @@
 "use server";
 
-import { getUser } from "@/lib/auth";
 import { schemaShippingAddress } from "@/lib/schema";
 import { generateRandomString } from "@/lib/utils";
 import xenditClient from "@/lib/xendit";
@@ -12,6 +11,7 @@ import type {
   PaymentRequestParameters,
   PaymentRequest,
 } from "xendit-node/payment_request/models";
+import { auth } from "@/lib/auth";
 
 export async function storeOrder(
   _: unknown,
@@ -19,7 +19,7 @@ export async function storeOrder(
   total: number,
   products: TCart[]
 ): Promise<ActionResult> {
-  const { session, user } = await getUser();
+  const session = await auth();
 
   if (!session) {
     return redirect("/");
@@ -46,8 +46,9 @@ export async function storeOrder(
       data: {
         total: total,
         status: "pending",
-        user_id: user.id,
+        user_id: session.user?.id,
         code: generateRandomString(15),
+        
       },
     });
 
