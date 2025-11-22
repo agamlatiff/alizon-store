@@ -9,7 +9,7 @@ import { auth } from "@/lib/auth";
 import ListProducts from "@/components/customers/ListProducts";
 
 type paramsProps = {
-  params: Tparams;
+  params: Tparams
 };
 
 const DetailProductPage = async ({ params }: paramsProps) => {
@@ -83,7 +83,8 @@ const DetailProductPage = async ({ params }: paramsProps) => {
             <img src="/assets/icons/code-circle.svg" alt="icon" />
           </div>
           <p className="font-semibold text-sm">
-           Free Guarantee<br /> on All Products
+            Free Guarantee
+            <br /> on All Products
           </p>
         </div>
         <div className="border-[0.5px] border-[#E5E5E5] h-12" />

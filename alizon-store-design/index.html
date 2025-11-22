@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlizonStore - Modern Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+              display: ['Poppins', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                DEFAULT: '#FFB400',
+                600: '#FFAA00',
+                100: '#FFF8E6',
+              },
+              brand: {
+                DEFAULT: '#2A2A2A',
+                hover: '#3D3D3D'
+              },
+              neutral: {
+                900: '#111827',
+                500: '#6B7280',
+                100: '#F3F4F6'
+              },
+              surface: '#FBFCFE'
+            },
+            boxShadow: {
+              'card': '0 8px 20px rgba(11,43,82,0.06)',
+              'glow': '0 0 15px rgba(255, 180, 0, 0.3)',
+            },
+            animation: {
+              marquee: 'marquee 40s linear infinite',
+            },
+            keyframes: {
+              marquee: {
+                '0%': { transform: 'translateX(0%)' },
+                '100%': { transform: 'translateX(-50%)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Smooth scrolling */
+      html { scroll-behavior: smooth; }
+      body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+      
+      /* Hide scrollbar for chrome/safari/opera */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+      
+      .pause-on-hover:hover {
+        animation-play-state: paused;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-surface text-neutral-900">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
