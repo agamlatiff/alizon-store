@@ -2,15 +2,11 @@
 
 import { schemaShippingAddress } from "@/lib/schema";
 import { generateRandomString } from "@/lib/utils";
-import xenditClient from "@/lib/xendit";
+import stripe from "@/lib/stripe";
 import type { ActionResult, TCart } from "@/types";
 import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import type {
-  PaymentRequestParameters,
-  PaymentRequest,
-} from "xendit-node/payment_request/models";
 import { auth } from "@/lib/auth";
 
 export async function storeOrder(
@@ -22,7 +18,7 @@ export async function storeOrder(
   const session = await auth();
 
   if (!session) {
-    return redirect("/");
+    return redirect("/sign-in");
   }
 
   const parse = schemaShippingAddress.safeParse({
@@ -39,43 +35,18 @@ export async function storeOrder(
     };
   }
 
-  let redirectPaymentUrl = "/";
-
   try {
+    // Create order in database
     const order = await prisma.order.create({
       data: {
         total: total,
         status: "pending",
         user_id: session.user?.id,
         code: generateRandomString(15),
-        
       },
     });
 
-    const data: PaymentRequestParameters = {
-      amount: total,
-      paymentMethod: {
-        ewallet: {
-          channelProperties: {
-            successReturnUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
-          },
-          channelCode: "SHOPEEPAY",
-        },
-        reusability: "ONE_TIME_USE",
-        type: "EWALLET",
-      },
-      currency: "IDR",
-      referenceId: order.code,
-    };
-
-    const response: PaymentRequest =
-      await xenditClient.PaymentRequest.createPaymentRequest({
-        data,
-      });
-
-    redirectPaymentUrl =
-      response.actions?.find((item) => item.urlType === "DEEPLINK")?.url ?? "/";
-
+    // Create order products
     const queryCreateProductOrder: Prisma.OrderProductCreateManyInput[] = [];
 
     for (const product of products) {
@@ -91,6 +62,7 @@ export async function storeOrder(
       data: queryCreateProductOrder,
     });
 
+    // Create order details (shipping address)
     await prisma.orderDetail.create({
       data: {
         address: parse.data.address,
@@ -101,14 +73,46 @@ export async function storeOrder(
         order_id: order.id,
       },
     });
+
+    // Create Stripe Checkout Session
+    const stripeSession = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: products.map((product) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: product.name,
+            images: [product.image_url],
+          },
+          unit_amount: Math.round(product.price * 100), // Stripe uses cents
+        },
+        quantity: product.quantity,
+      })),
+      mode: "payment",
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}&order_id=${order.id}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/cancel?order_id=${order.id}`,
+      metadata: {
+        order_id: order.id,
+        order_code: order.code,
+        user_id: session.user?.id || "",
+      },
+      customer_email: session.user?.email || undefined,
+    });
+
+    // Update order with Stripe session ID
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        code: stripeSession.id, // Store Stripe session ID as order code
+      },
+    });
+
+    // Redirect to Stripe Checkout
+    return redirect(stripeSession.url || "/");
   } catch (e) {
-    console.log(e);
+    console.error("Checkout error:", e);
     return {
-      error: "Failed to check out",
+      error: "Failed to process checkout. Please try again.",
     };
   }
-
-  console.log(parse);
-
-  return redirect(redirectPaymentUrl);
 }

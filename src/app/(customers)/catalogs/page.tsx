@@ -7,6 +7,7 @@ import FilterPrice from "./_components/FilterPrice";
 import FilterStock from "./_components/FilterStock";
 import ProductListing from "./_components/ProductListing";
 import SearchBar from "./_components/SearchBar";
+import SortDropdown from "./_components/SortDropdown";
 import { auth } from "@/lib/auth";
 
 const CatalogPage = async () => {
@@ -14,7 +15,7 @@ const CatalogPage = async () => {
   return (
     <>
       <Navbar session={session} />
-      
+
       {/* Page Header */}
       <div className="bg-neutral-900 py-16 mb-12">
         <div className="container mx-auto px-4 md:px-6 text-center">
@@ -36,7 +37,7 @@ const CatalogPage = async () => {
               <h2 className="font-display font-bold text-xl text-brand">Filters</h2>
               <button className="text-sm text-neutral-500 hover:text-primary transition-colors">Reset</button>
             </div>
-            
+
             <div className="space-y-6">
               <FilterPrice />
               <div className="h-px bg-neutral-100" />
@@ -54,22 +55,14 @@ const CatalogPage = async () => {
         {/* Main Content */}
         <div className="flex-1">
           <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-neutral-100 shadow-sm">
-             <p className="text-neutral-500 text-sm">Showing <span className="font-bold text-brand">All</span> Products</p>
-             <div className="flex items-center gap-2">
-               <span className="text-sm text-neutral-500">Sort by:</span>
-               <select className="bg-neutral-50 border border-neutral-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50">
-                 <option>Most Popular</option>
-                 <option>Newest</option>
-                 <option>Price: Low to High</option>
-                 <option>Price: High to Low</option>
-               </select>
-             </div>
+            <p className="text-neutral-500 text-sm">Showing <span className="font-bold text-brand">All</span> Products</p>
+            <SortDropdown />
           </div>
-          
+
           <ProductListing />
         </div>
       </div>
-      
+
       <Footer />
     </>
   );

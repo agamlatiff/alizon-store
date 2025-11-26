@@ -25,6 +25,7 @@ const FilterCheckboxItem = ({ id, value, type }: FilterCheckboxItemProps) => {
             stock: filter?.stock?.filter((item) => item !== e.target.value),
           });
         }
+        break;
       case "brand":
         if (e.target.checked) {
           setFilter({
@@ -35,6 +36,7 @@ const FilterCheckboxItem = ({ id, value, type }: FilterCheckboxItemProps) => {
             brands: filter?.brands?.filter((item) => item !== e.target.value),
           });
         }
+        break;
       case "category":
         if (e.target.checked) {
           setFilter({
@@ -47,6 +49,7 @@ const FilterCheckboxItem = ({ id, value, type }: FilterCheckboxItemProps) => {
             ),
           });
         }
+        break;
       case "location":
         if (e.target.checked) {
           setFilter({
@@ -59,6 +62,7 @@ const FilterCheckboxItem = ({ id, value, type }: FilterCheckboxItemProps) => {
             ),
           });
         }
+        break;
 
       default:
         break;
@@ -75,7 +79,7 @@ const FilterCheckboxItem = ({ id, value, type }: FilterCheckboxItemProps) => {
         type="checkbox"
         id={id + value}
         value={id}
-        className="w-6 h-6 flex shrink-0 appearance-none checked:border-[3px] checked:border-solid checked:border-white rounded-md checked:bg-[#0D5CD7] ring-1 ring-[#0D5CD7]"
+        className="w-6 h-6 flex shrink-0 appearance-none checked:border-[3px] checked:border-solid checked:border-white rounded-md checked:bg-secondary ring-1 ring-secondary"
       />
       <span>{value}</span>
     </label>

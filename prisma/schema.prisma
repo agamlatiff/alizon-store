@@ -24,6 +24,7 @@ model User {
   role RoleUser @default(customer)
 
   orders        Order[]
+  wishlists     Wishlist[]
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
@@ -154,6 +155,7 @@ model Product {
   stock       ProductStock
   images      String[]
   orders      OrderProduct[]
+  wishlists   Wishlist[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -209,4 +211,17 @@ model OrderProduct {
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model Wishlist {
+  id         String   @id @default(cuid())
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  product_id String
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([user_id, product_id])
 }

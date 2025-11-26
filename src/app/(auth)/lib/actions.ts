@@ -14,6 +14,7 @@ const SignIn = async (
 ): Promise<TypeCheckingSignIn> => {
   const emailRaw = String(formData.get("email") ?? "");
   const passwordRaw = String(formData.get("password") ?? "");
+  const callbackUrl = String(formData.get("callbackUrl") ?? "/");
 
   // Validation schema
   const parsedData = schemaSignIn.safeParse({
@@ -79,8 +80,8 @@ const SignIn = async (
     console.log(error);
   }
 
-  // If three validation checking true, redirect
-  return redirect("/");
+  // If three validation checking true, redirect to callback URL or home
+  return redirect(callbackUrl);
 };
 
 export default SignIn;

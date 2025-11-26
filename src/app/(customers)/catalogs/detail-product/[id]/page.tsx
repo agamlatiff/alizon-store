@@ -21,10 +21,6 @@ const DetailProductPage = async ({ params }: paramsProps) => {
   if (!product) {
     return redirect("/");
   }
-  
-  // Mock rating
-  const rating = 4.8;
-  const reviewCount = 124;
 
   return (
     <>
@@ -53,10 +49,9 @@ const DetailProductPage = async ({ params }: paramsProps) => {
                <div className="flex items-center gap-2">
                   <div className="flex items-center gap-0.5">
                      {[1,2,3,4,5].map(i => (
-                       <Star key={i} className={`w-4 h-4 ${i <= Math.round(rating) ? 'fill-primary text-primary' : 'fill-neutral-200 text-neutral-200'}`} />
+                       <Star key={i} className={`w-4 h-4 fill-primary text-primary`} />
                      ))}
-                  </div>
-                  <span className="text-sm text-neutral-500 font-medium">({reviewCount} Reviews)</span>
+                  </div>  
                </div>
             </div>
 
@@ -85,10 +80,9 @@ const DetailProductPage = async ({ params }: paramsProps) => {
                   <div className="hidden lg:flex items-center gap-2 mb-6">
                       <div className="flex items-center gap-0.5">
                          {[1,2,3,4,5].map(i => (
-                           <Star key={i} className={`w-5 h-5 ${i <= Math.round(rating) ? 'fill-primary text-primary' : 'fill-neutral-200 text-neutral-200'}`} />
+                           <Star key={i} className={`w-5 h-5 fill-primary text-primary`} />
                          ))}
                       </div>
-                      <span className="text-sm text-neutral-500 font-medium ml-2">{rating} ({reviewCount} Reviews)</span>
                   </div>
                   
                   <div className="prose prose-neutral max-w-none">

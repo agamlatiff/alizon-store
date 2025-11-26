@@ -72,10 +72,31 @@ export async function POST(request: Request) {
       });
     }
 
+    // Determine sorting
+    let orderBy: Prisma.ProductOrderByWithRelationInput = {};
+
+    switch (res.sortBy) {
+      case "newest":
+        orderBy = { created_at: "desc" };
+        break;
+      case "price-asc":
+        orderBy = { price: "asc" };
+        break;
+      case "price-desc":
+        orderBy = { price: "desc" };
+        break;
+      case "popular":
+      default:
+        // For "popular", we could use order count, but for now use created_at desc
+        orderBy = { created_at: "desc" };
+        break;
+    }
+
     const products = await prisma.product.findMany({
       where: {
         AND: ANDQuery.length > 0 ? ANDQuery : undefined,
       },
+      orderBy: orderBy,
       select: {
         id: true,
         images: true,
@@ -86,6 +107,7 @@ export async function POST(request: Request) {
           },
         },
         price: true,
+        created_at: true,
       },
     });
 

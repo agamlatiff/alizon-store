@@ -1,6 +1,8 @@
 import type { ProductStock } from "@prisma/client";
-import {create} from 'zustand'
- 
+import { create } from 'zustand'
+
+export type SortOption = "popular" | "newest" | "price-asc" | "price-desc";
+
 export type TFilter = {
   search?: string;
   minPrice?: number;
@@ -9,22 +11,24 @@ export type TFilter = {
   brands?: string[] | null
   locations?: string[] | null
   categories?: string[] | null
+  sortBy?: SortOption;
 };
 
 export interface FilterState {
-  filter : TFilter
-  setFilter : (filter : TFilter) => void
+  filter: TFilter
+  setFilter: (filter: TFilter) => void
 }
 
 export const useFilter = create<FilterState>()((set) => ({
-  filter : {
-    search : '',
-    minPrice : 0,
-    maxPrice : 0,
-    stock : null,
-    brands : null,
-    locations : null,
-    categories : null
+  filter: {
+    search: '',
+    minPrice: 0,
+    maxPrice: 0,
+    stock: null,
+    brands: null,
+    locations: null,
+    categories: null,
+    sortBy: "popular"
   },
   setFilter: (filter) => set((state) => ({
     filter: {

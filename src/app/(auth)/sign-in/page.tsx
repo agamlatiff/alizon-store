@@ -4,13 +4,19 @@ import { signIn } from "@/lib/auth";
 import { GoogleIcon } from "@/lib/icon";
 import React from "react";
 
-const SignInPage = () => {
+interface SignInPageProps {
+  searchParams: { callbackUrl?: string };
+}
+
+const SignInPage = ({ searchParams }: SignInPageProps) => {
+  const callbackUrl = searchParams.callbackUrl || "/";
+
   return (
     <FormSignIn>
       <form
         action={async () => {
           "use server";
-          await signIn("google", { redirectTo: "/" });
+          await signIn("google", { redirectTo: callbackUrl });
         }}
       >
         <button

@@ -2,7 +2,7 @@ import type { TFilter } from "@/hooks/useFilter";
 import type { TProduct } from "@/types";
 
 export async function fetchProduct(body?: TFilter): Promise<TProduct[]> {
-  const res = await fetch("api/catalog", {
+  const res = await fetch("/api/catalog", {
     method: "POST",
     body: JSON.stringify(body ?? {}),
   });
