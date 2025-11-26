@@ -2,9 +2,12 @@
 
 import { useCart } from "@/hooks/useCart";
 import { USDFormat } from "@/lib/utils";
+import Button from "@/components/ui/button";
+import { ShoppingCart, Heart, CheckCircle2, Truck, ShieldCheck } from "lucide-react";
 
 import type { TCart, TProduct } from "@/types";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 interface PriceInfoProp {
@@ -14,92 +17,95 @@ interface PriceInfoProp {
 
 const PriceInfo = ({item, isLogin} : PriceInfoProp) => {
   
-  const {addProduct} = useCart();
+  const {addProduct, openCart} = useCart();
+  const [isAdding, setIsAdding] = useState(false);
   
   const router = useRouter()
   
-  const checkout = () => {
+  const handleAddToCart = () => {
+    setIsAdding(true);
     const newCart : TCart = {
       ...item,
       quantity: 1
     }
     
-    addProduct(newCart)
-    router.push('/carts')
+    addProduct(newCart);
+    
+    // Simulate loading for better UX
+    setTimeout(() => {
+      setIsAdding(false);
+      openCart();
+    }, 500);
   }
   
   return (
-    <div className="w-[302px] flex flex-col shrink-0 gap-5 h-fit">
-      <div className="w-full bg-white border border-[#E5E5E5] flex flex-col gap-[30px] p-[30px] rounded-3xl">
+    <div className="w-full lg:w-[350px] flex flex-col shrink-0 gap-5 h-fit sticky top-24">
+      <div className="w-full bg-white border border-neutral-100 shadow-xl shadow-neutral-100/50 flex flex-col gap-6 p-6 rounded-3xl">
         <div className="flex flex-col gap-1">
-          <p className="font-semibold">Brand New</p>
-          <p className="font-bold text-[24px] leading-[48px]">{USDFormat(item.price)}</p>
+          <div className="flex items-center gap-2">
+             <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">In Stock</span>
+             <span className="text-neutral-400 text-xs font-medium">SKU: {item.id.slice(0,8)}</span>
+          </div>
+          <p className="font-display font-bold text-4xl text-brand mt-2">{USDFormat(item.price)}</p>
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
-            <div className="flex shrink-0">
-              <img src="/assets/icons/tick-circle.svg" alt="icon" />
+        
+        <div className="space-y-3">
+          {[
+            "Official Warranty Included",
+            "100% Original Product",
+            "Free Shipping Available",
+            "Secure Packaging"
+          ].map((text, i) => (
+            <div key={i} className="flex items-center gap-3 text-sm text-neutral-600">
+              <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
+              <span className="font-medium">{text}</span>
             </div>
-            <p className="font-semibold">Peti telur packaging</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex shrink-0">
-              <img src="/assets/icons/tick-circle.svg" alt="icon" />
-            </div>
-            <p className="font-semibold">Manual book instructions</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex shrink-0">
-              <img src="/assets/icons/tick-circle.svg" alt="icon" />
-            </div>
-            <p className="font-semibold">Customer service 24/7</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex shrink-0">
-              <img src="/assets/icons/tick-circle.svg" alt="icon" />
-            </div>
-            <p className="font-semibold">Free delivery Jababeka</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex shrink-0">
-              <img src="/assets/icons/tick-circle.svg" alt="icon" />
-            </div>
-            <p className="font-semibold">Kwitansi orisinal 100%</p>
-          </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-3">
-          <button
-            type="button"
-            disabled={!isLogin}
-            onClick={checkout}
-            className="p-[12px_24px] bg-[#0D5CD7] rounded-full text-center font-semibold text-white disabled:opacity-60"
+        
+        <div className="flex flex-col gap-3 mt-2">
+          <Button
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            className="h-12 text-lg shadow-lg shadow-primary/20"
+            fullWidth
           >
-            Add to Cart
-          </button>
-          <a
-            href=""
-            className="p-[12px_24px] bg-white rounded-full text-center font-semibold border border-[#E5E5E5]"
+            {isAdding ? "Adding..." : (
+              <>
+                <ShoppingCart className="w-5 h-5 mr-2" /> Add to Cart
+              </>
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            className="h-12 text-lg border-neutral-200 hover:bg-neutral-50 hover:text-brand"
+            fullWidth
           >
-            Save to Wishlist
-          </a>
+            <Heart className="w-5 h-5 mr-2" /> Save to Wishlist
+          </Button>
         </div>
       </div>
-      <a href="">
-        <div className="w-full bg-white border border-[#E5E5E5] flex items-center justify-between gap-2 p-5 rounded-3xl">
-          <div className="flex items-center gap-[10px]">
-            <div className="w-12 h-12 flex shrink-0 rounded-full bg-[#FFC736] items-center justify-center overflow-hidden">
-              <img src="/assets/icons/cake.svg" alt="icon" />
+      
+      <div className="w-full bg-surface border border-neutral-100 p-5 rounded-3xl space-y-4">
+         <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+               <Truck className="w-5 h-5" />
             </div>
-            <div className="flex flex-col gap-[2px]">
-              <p className="font-semibold">Buy as a Gift</p>
-              <p className="text-sm">Free Delivery</p>
+            <div>
+               <h4 className="font-bold text-brand text-sm">Fast Delivery</h4>
+               <p className="text-xs text-neutral-500 mt-1">Get it within 2-3 business days</p>
             </div>
-          </div>
-          <div className="flex shrink-0">
-            <img src="/assets/icons/arrow-right.svg" alt="icon" />
-          </div>
-        </div>
-      </a>
+         </div>
+         <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 shrink-0">
+               <ShieldCheck className="w-5 h-5" />
+            </div>
+            <div>
+               <h4 className="font-bold text-brand text-sm">Buyer Protection</h4>
+               <p className="text-xs text-neutral-500 mt-1">Money back guarantee if not satisfied</p>
+            </div>
+         </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Facebook, Instagram, Twitter, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -51,21 +54,21 @@ const Footer = () => {
           <div>
             <h3 className="font-display font-bold text-lg mb-4 text-primary">Shop</h3>
             <ul className="space-y-2 text-sm text-neutral-400">
-              <li><a href="#" className="hover:text-white transition-colors">New Arrivals</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Best Sellers</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Men</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Women</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Accessories</a></li>
+              <li><Link href="/catalogs?filter=new" className="hover:text-white transition-colors">New Arrivals</Link></li>
+              <li><Link href="/catalogs?filter=popular" className="hover:text-white transition-colors">Best Sellers</Link></li>
+              <li><Link href="/catalogs?category=men" className="hover:text-white transition-colors">Men</Link></li>
+              <li><Link href="/catalogs?category=women" className="hover:text-white transition-colors">Women</Link></li>
+              <li><Link href="/catalogs?category=accessories" className="hover:text-white transition-colors">Accessories</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-display font-bold text-lg mb-4 text-primary">Help</h3>
             <ul className="space-y-2 text-sm text-neutral-400">
-              <li><a href="#" className="hover:text-white transition-colors">Customer Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Delivery Details</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms & Conditions</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><Link href="#" className="hover:text-white transition-colors">Customer Service</Link></li>
+              <li><Link href="#" className="hover:text-white transition-colors">Delivery Details</Link></li>
+              <li><Link href="#" className="hover:text-white transition-colors">Terms & Conditions</Link></li>
+              <li><Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
 
