@@ -128,3 +128,9 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+  
+@layer utilities {
+  .pause-on-hover:hover {
+    animation-play-state: paused;
+  }
+}

@@ -2,15 +2,11 @@
 
 import SignIn from "@/app/(auth)/lib/actions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/lib/icon";
 import type { TypeCheckingSignIn } from "@/types";
-
 import React, { useActionState, useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import Link from "next/link";
-import { AlertCircle } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import Button from "@/components/ui/button";
 
 const initiaFormState: TypeCheckingSignIn = {
   email: "",
@@ -21,129 +17,161 @@ const initiaFormState: TypeCheckingSignIn = {
 const FormSignIn = ({ children }: { children: React.ReactNode }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [state, formAction, pending] = useActionState(SignIn, initiaFormState);
+
   return (
-    <div className="min-h-screen bg-gray-100 font-sans text-gray-800 antialiased flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
-        {/* Header Section */}
-        <div className="text-center">
-          <div className="flex items-center justify-center mb-4">
-            <svg
-              className="w-10 h-10 mr-2 text-blue-600"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <h1 className="text-3xl font-bold text-gray-900">AlizonStore</h1>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800">Welcome back!</h2>
-          <p className="mt-1 text-md text-gray-500">Sign in to continue.</p>
-        </div>
-
-        {/* Google Sign In Button */}
-        {children}
-
-        {/* Separator */}
-        <div className="my-6 flex items-center">
-          <div className="flex-grow border-t border-gray-200"></div>
-          <span className="mx-4 text-xs font-semibold text-gray-400 uppercase">
-            OR
-          </span>
-          <div className="flex-grow border-t border-gray-200"></div>
-        </div>
-
-        {state.error !== "" && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{state.error}</AlertDescription>
-          </Alert>
-        )}
-
-        {/* Email & Password Form */}
-        <form action={formAction} className="space-y-6">
-          <div>
-            <Label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Email Address
-            </Label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <MailIcon className="h-5 w-5 text-gray-400" />
-              </div>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
-              />
-            </div>
-            <p className="text-sm text-red-500 mt-2">{state.email}</p>
-          </div>
-
-          <div>
-            <Label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Password
-            </Label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <LockIcon className="h-5 w-5 text-gray-400" />
-              </div>
-              <Input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                className="appearance-none block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400 hover:text-gray-600"
-              >
-                {showPassword ? (
-                  <EyeOffIcon className="h-5 w-5" />
-                ) : (
-                  <EyeIcon className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-            <p className="text-sm text-red-500 mt-2">{state.password}</p>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105"
-            >
-              Sign In
-            </button>
-          </div>
-        </form>
-
-        {/* Sign Up Link */}
-        <p className="text-center text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/sign-up"
-            className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300"
-          >
-            Sign up
+    <div className="min-h-screen flex bg-surface">
+      {/* Left Side - Image & Branding */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-brand">
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-[20s] hover:scale-110"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand/90 via-brand/40 to-transparent" />
+        
+        <div className="relative z-10 w-full h-full flex flex-col justify-between p-16 text-white">
+          <Link href="/" className="flex items-center gap-3 w-fit">
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-brand font-bold text-xl">A</div>
+            <span className="font-display font-bold text-2xl tracking-tight">AlizonStore</span>
           </Link>
-        </p>
+          
+          <div className="space-y-6 max-w-lg">
+            <h2 className="text-5xl font-display font-bold leading-tight">
+              Welcome Back to <span className="text-primary">Style.</span>
+            </h2>
+            <p className="text-lg text-neutral-300 font-light">
+              Sign in to access your saved items, track orders, and get exclusive access to new drops.
+            </p>
+            
+            <div className="flex gap-8 pt-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-2xl font-bold text-white">15k+</span>
+                <span className="text-sm text-neutral-400">Happy Customers</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-2xl font-bold text-white">4.9</span>
+                <span className="text-sm text-neutral-400">Average Rating</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-neutral-500">
+            © 2025 AlizonStore. Fashion for the modern era.
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative">
+        <div className="w-full max-w-md space-y-8 animate-in slide-in-from-right-8 duration-700">
+          
+          {/* Mobile Logo */}
+          <Link href="/" className="flex lg:hidden items-center gap-2 mb-8 justify-center">
+             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-brand font-bold text-lg">A</div>
+             <span className="font-display font-bold text-xl text-brand">AlizonStore</span>
+          </Link>
+
+          <div className="text-center lg:text-left">
+            <h1 className="text-3xl font-display font-bold text-brand mb-2">Sign in</h1>
+            <p className="text-neutral-500">
+              New user? <Link href="/sign-up" className="text-primary-600 font-semibold hover:underline">Create an account</Link>
+            </p>
+          </div>
+
+          {state.error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{state.error}</AlertDescription>
+            </Alert>
+          )}
+
+          <form action={formAction} className="space-y-6">
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-brand" htmlFor="email">Email Address</label>
+                <div className="relative group">
+                  <input 
+                    id="email"
+                    name="email"
+                    type="email" 
+                    required
+                    className="w-full pl-11 pr-4 py-3 bg-white border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-neutral-400"
+                    placeholder="you@example.com"
+                  />
+                  <Mail className="w-5 h-5 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors" />
+                </div>
+                {state.email && <p className="text-sm text-red-500 mt-1">{state.email}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-brand" htmlFor="password">Password</label>
+                  <a href="#" className="text-xs font-medium text-primary-600 hover:text-primary-600/80">Forgot password?</a>
+                </div>
+                <div className="relative group">
+                  <input 
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"} 
+                    required
+                    className="w-full pl-11 pr-12 py-3 bg-white border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-neutral-400"
+                    placeholder="Enter your password"
+                  />
+                  <Lock className="w-5 h-5 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors" />
+                  <button 
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-brand transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+                {state.password && <p className="text-sm text-red-500 mt-1">{state.password}</p>}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input 
+                type="checkbox" 
+                id="remember" 
+                className="w-4 h-4 rounded border-neutral-300 text-primary focus:ring-primary"
+              />
+              <label htmlFor="remember" className="text-sm text-neutral-600 cursor-pointer select-none">Keep me logged in</label>
+            </div>
+
+            <Button 
+              type="submit" 
+              fullWidth 
+              size="lg" 
+              disabled={pending}
+              className="h-12 text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40"
+            >
+              {pending ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" /> Signing in...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  Sign In <ArrowRight className="w-5 h-5" />
+                </span>
+              )}
+            </Button>
+          </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-neutral-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-surface text-neutral-500">Or continue with</span>
+            </div>
+          </div>
+
+          {/* Google Button Container */}
+          <div className="flex flex-col gap-4">
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );

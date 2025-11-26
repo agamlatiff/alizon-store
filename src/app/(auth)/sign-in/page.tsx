@@ -1,5 +1,5 @@
 import FormSignIn from "@/components/auth/FormSignIn";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import { signIn } from "@/lib/auth";
 import { GoogleIcon } from "@/lib/icon";
 import React from "react";
@@ -13,13 +13,13 @@ const SignInPage = () => {
           await signIn("google", { redirectTo: "/" });
         }}
       >
-        <Button
+        <button
           type="submit"
-          className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+          className="w-full flex items-center justify-center gap-2 py-3 border border-neutral-200 rounded-xl hover:bg-neutral-50 hover:border-neutral-300 transition-all bg-white text-neutral-700 font-medium shadow-sm"
         >
-          <GoogleIcon/>
-          <span className="ml-3">Sign in with Google</span>
-        </Button>
+          <GoogleIcon />
+          <span>Google</span>
+        </button>
       </form>
     </FormSignIn>
   );

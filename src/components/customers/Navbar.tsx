@@ -122,7 +122,7 @@ const Navbar = ({ session }: NavbarProps) => {
                 </div>
               </div>
             ) : (
-              <Link href="/sign-in" className="text-neutral-700 hover:text-brand transition-colors hidden sm:block" aria-label="Login">
+              <Link href="/sign-in" className="text-neutral-700 hover:text-brand transition-colors" aria-label="Login">
                 <User className="w-6 h-6" />
               </Link>
             )}

@@ -7,10 +7,10 @@ import prisma from "@/lib/prisma";
 export async function POST(request: Request) {
   try {
     const res = (await request.json()) as TFilter;
-    const ORQuery: Prisma.ProductWhereInput[] = [];
+    const ANDQuery: Prisma.ProductWhereInput[] = [];
 
     if (res.search && res.search !== "") {
-      ORQuery.push({
+      ANDQuery.push({
         name: {
           contains: res.search,
           mode: "insensitive",
@@ -19,15 +19,15 @@ export async function POST(request: Request) {
     }
 
     if (res.minPrice && res.minPrice > 0) {
-      ORQuery.push({
+      ANDQuery.push({
         price: {
           gte: res.minPrice,
         },
       });
     }
 
-    if (res.maxPrice && res.maxPrice) {
-      ORQuery.push({
+    if (res.maxPrice && res.maxPrice > 0) {
+      ANDQuery.push({
         price: {
           lte: res.maxPrice,
         },
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     }
 
     if (res.stock && res.stock.length > 0) {
-      ORQuery.push({
+      ANDQuery.push({
         stock: {
           in: res.stock,
         },
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     }
 
     if (res.brands && res.brands.length > 0) {
-      ORQuery.push({
+      ANDQuery.push({
         brand: {
           id: {
             in: res.brands,
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     }
 
     if (res.categories && res.categories.length > 0) {
-      ORQuery.push({
+      ANDQuery.push({
         category: {
           id: {
             in: res.categories,
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     }
 
     if (res.locations && res.locations.length > 0) {
-      ORQuery.push({
+      ANDQuery.push({
         location: {
           id: {
             in: res.locations,
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
 
     const products = await prisma.product.findMany({
       where: {
-        OR: ORQuery.length > 0 ? ORQuery : undefined,
+        AND: ANDQuery.length > 0 ? ANDQuery : undefined,
       },
       select: {
         id: true,

@@ -1,3 +1,5 @@
+'use client';
+
 import { USDFormat } from "@/lib/utils";
 import type { TProduct } from "@/types";
 import Link from "next/link";
@@ -15,14 +17,17 @@ const CardProduct = ({ item }: CardProductProps) => {
   const oldPrice = Number(item.price) * 1.2; // Mock old price for demo
   const discountPercentage = Math.round(((oldPrice - Number(item.price)) / oldPrice) * 100);
 
+  const [imgSrc, setImgSrc] = React.useState(item.image_url);
+
   return (
     <div className="group relative bg-white rounded-2xl overflow-hidden hover:shadow-card transition-all duration-300 transform hover:-translate-y-1 border border-neutral-100">
       
       {/* Image Container */}
       <Link href={`/catalogs/detail-product/${item.id}`} className="block relative aspect-[3/4] overflow-hidden bg-neutral-50">
         <img 
-          src={item.image_url} 
+          src={imgSrc} 
           alt={item.name} 
+          onError={() => setImgSrc('/assets/photos/p1.png')}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         

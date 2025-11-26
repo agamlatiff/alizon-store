@@ -8,10 +8,12 @@ import { Sparkles, Truck, RotateCcw, ShieldCheck, ChevronLeft, ChevronRight, Arr
 import Link from "next/link";
 import Button from "@/components/ui/button";
 import Image from "next/image";
+import TestimonialMarquee from "@/components/customers/TestimonialMarquee";
+import { getImageUrl } from "@/lib/supabase";
 
 async function getNewArrivals() {
   return await prisma.product.findMany({
-    take: 8,
+    take: 4,
     orderBy: { created_at: 'desc' },
     include: {
       category: true,
@@ -19,19 +21,40 @@ async function getNewArrivals() {
   });
 }
 
+async function getCategories() {
+  return await prisma.category.findMany({
+    take: 4,
+    include: {
+      products: {
+        take: 1,
+        select: {
+          images: true
+        }
+      }
+    }
+  });
+}
+
 const LandingPage = async () => {
   const session = await auth();
   const newArrivals = await getNewArrivals();
+  const categoriesData = await getCategories();
   
-  // Transform Prisma data to match CardProduct expectation if needed, 
-  // but CardProduct now accepts TProduct which matches Prisma result mostly.
-  // We might need to map `category` to `category_name` if TProduct expects that.
+  // Transform Prisma data to match CardProduct expectation
   const products = newArrivals.map(p => ({
     ...p,
     price: Number(p.price), // Convert BigInt to number
-    image_url: p.images[0] || '/assets/photos/p1.png', // Fallback image
+    image_url: p.images[0] ? getImageUrl(p.images[0], "products") : '/assets/photos/p1.png',
     category_name: p.category.name
   }));
+
+  // Helper to get image for category
+  const getCategoryImage = (cat: any, fallbackUrl: string) => {
+    if (cat?.products?.[0]?.images?.[0]) {
+      return getImageUrl(cat.products[0].images[0], "products");
+    }
+    return fallbackUrl;
+  };
 
   return (
     <>
@@ -128,67 +151,75 @@ const LandingPage = async () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 md:h-[650px]">
-            {/* Large Item Left - Women */}
-            <Link href="/catalogs" className="group relative rounded-3xl overflow-hidden col-span-1 md:col-span-2 md:row-span-2 bg-neutral-100 shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop" 
-                alt="Women's Fashion" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-              <div className="absolute bottom-0 left-0 p-8 md:p-12">
-                 <span className="text-primary font-bold tracking-wider text-sm uppercase mb-2 block">New Season</span>
-                 <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Women</h3>
-                 <span className="inline-flex items-center gap-2 text-white font-medium group-hover:gap-4 transition-all">
-                   Explore Collection <ArrowRight className="w-5 h-5" />
-                 </span>
-              </div>
-            </Link>
+            {/* Large Item Left */}
+            {categoriesData[0] && (
+              <Link href={`/catalogs?categories=${categoriesData[0].id}`} className="group relative rounded-3xl overflow-hidden col-span-1 md:col-span-2 md:row-span-2 bg-neutral-100 shadow-lg">
+                <img 
+                  src={getCategoryImage(categoriesData[0], "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop")}
+                  alt={categoriesData[0].name} 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                <div className="absolute bottom-0 left-0 p-8 md:p-12">
+                   <span className="text-primary font-bold tracking-wider text-sm uppercase mb-2 block">New Season</span>
+                   <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">{categoriesData[0].name}</h3>
+                   <span className="inline-flex items-center gap-2 text-white font-medium group-hover:gap-4 transition-all">
+                     Explore Collection <ArrowRight className="w-5 h-5" />
+                   </span>
+                </div>
+              </Link>
+            )}
 
-            {/* Top Right - Men */}
-            <Link href="/catalogs" className="group relative rounded-3xl overflow-hidden col-span-1 md:col-span-2 bg-neutral-100 shadow-lg h-64 md:h-auto">
-               <img 
-                src="https://images.unsplash.com/photo-1516257984-b1b4d8c92d1d?q=80&w=1200&auto=format&fit=crop" 
-                alt="Men's Fashion" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-              <div className="absolute inset-y-0 right-0 p-8 flex flex-col justify-center items-end text-right">
-                 <h3 className="text-2xl md:text-4xl font-display font-bold text-white mb-2">Men</h3>
-                 <span className="text-neutral-300 text-sm mb-4">Classic & Modern Styles</span>
-                 <span className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-primary group-hover:text-brand transition-colors">
-                   <ArrowUpRight className="w-5 h-5" />
-                 </span>
-              </div>
-            </Link>
+            {/* Top Right */}
+            {categoriesData[1] && (
+              <Link href={`/catalogs?categories=${categoriesData[1].id}`} className="group relative rounded-3xl overflow-hidden col-span-1 md:col-span-2 bg-neutral-100 shadow-lg h-64 md:h-auto">
+                 <img 
+                  src={getCategoryImage(categoriesData[1], "https://images.unsplash.com/photo-1516257984-b1b4d8c92d1d?q=80&w=1200&auto=format&fit=crop")}
+                  alt={categoriesData[1].name} 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                <div className="absolute inset-y-0 right-0 p-8 flex flex-col justify-center items-end text-right">
+                   <h3 className="text-2xl md:text-4xl font-display font-bold text-white mb-2">{categoriesData[1].name}</h3>
+                   <span className="text-neutral-300 text-sm mb-4">Classic & Modern Styles</span>
+                   <span className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-primary group-hover:text-brand transition-colors">
+                     <ArrowUpRight className="w-5 h-5" />
+                   </span>
+                </div>
+              </Link>
+            )}
 
-            {/* Bottom Mid - Accessories */}
-            <Link href="/catalogs" className="group relative rounded-3xl overflow-hidden col-span-1 bg-neutral-100 shadow-lg h-64 md:h-auto">
-               <img 
-                src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop" 
-                alt="Accessories" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                 <h3 className="text-2xl font-display font-bold text-white mb-2">Accessories</h3>
-                 <span className="text-white/80 text-sm">Complete the look</span>
-              </div>
-            </Link>
+            {/* Bottom Mid */}
+            {categoriesData[2] && (
+              <Link href={`/catalogs?categories=${categoriesData[2].id}`} className="group relative rounded-3xl overflow-hidden col-span-1 bg-neutral-100 shadow-lg h-64 md:h-auto">
+                 <img 
+                  src={getCategoryImage(categoriesData[2], "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop")}
+                  alt={categoriesData[2].name} 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                   <h3 className="text-2xl font-display font-bold text-white mb-2">{categoriesData[2].name}</h3>
+                   <span className="text-white/80 text-sm">Complete the look</span>
+                </div>
+              </Link>
+            )}
 
-            {/* Bottom Right - Shoes */}
-            <Link href="/catalogs" className="group relative rounded-3xl overflow-hidden col-span-1 bg-neutral-100 shadow-lg h-64 md:h-auto">
-              <img 
-                src="https://images.unsplash.com/photo-1560769629-975e13f0c470?q=80&w=800&auto=format&fit=crop" 
-                alt="Shoes" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                 <h3 className="text-2xl font-display font-bold text-white mb-2">Shoes</h3>
-                 <span className="text-white/80 text-sm">Step up your game</span>
-              </div>
-            </Link>
+            {/* Bottom Right */}
+            {categoriesData[3] && (
+              <Link href={`/catalogs?categories=${categoriesData[3].id}`} className="group relative rounded-3xl overflow-hidden col-span-1 bg-neutral-100 shadow-lg h-64 md:h-auto">
+                <img 
+                  src={getCategoryImage(categoriesData[3], "https://images.unsplash.com/photo-1560769629-975e13f0c470?q=80&w=800&auto=format&fit=crop")}
+                  alt={categoriesData[3].name} 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                   <h3 className="text-2xl font-display font-bold text-white mb-2">{categoriesData[3].name}</h3>
+                   <span className="text-white/80 text-sm">Step up your game</span>
+                </div>
+              </Link>
+            )}
           </div>
         </section>
 
@@ -229,6 +260,8 @@ const LandingPage = async () => {
               </div>
            </div>
         </section>
+        {/* Testimonials Marquee */}
+        <TestimonialMarquee />
       </div>
       
       <Footer />
