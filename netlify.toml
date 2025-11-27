@@ -7,10 +7,7 @@
   package = "@netlify/plugin-nextjs"
 
 # Redirect rules for Next.js
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+
 
 # Environment variables (set these in Netlify dashboard)
 # DATABASE_URL
