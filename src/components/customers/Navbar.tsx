@@ -74,9 +74,13 @@ const Navbar = ({ session }: NavbarProps) => {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-brand font-bold text-lg group-hover:rotate-12 transition-transform">
-              A
-            </div>
+            <Image
+              src="/logo.png"
+              alt="AlizonStore Logo"
+              width={32}
+              height={32}
+              className="group-hover:scale-110 transition-transform"
+            />
             <span className="font-display font-bold text-xl md:text-2xl text-brand tracking-tight">AlizonStore</span>
           </Link>
 
