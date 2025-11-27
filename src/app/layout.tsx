@@ -8,6 +8,16 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+export const metadata = {
+  title: "AlizonStore - Your Premium E-Commerce Destination",
+  description: "Discover amazing products at AlizonStore. Shop the latest trends in electronics, fashion, and more.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
