@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -93,12 +93,13 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
       <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
         <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" className="h-7 w-7" asChild>
-              <Link href="/dashboard/brands">
-                <ChevronLeft className="h-4 w-4" />
-                <span className="sr-only">Back</span>
-              </Link>
-            </Button>
+            <Link
+              href="/dashboard/brands"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-7 w-7"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Back</span>
+            </Link>
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
               Create Brand
             </h1>
@@ -171,9 +172,9 @@ const FormBrand = ({ data, type }: FormBrandProps) => {
 
                           <Button
                             type="button"
-                            variant="destructive"
-                            size="icon"
-                            className="absolute top-1 right-1 h-6 w-6"
+                            variant="secondary"
+                            size="sm"
+                            className="absolute top-1 right-1 h-6 w-6 p-0 bg-red-500 hover:bg-red-600 text-white"
                             onClick={clearImage}
                           >
                             <X className="h-4 w-4" />

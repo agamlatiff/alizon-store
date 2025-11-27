@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PlusCircle, Archive } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -26,14 +26,15 @@ export async function CategoryList({
           <CardTitle className="text-lg">Categories</CardTitle>
           <CardDescription>Manage your product categories</CardDescription>
         </div>
-        <Button asChild size="sm" className="gap-1">
-          <Link href="/dashboard/categories?action=create">
-            <PlusCircle className="h-4 w-4" />
-            <span className="hidden sm:inline sm:whitespace-nowrap">
-              Add New
-            </span>
-          </Link>
-        </Button>
+        <Link
+          href="/dashboard/categories?action=create"
+          className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 gap-1 px-3"
+        >
+          <PlusCircle className="h-4 w-4" />
+          <span className="hidden sm:inline sm:whitespace-nowrap">
+            Add New
+          </span>
+        </Link>
       </CardHeader>
       <CardContent className="p-2">
         <nav className="grid gap-1 text-sm text-muted-foreground">
@@ -44,7 +45,7 @@ export async function CategoryList({
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary hover:bg-muted",
                 activeCategoryId === String(category.id) &&
-                  "bg-muted text-primary font-semibold"
+                "bg-muted text-primary font-semibold"
               )}
             >
               <Archive className="h-4 w-4" />
