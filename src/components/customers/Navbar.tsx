@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { ShoppingBag, Search, Menu, User, X, LogOut, ChevronDown, Heart } from 'lucide-react';
+import { ShoppingBag, Search, Menu, User, X, LogOut, ChevronDown, Heart, LayoutDashboard } from 'lucide-react';
 import Image from 'next/image';
 import { useCart } from '@/hooks/useCart';
 import CartDrawer from './CartDrawer';
@@ -145,6 +145,16 @@ const Navbar = ({ session }: NavbarProps) => {
 
                       {/* Menu Items */}
                       <div className="py-1">
+                        {session.user?.role === 'seller' && (
+                          <Link
+                            href="/dashboard"
+                            className="flex items-center gap-3 px-4 py-2 text-sm font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 transition-colors"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <LayoutDashboard className="w-4 h-4" />
+                            Dashboard
+                          </Link>
+                        )}
                         <Link
                           href="/profile"
                           className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
@@ -252,6 +262,12 @@ const Navbar = ({ session }: NavbarProps) => {
                   <Link href="/wishlist" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
                     My Wishlist <Heart className="w-5 h-5" />
                   </Link>
+
+                  {session.user?.role === 'seller' && (
+                    <Link href="/dashboard" className="text-lg font-bold text-primary-600 bg-primary-50 py-3 px-4 rounded-lg border-2 border-primary-200 flex items-center justify-between">
+                      Dashboard <LayoutDashboard className="w-5 h-5" />
+                    </Link>
+                  )}
 
                   {/* Logout Button */}
                   <form action={handleLogout}>

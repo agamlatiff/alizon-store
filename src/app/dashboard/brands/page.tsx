@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -18,14 +18,15 @@ const BrandPage = async () => {
   return (
     <div className="space-y-4">
       <div className="text-right">
-        <Button size="sm" className="h-8 gap-1" asChild>
-          <Link href="/dashboard/brands/create">
-            <PlusCircle className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add Brand
-            </span>
-          </Link>
-        </Button>
+        <Link
+          href="/dashboard/brands/create"
+          className="inline-flex items-center justify-center font-medium transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 bg-primary hover:bg-primary-600 text-brand focus:ring-primary-600 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm px-4 py-1.5 h-8 gap-1"
+        >
+          <PlusCircle className="h-3.5 w-3.5" />
+          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+            Add Brand
+          </span>
+        </Link>
       </div>
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>

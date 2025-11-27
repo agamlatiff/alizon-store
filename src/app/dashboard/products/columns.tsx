@@ -6,7 +6,7 @@ import Image from "next/image";
 import { getImageUrl } from "@/lib/supabase";
 import { dateFormat, USDFormat } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import Link from "next/link";
 import { Edit } from "lucide-react";
 import FormDelete from "../../../components/dashboard/products/FormDelete";
@@ -30,12 +30,13 @@ export const columns: ColumnDef<TColumn>[] = [
     cell: ({ row }) => {
       const product = row.original;
       return (
-        <div className="inline-flex items-center gap-5 object-fit">
+        <div className="inline-flex items-center gap-5">
           <Image
             src={getImageUrl(product.image_url, "products")}
             height={80}
             width={80}
             alt="Product"
+            className="rounded-lg object-cover"
           />
           <span>{product.name}</span>
         </div>
@@ -77,13 +78,14 @@ export const columns: ColumnDef<TColumn>[] = [
     cell: ({ row }) => {
       const product = row.original;
       return (
-        <div className="space-x-4 inline-flex text-white">
-          <Button size={"sm"} asChild>
-            <Link href={`/dashboard/products/edit/${product.id}`}>
-              <Edit className="size-4 mr-2" />
-              Edit
-            </Link>
-          </Button>
+        <div className="space-x-4 inline-flex">
+          <Link
+            href={`/dashboard/products/edit/${product.id}`}
+            className="inline-flex items-center justify-center font-medium transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 bg-primary hover:bg-primary-600 text-brand focus:ring-primary-600 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm px-4 py-1.5"
+          >
+            <Edit className="size-4 mr-2" />
+            Edit
+          </Link>
           <FormDelete id={product.id} />
         </div>
       );

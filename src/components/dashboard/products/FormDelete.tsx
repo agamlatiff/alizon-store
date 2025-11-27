@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import type { ActionResult } from "@/types";
 import { Trash } from "lucide-react";
 import { deleteProduct } from "../../../app/dashboard/products/lib/actions";
 import { useActionState } from "react";
+import Button from "@/components/ui/button";
 
 const initialState: ActionResult = {
   error: "",
@@ -25,7 +25,10 @@ const FormDelete = ({ id }: FormDeleteProps) => {
 
   return (
     <form action={formAction}>
-      <Button variant={"destructive"} size={"sm"} disabled={pending}>
+      <Button variant={"secondary"}
+        size={"sm"}
+        disabled={pending}
+        className="text-white bg-red-500 hover:bg-red-600">
         <Trash className="size-4 mr-2" />
         {pending ? "Loading..." : "Delete"}
       </Button>

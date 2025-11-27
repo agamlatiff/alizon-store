@@ -1,102 +1,94 @@
-# AlizonStore
+# Alizon Store - Stripe Integration Update
 
-AlizonStore is a full-stack e-commerce platform built with modern web technologies. It serves as a portfolio project to showcase proficiency in building robust, scalable, and user-friendly web applications. The platform features separate interfaces for customers and sellers, providing a complete e-commerce experience from product browsing to order management.
+## 🚀 Recent Changes (Stripe Integration)
 
-## Features
+We have successfully migrated the payment gateway from Xendit to **Stripe**. Here is a summary of the changes:
 
-### Customer-Facing (Storefront)
+### 1. Dependencies & Configuration
+- **Removed**: `xendit-node` and related configuration files (`src/lib/xendit.ts`).
+- **Added**: `stripe` and `@stripe/stripe-js` packages.
+- **New Config**: Created `src/lib/stripe.ts` to initialize the Stripe client.
 
-  * **Product Catalog:** Browse products with filtering and searching capabilities.
-  * **Shopping Cart:** Add products to a cart and manage quantities.
-  * **Checkout Process:** A seamless checkout process with a simulated payment gateway.
-  * **User Authentication:** Sign up, sign in, and log out with credentials or Google.
+### 2. Checkout Flow (`storeOrder` Action)
+- Refactored `src/app/(customers)/carts/lib/actions.ts`.
+- Replaced Xendit payment request logic with **Stripe Checkout Sessions**.
+- Added proper error handling and validation (fixed "Invalid input" bugs).
+- Fixed `NEXT_REDIRECT` error by ensuring redirects happen outside `try/catch` blocks.
 
-### Seller-Facing (Dashboard)
+### 3. Webhook Handling
+- Created a new endpoint: `src/app/api/webhooks/stripe/route.ts`.
+- This webhook listens for `checkout.session.completed` events.
+- Automatically updates the order status in the database from `pending` to `success` upon successful payment.
 
-  * **Sales Analytics:** View key metrics like total revenue, sales, and customer count on a dashboard with charts.
-  * **Product Management:** Full CRUD (Create, Read, Update, Delete) functionality for products.
-  * **Category Management:** Organize products into categories with CRUD operations.
-  * **Brand Management:** Manage brands with CRUD functionality.
-  * **Location Management:** Manage store locations with CRUD functionality.
-  * **Order Management:** View and manage customer orders.
-  * **Customer Management:** View a list of all registered customers.
+### 4. UI Updates
+- **Success Page**: Added `src/app/checkout/success/page.tsx` to display order confirmation.
+- **Cancel Page**: Added `src/app/checkout/cancel/page.tsx` for cancelled payments.
+- **Checkout Form**: Added error alerts to `CheckoutForm.tsx` to display validation or payment errors to the user.
 
-## Tech Stack
+---
 
-This project is built with a modern, full-stack tech stack:
+## 🛠️ Stripe Setup Guide
 
-  * **Framework:** [Next.js](https://nextjs.org/) (React)
-  * **Styling:** [Tailwind CSS](https://tailwindcss.com/) with [Shadcn/ui](https://ui.shadcn.com/) for UI components
-  * **Database:** [PostgreSQL](https://www.postgresql.org/)
-  * **ORM:** [Prisma](https://www.prisma.io/)
-  * **Authentication:** [NextAuth.js](https://next-auth.js.org/) (Credentials and Google Provider)
-  * **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
-  * **Data Fetching:** [TanStack Query (React Query)](https://tanstack.com/query/latest)
-  * **Form Validation:** [Zod](https://zod.dev/)
-  * **Charts:** [Recharts](https://recharts.org/)
-  * **File Storage:** [Supabase Storage](https://supabase.com/storage)
-  * **Deployment:** Vercel
+Follow these steps to set up Stripe for this project:
 
-## Getting Started
+### 1. Get API Keys
+1.  Log in to your [Stripe Dashboard](https://dashboard.stripe.com/).
+2.  Go to **Developers** > **API keys**.
+3.  Copy the **Publishable key** (`pk_test_...`) and **Secret key** (`sk_test_...`).
 
-To get a local copy up and running, follow these simple steps.
+### 2. Configure Environment Variables
+Create or update your `.env` (or `.env.local`) file with the following:
 
-### Prerequisites
+```env
+# Stripe Configuration
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
+STRIPE_SECRET_KEY=sk_test_your_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 
-  * Node.js (v18 or later recommended)
-  * npm, yarn, or pnpm
-  * PostgreSQL database
+# App URL (Required for Stripe Redirects)
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-### Installation
+### 3. Get Webhook Secret (For Local Development)
+To test payments locally, you need to forward Stripe events to your localhost.
 
-1.  **Clone the repo**
+1.  **Install Stripe CLI**:
+    - [Download Stripe CLI](https://docs.stripe.com/stripe-cli) for your OS.
+    - Or use a package manager (e.g., `scoop install stripe` on Windows).
 
-    ```sh
-    git clone https://github.com/agamlatiff/alizon-store.git
+2.  **Login**:
+    ```bash
+    stripe login
     ```
 
-2.  **Install NPM packages**
-
-    ```sh
-    npm install
+3.  **Start Listening**:
+    Run this command in your terminal:
+    ```bash
+    stripe listen --forward-to localhost:3000/api/webhooks/stripe
     ```
 
-3.  **Set up environment variables**
+4.  **Copy Secret**:
+    The CLI will output a signing secret (starts with `whsec_...`). Copy this value to `STRIPE_WEBHOOK_SECRET` in your `.env` file.
 
-    Create a `.env.local` file in the root of the project and add the necessary environment variables. You'll need to include database credentials, NextAuth.js settings, and Supabase credentials.
+### 4. Restart Server
+**Crucial Step**: After updating `.env`, you MUST restart your Next.js server.
 
-    ```
-    NEXT_PUBLIC_SUPABASE_URL=
-    NEXT_PUBLIC_SUPABASE_KEY=
+```bash
+# Stop server (Ctrl + C)
+npm run dev
+```
 
-    DATABASE_URL=
+---
 
-    AUTH_SECRET=
+## 🧪 How to Test Payment
 
-    AUTH_GOOGLE_ID=
-    AUTH_GOOGLE_SECRET=
-
-    AUTH_TRUST_HOST=
-
-    PASSWORD_PEPPER=
-    ```
-
-4.  **Run database migrations**
-
-    ```sh
-    npx prisma migrate dev
-    ```
-
-5.  **Start the development server**
-
-    ```sh
-    npm run dev
-    ```
-
-    Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) with your browser to see the result.
-
-## Contact
-
-Agam Latifullah - [agam.latiff@gmail.com](mailto:agam.latiff@gmail.com)
-
-Project Link: [https://github.com/agamlatiff/alizon-store](https://www.google.com/search?q=https://github.com/agamlatiff/alizon-store)
+1.  Add items to your cart.
+2.  Proceed to checkout.
+3.  Fill in the shipping details.
+4.  Click **Checkout Now**.
+5.  You will be redirected to Stripe's hosted payment page.
+6.  Use a **Test Card**:
+    - **Card Number**: `4242 4242 4242 4242`
+    - **Expiry**: Any future date (e.g., 12/30)
+    - **CVC**: Any 3 digits (e.g., 123)
+7.  After payment, you should be redirected to the Success Page, and the order status in your database will update to `success`.

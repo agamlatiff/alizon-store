@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import type { ActionResult } from "@/types";
 import { Trash } from "lucide-react";
 import { deleteCategory } from "../../../app/dashboard/categories/lib/actions";
@@ -26,10 +26,10 @@ const FormDelete = ({ id }: FormDeleteProps) => {
   return (
     <form action={formAction}>
       <Button
-        variant={"destructive"}
+        variant={"secondary"}
         size={"sm"}
         disabled={pending}
-        className="text-white"
+        className="text-white bg-red-500 hover:bg-red-600"
       >
         <Trash className="size-4 mr-2" />
         {pending ? "Loading..." : "Delete"}

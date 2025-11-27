@@ -17,16 +17,19 @@ export async function storeOrder(
 ): Promise<ActionResult> {
   const session = await auth();
 
-  if (!session) {
+  if (!session || !session.user?.id) {
     return redirect("/sign-in");
   }
 
+  let redirectUrl = "/";
+
   const parse = schemaShippingAddress.safeParse({
-    name: formData.get("name"),
-    phone: formData.get("phone"),
-    address: formData.get("address"),
-    city: formData.get("city"),
-    postal_code: formData.get("postal_code"),
+    name: formData.get("name")?.toString() ?? "",
+    phone: formData.get("phone")?.toString() ?? "",
+    address: formData.get("address")?.toString() ?? "",
+    city: formData.get("city")?.toString() ?? "",
+    postal_code: formData.get("postal_code")?.toString() ?? "",
+    notes: formData.get("notes")?.toString() ?? null,
   });
 
   if (!parse.success) {
@@ -41,7 +44,7 @@ export async function storeOrder(
       data: {
         total: total,
         status: "pending",
-        user_id: session.user?.id,
+        user_id: session.user.id,
         code: generateRandomString(15),
       },
     });
@@ -70,6 +73,7 @@ export async function storeOrder(
         name: parse.data.name,
         phone: parse.data.phone,
         postal_code: parse.data.postal_code,
+        notes: parse.data.notes,
         order_id: order.id,
       },
     });
@@ -108,11 +112,13 @@ export async function storeOrder(
     });
 
     // Redirect to Stripe Checkout
-    return redirect(stripeSession.url || "/");
+    redirectUrl = stripeSession.url || "/";
   } catch (e) {
     console.error("Checkout error:", e);
     return {
       error: "Failed to process checkout. Please try again.",
     };
   }
+
+  return redirect(redirectUrl);
 }

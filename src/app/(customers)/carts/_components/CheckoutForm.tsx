@@ -124,7 +124,7 @@ const CheckoutForm = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="w-full lg:w-[400px] flex flex-col shrink-0 gap-4 h-fit">
         <h2 className="font-display font-bold text-2xl leading-[34px] text-brand">Payment Details</h2>
         <div className="w-full bg-white border border-[#E5E5E5] flex flex-col gap-[30px] p-[30px] rounded-3xl shadow-lg shadow-neutral-100">
@@ -139,7 +139,7 @@ const CheckoutForm = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-neutral-600">
@@ -170,17 +170,23 @@ const CheckoutForm = () => {
               <p className="font-semibold text-brand">{USDFormat(0)}</p>
             </div>
           </div>
-          
+
           <div className="h-px bg-neutral-100" />
-          
+
           <div className="flex flex-col gap-1">
             <p className="font-semibold text-neutral-500">Grand Total</p>
             <p className="font-display font-bold text-[32px] leading-[48px] text-primary-600">
               {USDFormat(grandTotal)}
             </p>
           </div>
-          
+
           <div className="flex flex-col gap-3">
+            {state.error && (
+              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm font-medium border border-red-100 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
+                {state.error}
+              </div>
+            )}
             <Button
               type="submit"
               className="h-12 text-lg shadow-xl shadow-primary/20"

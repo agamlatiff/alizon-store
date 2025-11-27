@@ -25,12 +25,12 @@ export default async function CheckoutSuccessPage({
   const order = await prisma.order.findUnique({
     where: { id: order_id },
     include: {
-      OrderProduct: {
+      products: {
         include: {
           product: true,
         },
       },
-      OrderDetail: true,
+      detail: true,
     },
   });
 
@@ -73,39 +73,39 @@ export default async function CheckoutSuccessPage({
               <div className="flex justify-between items-center">
                 <span className="text-neutral-600">Status</span>
                 <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
-                  {order.status === "paid" ? "Paid" : "Processing"}
+                  {order.status === "success" ? "Paid" : "Processing"}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-600">Total Amount</span>
                 <span className="font-bold text-xl text-primary-600">
-                  {USDFormat(order.total)}
+                  {USDFormat(Number(order.total))}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-600">Items</span>
                 <span className="font-semibold text-brand">
-                  {order.OrderProduct.length} item(s)
+                  {order.products.length} item(s)
                 </span>
               </div>
             </div>
           </div>
 
           {/* Shipping Address */}
-          {order.OrderDetail && (
+          {order.detail && (
             <div className="bg-surface rounded-2xl p-6 mb-8 text-left">
               <h3 className="font-bold text-lg text-brand mb-3">
                 Shipping Address
               </h3>
               <div className="space-y-1 text-neutral-600">
                 <p className="font-semibold text-brand">
-                  {order.OrderDetail.name}
+                  {order.detail.name}
                 </p>
-                <p>{order.OrderDetail.address}</p>
+                <p>{order.detail.address}</p>
                 <p>
-                  {order.OrderDetail.city}, {order.OrderDetail.postal_code}
+                  {order.detail.city}, {order.detail.postal_code}
                 </p>
-                <p>{order.OrderDetail.phone}</p>
+                <p>{order.detail.phone}</p>
               </div>
             </div>
           )}

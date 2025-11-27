@@ -1,18 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import type { TypeCheckingBrand } from "@/types";
+import Button from "@/components/ui/button";
+import type { ActionResult } from "@/types";
 import { Trash } from "lucide-react";
 import { deleteBrand } from "../../../app/dashboard/brands/lib/actions";
 import { useActionState } from "react";
 
-const initialState: TypeCheckingBrand = {
-  country: "",
-  description: "",
-  logo: "",
-  name: "",
-  status: "",
-  website: "",
+const initialState: ActionResult = {
   error: "",
 };
 
@@ -31,7 +25,12 @@ const FormDelete = ({ id }: FormDeleteProps) => {
 
   return (
     <form action={formAction}>
-      <Button className="text-white" variant={"destructive"} size={"sm"} disabled={pending}>
+      <Button
+        variant={"secondary"}
+        size={"sm"}
+        disabled={pending}
+        className="text-white bg-red-500 hover:bg-red-600"
+      >
         <Trash className="size-4 mr-2" />
         {pending ? "Loading..." : "Delete"}
       </Button>

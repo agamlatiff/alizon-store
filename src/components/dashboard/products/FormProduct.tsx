@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -76,7 +76,7 @@ const FormProduct = ({
       <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
         <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" className="h-7 w-7" asChild>
+            <Button variant="outline" size="sm" className="h-7 w-7" >
               <Link href="/dashboard/products">
                 <ChevronLeft className="h-4 w-4" />
                 <span className="sr-only">Back</span>
