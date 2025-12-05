@@ -9,6 +9,7 @@ import WishlistButton from "./WishlistButton";
 import { useCart } from "@/hooks/useCart";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface CardProductProps {
   item: TProduct;
@@ -47,11 +48,13 @@ const CardProduct = ({ item }: CardProductProps) => {
 
       {/* Image Container */}
       <Link href={`/catalogs/detail-product/${item.id}`} className="block relative aspect-[3/4] overflow-hidden bg-neutral-50">
-        <img
+        <Image
           src={imgSrc}
           alt={item.name}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           onError={() => setImgSrc('/assets/photos/p1.png')}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
 
         {/* Badges */}

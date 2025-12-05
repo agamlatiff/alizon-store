@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProduct } from "../lib/data";
 import { useFilter } from "@/hooks/useFilter";
 import CardProduct from "@/components/customers/CardProduct";
-import LoadingState from "@/components/Loading";
+import ProductCardSkeleton from "@/components/customers/skeletons/ProductCardSkeleton";
 
 const ProductListing = () => {
   const { filter } = useFilter();
@@ -14,10 +14,15 @@ const ProductListing = () => {
     queryFn: () => fetchProduct(filter),
   });
 
+
   if (isLoading) {
-    <div className="grid grid-cols-3 gap-[30px]">
-      <LoadingState />
-    </div>;
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(6)].map((_, i) => (
+          <ProductCardSkeleton key={i} />
+        ))}
+      </div>
+    );
   }
 
   return (

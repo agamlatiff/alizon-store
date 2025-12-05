@@ -88,12 +88,8 @@ const Navbar = ({ session }: NavbarProps) => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link href="/" className={getLinkClass('/')}>Home</Link>
             <Link href="/catalogs" className={getLinkClass('/catalogs')}>Shop</Link>
-            <Link href="/catalogs?filter=new" className={getLinkClass('/catalogs', 'new')}>
-              New Drops
-            </Link>
-            <Link href="/catalogs?filter=popular" className={getLinkClass('/catalogs', 'popular')}>
-              Best Sellers
-            </Link>
+            <Link href="/about" className={getLinkClass('/about')}>About</Link>
+            <Link href="/contact" className={getLinkClass('/contact')}>Contact</Link>
           </nav>
 
           {/* Actions */}
@@ -241,13 +237,9 @@ const Navbar = ({ session }: NavbarProps) => {
 
             <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-neutral-100 shadow-2xl py-6 px-6 flex flex-col gap-4 animate-in slide-in-from-top-2 max-h-[80vh] overflow-y-auto">
               <Link href="/" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Home</Link>
-              <Link href="/catalogs" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Shop All</Link>
-              <Link href="/catalogs?filter=new" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
-                New Drops
-              </Link>
-              <Link href="/catalogs?filter=popular" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
-                Best Sellers
-              </Link>
+              <Link href="/catalogs" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Shop</Link>
+              <Link href="/about" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">About Us</Link>
+              <Link href="/contact" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Contact</Link>
 
               {session ? (
                 <>

@@ -93,6 +93,7 @@ export async function POST(request: Request) {
     }
 
     const products = await prisma.product.findMany({
+      take: 50, // Limit to 50 products for performance
       where: {
         AND: ANDQuery.length > 0 ? ANDQuery : undefined,
       },

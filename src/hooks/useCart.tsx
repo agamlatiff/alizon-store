@@ -1,14 +1,14 @@
 import type { TCart } from "@/types";
 import { create } from "zustand";
-import {createJSONStorage, persist} from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface CartState {
   products: TCart[]
   isOpen: boolean
-  addProduct : (cart : TCart) => void
-  increaseQuantity : (id: string) => void
-  decreaseQuantity : (id: string) => void
-  removeProduct : (id: string) => void
+  addProduct: (cart: TCart) => void
+  increaseQuantity: (id: string) => void
+  decreaseQuantity: (id: string) => void
+  removeProduct: (id: string) => void
   openCart: () => void
   closeCart: () => void
   toggleCart: () => void
@@ -20,7 +20,7 @@ export const useCart = create<CartState>()(
     (set, get) => ({
       products: [],
       isOpen: false,
-      addProduct : (cart) => {
+      addProduct: (cart) => {
         const existingProduct = get().products.find((item) => item.id === cart.id);
         if (existingProduct) {
           get().increaseQuantity(cart.id);
@@ -33,7 +33,7 @@ export const useCart = create<CartState>()(
       },
       increaseQuantity: (id) => {
         const newProducts = get().products.map((item) => {
-          if(item.id === id) {
+          if (item.id === id) {
             return {
               ...item,
               quantity: item.quantity + 1
@@ -45,9 +45,9 @@ export const useCart = create<CartState>()(
           products: newProducts
         })
       },
-      decreaseQuantity:  (id) => {
+      decreaseQuantity: (id) => {
         const newProducts = get().products.map((item) => {
-          if(item.id === id) {
+          if (item.id === id) {
             return {
               ...item,
               quantity: item.quantity - 1
@@ -68,7 +68,7 @@ export const useCart = create<CartState>()(
     }),
     {
       name: 'cart-product-belanja',
-      storage: createJSONStorage(() => sessionStorage)
+      storage: createJSONStorage(() => (typeof window !== "undefined" ? sessionStorage : { getItem: () => null, setItem: () => { }, removeItem: () => { } })),
     }
   )
 )
