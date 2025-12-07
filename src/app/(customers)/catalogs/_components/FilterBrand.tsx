@@ -1,8 +1,8 @@
-import { getBrands } from "@/app/dashboard/brands/lib/data";
+import { getBrandsCached } from "@/lib/cache";
 import FilterCheckboxItem from "./FilterCheckboxItem";
 
 const FilterBrand = async () => {
-  const brands = await getBrands();
+  const brands = await getBrandsCached();
 
   return (
     <>

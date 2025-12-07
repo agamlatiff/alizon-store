@@ -11,11 +11,11 @@ const SortDropdown = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-neutral-500">Sort by:</span>
+      <span className="text-sm text-neutral-500 hidden sm:inline">Sort by:</span>
       <select
         value={filter.sortBy || "popular"}
         onChange={handleSortChange}
-        className="bg-neutral-50 border border-neutral-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50"
+        className="bg-neutral-50 border border-neutral-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 max-w-[150px] sm:max-w-none"
       >
         <option value="popular">Most Popular</option>
         <option value="newest">Newest</option>

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/dashboard/',
     },
-    sitemap: 'https://alizon-store.com/sitemap.xml',
+    sitemap: 'https://alizonstore.vercel.app/sitemap.xml',
   }
 }

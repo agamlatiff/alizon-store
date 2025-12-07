@@ -11,12 +11,14 @@ import NewArrivals from "@/components/customers/home/NewArrivals";
 import Categories from "@/components/customers/home/Categories";
 import NewArrivalsSkeleton from "@/components/customers/skeletons/NewArrivalsSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OrganizationJsonLd } from "@/components/seo/JsonLd";
 
 const LandingPage = async () => {
   const session = await auth();
 
   return (
     <>
+      <OrganizationJsonLd />
       <Navbar session={session} />
 
       <div className="space-y-0 pb-24">

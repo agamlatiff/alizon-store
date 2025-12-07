@@ -1,9 +1,9 @@
-import { getLocations } from "@/app/dashboard/locations/lib/data";
+import { getLocationsCached } from "@/lib/cache";
 import FilterCheckboxItem from "./FilterCheckboxItem";
 
 
 const FilterLocation = async () => {
-  const locations = await getLocations();
+  const locations = await getLocationsCached();
 
   return (
     <>

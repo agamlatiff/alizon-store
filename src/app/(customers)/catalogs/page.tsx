@@ -9,6 +9,8 @@ import ProductListing from "./_components/ProductListing";
 import SearchBar from "./_components/SearchBar";
 import SortDropdown from "./_components/SortDropdown";
 import { auth } from "@/lib/auth";
+import Link from "next/link";
+import MobileFilter from "./_components/MobileFilter";
 
 const CatalogPage = async () => {
   const session = await auth();
@@ -30,12 +32,12 @@ const CatalogPage = async () => {
         id="catalog"
         className="container mx-auto px-4 md:px-6 flex flex-col lg:flex-row gap-10 pb-24"
       >
-        {/* Sidebar Filters */}
-        <aside className="w-full lg:w-[280px] flex-shrink-0 space-y-8">
+        {/* Sidebar Filters - Desktop */}
+        <aside className="hidden lg:block w-[280px] flex-shrink-0 space-y-8">
           <div className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm space-y-8 sticky top-24">
             <div className="flex items-center justify-between">
               <h2 className="font-display font-bold text-xl text-brand">Filters</h2>
-              <button className="text-sm text-neutral-500 hover:text-primary transition-colors">Reset</button>
+              <Link href="/catalogs" className="text-sm text-neutral-500 hover:text-primary transition-colors">Reset</Link>
             </div>
 
             <div className="space-y-6">
@@ -54,9 +56,33 @@ const CatalogPage = async () => {
 
         {/* Main Content */}
         <div className="flex-1">
-          <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-neutral-100 shadow-sm">
-            <p className="text-neutral-500 text-sm">Showing <span className="font-bold text-brand">All</span> Products</p>
-            <SortDropdown />
+          {/* Controls Bar */}
+          <div className="mb-6 bg-white p-4 rounded-xl border border-neutral-100 shadow-sm md:static">
+            <div className="flex flex-row items-center justify-between gap-4">
+              {/* Desktop: Showing text */}
+              <p className="text-neutral-500 text-sm whitespace-nowrap hidden md:block">Showing <span className="font-bold text-brand">All</span> Products</p>
+
+              {/* Mobile: Filter Trigger */}
+              <div className="lg:hidden">
+                <MobileFilter>
+                  <div className="space-y-6">
+                    <FilterPrice />
+                    <div className="h-px bg-neutral-100" />
+                    <FilterStock />
+                    <div className="h-px bg-neutral-100" />
+                    <FilterBrand />
+                    <div className="h-px bg-neutral-100" />
+                    <FilterLocation />
+                    <div className="h-px bg-neutral-100" />
+                    <FilterCategories />
+                  </div>
+                </MobileFilter>
+              </div>
+
+              <div className="flex-1 md:flex-none flex justify-end">
+                <SortDropdown />
+              </div>
+            </div>
           </div>
 
           <ProductListing />

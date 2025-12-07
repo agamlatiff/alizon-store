@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { ShoppingBag, Search, Menu, User, X, LogOut, ChevronDown, Heart, LayoutDashboard } from 'lucide-react';
+import { ShoppingBag, Search, Menu, User, X, LogOut, ChevronDown, Heart, LayoutDashboard, Home, Store, Info, Phone } from 'lucide-react';
 import Image from 'next/image';
 import { useCart } from '@/hooks/useCart';
 import CartDrawer from './CartDrawer';
@@ -230,64 +230,154 @@ const Navbar = ({ session }: NavbarProps) => {
           <>
             {/* Overlay */}
             <div
-              className="fixed inset-0 bg-neutral-900/50 backdrop-blur-[2px] -z-10 md:hidden transition-opacity duration-300"
+              className="fixed inset-0 bg-neutral-900/20 backdrop-blur-sm -z-10 md:hidden animate-in fade-in duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
               aria-hidden="true"
             />
 
-            <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-neutral-100 shadow-2xl py-6 px-6 flex flex-col gap-4 animate-in slide-in-from-top-2 max-h-[80vh] overflow-y-auto">
-              <Link href="/" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Home</Link>
-              <Link href="/catalogs" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Shop</Link>
-              <Link href="/about" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">About Us</Link>
-              <Link href="/contact" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50">Contact</Link>
+            <div className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-neutral-100 shadow-2xl flex flex-col max-h-[85vh] overflow-y-auto animate-in slide-in-from-top-5 duration-300">
 
-              {session ? (
-                <>
-                  {/* User Info */}
-                  <div className="py-3 border-b border-neutral-50">
-                    <p className="font-bold text-brand text-base">{session.user?.name || 'User'}</p>
-                    <p className="text-xs text-neutral-500">{session.user?.email}</p>
+              {/* Search Bar Area */}
+              <div className="p-4 border-b border-neutral-100/50">
+                <div className="relative group">
+                  <input
+                    type="text"
+                    placeholder="Search for products..."
+                    className="w-full pl-11 pr-4 py-3.5 bg-neutral-50 group-hover:bg-neutral-100 focus:bg-white border-none ring-1 ring-neutral-200 focus:ring-2 focus:ring-primary/20 rounded-2xl text-base transition-all duration-300"
+                  />
+                  <Search className="w-5 h-5 text-neutral-400 group-hover:text-primary transition-colors absolute left-4 top-1/2 -translate-y-1/2" />
+                </div>
+              </div>
+
+              {/* Main Navigation */}
+              <div className="p-3 space-y-1">
+                <Link
+                  href="/"
+                  className="flex items-center gap-4 px-4 py-3.5 text-neutral-700 font-medium rounded-xl hover:bg-neutral-50 active:bg-neutral-100 transition-all border border-transparent hover:border-neutral-100"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="w-10 h-10 rounded-full bg-brand/5 flex items-center justify-center text-brand">
+                    <Home className="w-5 h-5" />
                   </div>
-
-                  <Link href="/profile" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
-                    My Profile <User className="w-5 h-5" />
-                  </Link>
-                  <Link href="/orders" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
-                    My Orders <ShoppingBag className="w-5 h-5" />
-                  </Link>
-                  <Link href="/wishlist" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
-                    My Wishlist <Heart className="w-5 h-5" />
-                  </Link>
-
-                  {session.user?.role === 'seller' && (
-                    <Link href="/dashboard" className="text-lg font-bold text-primary-600 bg-primary-50 py-3 px-4 rounded-lg border-2 border-primary-200 flex items-center justify-between">
-                      Dashboard <LayoutDashboard className="w-5 h-5" />
-                    </Link>
-                  )}
-
-                  {/* Logout Button */}
-                  <form action={handleLogout}>
-                    <button
-                      type="submit"
-                      className="text-lg font-bold text-red-600 py-2 border-b border-neutral-50 flex items-center justify-between w-full text-left"
-                    >
-                      Logout <LogOut className="w-5 h-5" />
-                    </button>
-                  </form>
-                </>
-              ) : (
-                <Link href="/sign-in" className="text-lg font-bold text-neutral-800 py-2 border-b border-neutral-50 flex items-center justify-between">
-                  Login / Register <User className="w-5 h-5" />
+                  <span className="text-base">Home</span>
                 </Link>
-              )}
 
-              <div className="relative mt-2">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full pl-10 pr-4 py-3 bg-neutral-100 rounded-xl text-base"
-                />
-                <Search className="w-5 h-5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Link
+                  href="/catalogs"
+                  className="flex items-center gap-4 px-4 py-3.5 text-neutral-700 font-medium rounded-xl hover:bg-neutral-50 active:bg-neutral-100 transition-all border border-transparent hover:border-neutral-100"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="w-10 h-10 rounded-full bg-brand/5 flex items-center justify-center text-brand">
+                    <Store className="w-5 h-5" />
+                  </div>
+                  <span className="text-base">Shop</span>
+                </Link>
+
+                <Link
+                  href="/about"
+                  className="flex items-center gap-4 px-4 py-3.5 text-neutral-700 font-medium rounded-xl hover:bg-neutral-50 active:bg-neutral-100 transition-all border border-transparent hover:border-neutral-100"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="w-10 h-10 rounded-full bg-brand/5 flex items-center justify-center text-brand">
+                    <Info className="w-5 h-5" />
+                  </div>
+                  <span className="text-base">About Us</span>
+                </Link>
+
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-4 px-4 py-3.5 text-neutral-700 font-medium rounded-xl hover:bg-neutral-50 active:bg-neutral-100 transition-all border border-transparent hover:border-neutral-100"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="w-10 h-10 rounded-full bg-brand/5 flex items-center justify-center text-brand">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <span className="text-base">Contact</span>
+                </Link>
+              </div>
+
+              {/* User Section */}
+              <div className="p-3 mt-auto">
+                {session ? (
+                  <div className="bg-neutral-50 rounded-2xl p-4 border border-neutral-100">
+                    <div className="flex items-center gap-4 mb-4 pb-4 border-b border-neutral-200/60">
+                      <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden bg-brand flex items-center justify-center text-white font-bold text-lg">
+                        {session.user?.image ? (
+                          <Image
+                            src={session.user.image}
+                            alt={session.user.name || 'User'}
+                            width={48}
+                            height={48}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          session.user?.name?.charAt(0) || 'U'
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-neutral-900 truncate">{session.user?.name || 'User'}</p>
+                        <p className="text-xs text-neutral-500 truncate font-medium">{session.user?.email}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 mb-2">
+                      <Link
+                        href="/profile"
+                        className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all text-center"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <User className="w-5 h-5 text-neutral-600" />
+                        <span className="text-[10px] font-semibold text-neutral-600">Profile</span>
+                      </Link>
+                      <Link
+                        href="/orders"
+                        className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all text-center"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <ShoppingBag className="w-5 h-5 text-neutral-600" />
+                        <span className="text-[10px] font-semibold text-neutral-600">Orders</span>
+                      </Link>
+                      <Link
+                        href="/wishlist"
+                        className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all text-center"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Heart className="w-5 h-5 text-neutral-600" />
+                        <span className="text-[10px] font-semibold text-neutral-600">Wishlist</span>
+                      </Link>
+                    </div>
+
+                    {session.user?.role === 'seller' && (
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center justify-center gap-2 w-full p-3 bg-white border border-primary-100 text-primary-700 font-semibold rounded-xl text-sm mb-3 hover:bg-primary-50 transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <LayoutDashboard className="w-4 h-4" />
+                        Seller Dashboard
+                      </Link>
+                    )}
+
+                    <form action={handleLogout} className="mt-1">
+                      <button
+                        type="submit"
+                        className="flex items-center justify-center gap-2 w-full p-3 text-red-600 font-medium text-sm hover:bg-red-50 rounded-xl transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  <Link
+                    href="/sign-in"
+                    className="flex items-center justify-center gap-2 w-full bg-brand text-white p-4 rounded-xl font-bold shadow-lg shadow-brand/20 active:scale-[0.98] transition-all"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <User className="w-5 h-5" />
+                    Login / Register
+                  </Link>
+                )}
               </div>
             </div>
           </>

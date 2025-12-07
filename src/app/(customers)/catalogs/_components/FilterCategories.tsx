@@ -1,9 +1,9 @@
-import { getCategories } from "@/app/dashboard/categories/lib/data";
+import { getCategoriesCached } from "@/lib/cache";
 import FilterCheckboxItem from "./FilterCheckboxItem";
 
 
 const FilterCategories = async () => {
-  const categories = await getCategories();
+  const categories = await getCategoriesCached();
   return (
     <>
       <div className="flex flex-col gap-[14px]">

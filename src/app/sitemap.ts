@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import prisma from '@/lib/prisma'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://alizon-store.com'
+  const baseUrl = 'https://alizonstore.vercel.app'
 
   // Get all products
   const products = await prisma.product.findMany({
@@ -24,16 +24,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
   }))
 
+  // Static pages
+  const staticPages = [
+    '',
+    '/catalogs',
+    '/about',
+    '/contact',
+    '/faq',
+    '/terms',
+    '/privacy',
+  ].map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: new Date(),
+  }))
+
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/catalogs`,
-      lastModified: new Date(),
-    },
+    ...staticPages,
     ...productUrls,
     ...categoryUrls,
   ]
 }
+
